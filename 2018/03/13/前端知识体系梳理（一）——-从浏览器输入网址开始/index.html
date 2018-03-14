@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="本片以浏览器输入url后页面的加载过程讲起，引导出js单线程、性能优化、web安全等方面的问题，进一步延展出后边几篇对html、css、js、前端算法等相关知识梳理的文章">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-13T18:00:33.000Z">
+<meta property="og:updated_time" content="2018-03-14T06:44:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前端知识体系梳理（一）—— 从浏览器输入网址说起">
 <meta name="twitter:description" content="本片以浏览器输入url后页面的加载过程讲起，引导出js单线程、性能优化、web安全等方面的问题，进一步延展出后边几篇对html、css、js、前端算法等相关知识梳理的文章">
@@ -615,7 +615,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var i</span><br><span class="line">for (i = 0; i &lt; document.getElementsByTagName(&apos;p&apos;).length; i++) &#123;  // 每次循环，都会查询 DOM ，耗费性能</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>合并 DOM 插入:</strong><br>DOM 操作是非常耗费性能的，因此插入多个标签时，先插入 Fragment 然后再统一插入 DOM。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var listNode = document.getElementById(&apos;list&apos;)</span><br><span class="line">// 要插入 10 个 li 标签</span><br><span class="line">var frag = document.createDocumentFragment();</span><br><span class="line">var x, li;</span><br><span class="line">for(x = 0; x &lt; 10; x++) &#123;</span><br><span class="line">    li = document.createElement(&quot;li&quot;);</span><br><span class="line">    li.innerHTML = &quot;List item &quot; + x;</span><br><span class="line">    frag.appendChild(li);  // 先放在 frag 中，最后一次性插入到 DOM 结构中。</span><br><span class="line">&#125;</span><br><span class="line">listNode.appendChild(frag);...</span><br></pre></td></tr></table></figure></p>
 <p><strong>尽早执行操作：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">window.addEventListener(&apos;load&apos;, function () &#123;</span><br><span class="line">    // 页面的全部资源加载完才会执行，包括图片、视频等</span><br><span class="line">&#125;)</span><br><span class="line">document.addEventListener(&apos;DOMContentLoaded&apos;, function () &#123;</span><br><span class="line">    // DOM 渲染完即可执行，此时图片、视频还可能没有加载完</span><br><span class="line">&#125;)...</span><br></pre></td></tr></table></figure></p>
-<p><strong>事件节流</strong><br>详细可参考 <a href="http://blog.csdn.net/crystal6918/article/details/62236730" target="_blank" rel="noopener">http://blog.csdn.net/crystal6918/article/details/62236730</a> 这里，写的不错</p>
+<p><strong>防抖动和节流</strong></p>
+<p>针对一些会频繁触发的事件如scroll、resize，如果正常绑定事件处理函数的话，有可能在很短的时间内多次连续触发事件，十分影响性能。针对这类事件要进行防抖动或者节流处理。</p>
+<p>防抖：无论频发触发多久，都是在停止触发时delay时间后才执行第一次或者才允许被下次触发执行。</p>
+<p>如下高频触发实现第一次触发立即执行，然后高频触发结束时需等待delay时间后才允许下次触发可以执行。（可用场景举例：表单提交）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">function debouce(fun, delay, immediate) &#123;</span><br><span class="line">	var timer = null;</span><br><span class="line">	return function() &#123;</span><br><span class="line"></span><br><span class="line">		if(timer)&#123; clearTimeout(timer); &#125;</span><br><span class="line">		if(immediate)&#123;</span><br><span class="line"></span><br><span class="line">			// 首次立即响应，后边过了delay时间之后才能响应</span><br><span class="line">			if(timer === null) &#123;</span><br><span class="line">				fun.apply(this, arguments); // 要指定调用对象</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			// 过了delay时间，设置判定条件timer = null; 上边才可以响应</span><br><span class="line">			timer = setTimeout(function() &#123;timer = null;&#125;, delay)</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line"></span><br><span class="line">			// 每次触发都要delay时间之后才响应</span><br><span class="line">			timer = setTimeout(fun, delay)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">var retfun = debouce(function()&#123;console.log(&apos;执行&apos;);&#125;, 1000, true);</span><br><span class="line">retfun();</span><br></pre></td></tr></table></figure></p>
+<p>节流：节流函数不管事件触发有多频繁，都会保证在规定时间内一定会执行一次真正的事件处理函数。</p>
+<p>如下实现：一个事件高度频发触发，刚触发时立即执行，过程中每delay时间间隔执行一次，最后一次触发完毕立即再执行一次或者delay时间间隔后还能执行一次的节流函数：（可用场景举例：滚动页面无限加载）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">function throttle(fun, delay) &#123;</span><br><span class="line">	var timer = null;</span><br><span class="line">	var startTime = Date.now();</span><br><span class="line">	return function() &#123;</span><br><span class="line"></span><br><span class="line">		// 首次时立即触发，后边每隔delay触发</span><br><span class="line">		if(timer) &#123; clearTimeout(timer); &#125;</span><br><span class="line">		if(Date.now() - startTime &gt; delay) &#123;</span><br><span class="line">			fun.apply(this, arguments);</span><br><span class="line">			startTime = Date.now();</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			timer = setTimeout(fun, delay)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">var retfun = throttle(function()&#123;console.log(&apos;执行&apos;);&#125;, 1000);</span><br><span class="line">retfun()</span><br></pre></td></tr></table></figure></p>
 <h1 id="web安全"><a href="#web安全" class="headerlink" title="web安全"></a>web安全</h1><p>本片主要介绍前端主要涉及到的安全问题：</p>
 <h2 id="XSS"><a href="#XSS" class="headerlink" title="XSS"></a>XSS</h2><p>概念</p>
 <ul>
@@ -694,6 +699,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/03/14/前端知识体系梳理（二-1）——-重新认识HTML、CSS/" rel="prev" title="前端知识体系梳理（二-1）—— 重新认识HTML、CSS">
+                前端知识体系梳理（二-1）—— 重新认识HTML、CSS <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -769,7 +778,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -782,7 +791,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
