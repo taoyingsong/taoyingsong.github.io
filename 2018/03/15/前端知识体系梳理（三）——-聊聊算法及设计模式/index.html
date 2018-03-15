@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="算法的世界博大精深，路漫漫，上下求索">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-15T06:02:14.000Z">
+<meta property="og:updated_time" content="2018-03-15T06:25:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前端知识体系梳理（三）—— 聊聊算法及设计模式">
 <meta name="twitter:description" content="算法的世界博大精深，路漫漫，上下求索">
@@ -313,13 +313,30 @@
       
         <p>算法的世界博大精深，路漫漫，上下求索<br><a id="more"></a></p>
 <ul>
+<li>算法<ul>
+<li>先说数据结构 </li>
 <li>算法复杂度分析</li>
-<li>算法</li>
+<li>详情</li>
+</ul>
+</li>
 <li>设计模式</li>
 </ul>
 <hr>
-<p>导语：</p>
-<h2 id="算法复杂度分析"><a href="#算法复杂度分析" class="headerlink" title="算法复杂度分析"></a>算法复杂度分析</h2><p>这里只说时间复杂度</p>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>下边说的都还比较简单，感兴趣的同学可以去各大OJ上刷刷题：<br><a href="https://leetcode.com/" target="_blank" rel="noopener">https://leetcode.com/</a><br><a href="http://acm.hdu.edu.cn/" target="_blank" rel="noopener">http://acm.hdu.edu.cn/</a><br><a href="http://poj.org/" target="_blank" rel="noopener">http://poj.org/</a><br>…</p>
+<h3 id="先说数据结构"><a href="#先说数据结构" class="headerlink" title="先说数据结构"></a>先说数据结构</h3><ul>
+<li>简单数据结构<ul>
+<li>有序数据结构：栈、队列、链表，有序数据结构省空间（存储空间小）</li>
+<li>无序数据结构：集合、字典、散列表，无序数据结构省时间（读取时间快）</li>
+</ul>
+</li>
+<li>复杂数据结构<ul>
+<li>树、堆</li>
+<li>图</li>
+</ul>
+</li>
+</ul>
+<p>对于简单数据结构，在 ES 中对应的是数组（Array）和对象（Object）。可以想一下，数组的存储是有序的，对象的存储是无序的，我要在对象中根据key找到一个值是立即返回的，数组则需要查找的过程。</p>
+<h3 id="算法复杂度分析"><a href="#算法复杂度分析" class="headerlink" title="算法复杂度分析"></a>算法复杂度分析</h3><p>这里只说时间复杂度</p>
 <p>常见的时间复杂度有：</p>
 <ul>
 <li>常数阶 O(1)</li>
@@ -338,22 +355,7 @@
 </ol>
 <p>例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let number = 1; // 语句执行一次 </span><br><span class="line">while (number &lt; n) &#123; // 语句执行 logN 次</span><br><span class="line">  number *= 2; // 语句执行 logN 次</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>上面代码while的跳出判断条件是<code>number&lt;n</code>，而循环体内number增长速度是(2^n)，所以循环代码实际执行logN次，复杂度为：1 + 2 * logN = O(logN)</p>
-<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>下边说的都还比较简单，感兴趣的同学可以去各大OJ上刷刷题：<br><a href="https://leetcode.com/" target="_blank" rel="noopener">https://leetcode.com/</a><br><a href="http://acm.hdu.edu.cn/" target="_blank" rel="noopener">http://acm.hdu.edu.cn/</a><br><a href="http://poj.org/" target="_blank" rel="noopener">http://poj.org/</a><br>…</p>
-<p>先说数据结构：</p>
-<ul>
-<li>简单数据结构<ul>
-<li>有序数据结构：栈、队列、链表，有序数据结构省空间（存储空间小）</li>
-<li>无序数据结构：集合、字典、散列表，无序数据结构省时间（读取时间快）</li>
-</ul>
-</li>
-<li>复杂数据结构<ul>
-<li>树、堆</li>
-<li>图</li>
-</ul>
-</li>
-</ul>
-<p>对于简单数据结构，在 ES 中对应的是数组（Array）和对象（Object）。可以想一下，数组的存储是有序的，对象的存储是无序的，我要在对象中根据key找到一个值是立即返回的，数组则需要查找的过程。</p>
-<p>前端相对来说需要高深复杂算法的情况不多，下边简单介绍一些基础算法：</p>
+<h3 id="详情"><a href="#详情" class="headerlink" title="详情"></a>详情</h3><p>前端相对来说需要高深复杂算法的情况不多，下边简单介绍一些基础算法：</p>
 <blockquote>
 <p>递归</p>
 </blockquote>
@@ -549,7 +551,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#算法复杂度分析"><span class="nav-number">1.</span> <span class="nav-text">算法复杂度分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法"><span class="nav-number">2.</span> <span class="nav-text">算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计模式"><span class="nav-number">3.</span> <span class="nav-text">设计模式</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#算法"><span class="nav-number">1.</span> <span class="nav-text">算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#先说数据结构"><span class="nav-number">1.1.</span> <span class="nav-text">先说数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法复杂度分析"><span class="nav-number">1.2.</span> <span class="nav-text">算法复杂度分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#详情"><span class="nav-number">1.3.</span> <span class="nav-text">详情</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计模式"><span class="nav-number">2.</span> <span class="nav-text">设计模式</span></a></li></ol></div>
             
 
           </div>
