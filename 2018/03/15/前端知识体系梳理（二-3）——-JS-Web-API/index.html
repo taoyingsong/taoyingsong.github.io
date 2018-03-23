@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="路漫漫其修远兮&lt;br &#x2F;&gt;吾将上下而求索">
 <meta property="og:description" content="第二部分的最后一篇，加油！">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-15T04:26:35.000Z">
+<meta property="og:updated_time" content="2018-03-19T14:04:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前端知识体系梳理（二-3）—— JS-Web-API">
 <meta name="twitter:description" content="第二部分的最后一篇，加油！">
@@ -386,6 +386,7 @@
 </ul>
 <h3 id="Fetch-API"><a href="#Fetch-API" class="headerlink" title="Fetch API"></a>Fetch API</h3><p> 目前已经有一个获取 HTTP 请求更加方便的 API：Fetch，通过Fetch提供的fetch()这个全局函数方法可以很简单地发起异步请求，并且支持Promise的回调。但是 Fetch API 是比较新的 API，具体使用的时候还需要查查 caniuse，看下其浏览器兼容情况。</p>
 <p>看一个简单的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> fetch(&apos;some/api/data.json&apos;, &#123;</span><br><span class="line">  method:&apos;POST&apos;, //请求类型 GET、POST</span><br><span class="line">  headers:&#123;&#125;, // 请求的头信息，形式为 Headers 对象或 ByteString</span><br><span class="line">  body:&#123;&#125;, //请求发送的数据 blob、BufferSource、FormData、URLSearchParams（get 或head 方法中不能包含 body）</span><br><span class="line">  mode:&apos;&apos;, //请求的模式，是否跨域等，如 cors、 no-cors 或 same-origin</span><br><span class="line">  credentials:&apos;&apos;, //cookie 的跨域策略，如 omit、same-origin 或 include</span><br><span class="line">  cache:&apos;&apos;, //请求的 cache 模式: default、no-store、reload、no-cache、 force-cache 或 only-if-cached</span><br><span class="line">&#125;).then(function(response) &#123; ... &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>手动封装一个兼容低版本的fetch: <a href="https://gitee.com/taoyingsong/open-skill/blob/master/fetch.js" target="_blank" rel="noopener">https://gitee.com/taoyingsong/open-skill/blob/master/fetch.js</a><br>更多关于fetch及promise的介绍：<br><a href="https://github.com/camsong/blog/issues/2" target="_blank" rel="noopener">https://github.com/camsong/blog/issues/2</a><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise</a></p>
 <h3 id="跨域"><a href="#跨域" class="headerlink" title="跨域"></a>跨域</h3><p>什么是跨域：相同的协议、域名、端口号即同源，否则就是跨域。</p>
 <p>HTML 中几个标签能逃避过同源策略——<code>&lt;script src=&quot;xxx&quot;&gt;</code>、<code>&lt;img src=&quot;xxxx&quot;/&gt;</code>、<code>&lt;link href=&quot;xxxx&quot;&gt;</code>，这三个标签的src/href可以加载其他域的资源，不受同源策略限制。</p>
 <p>因此：</p>
