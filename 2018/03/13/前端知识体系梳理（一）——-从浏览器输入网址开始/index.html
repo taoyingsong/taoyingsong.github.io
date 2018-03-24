@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="路漫漫其修远兮&lt;br &#x2F;&gt;吾将上下而求索">
 <meta property="og:description" content="本片以浏览器输入url后页面的加载过程讲起，引导出js单线程、性能优化、web安全等方面的问题，进一步延展出后边几篇对html、css、js、前端算法等相关知识梳理的文章">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-23T16:30:28.000Z">
+<meta property="og:updated_time" content="2018-03-24T16:49:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前端知识体系梳理（一）—— 从浏览器输入网址说起">
 <meta name="twitter:description" content="本片以浏览器输入url后页面的加载过程讲起，引导出js单线程、性能优化、web安全等方面的问题，进一步延展出后边几篇对html、css、js、前端算法等相关知识梳理的文章">
@@ -355,20 +355,25 @@
 <p>ps.【】—— 为主干路线。DNS存在着多级缓存，从离浏览器的距离排序的话，有以下几种: 浏览器缓存，系统缓存，路由器缓存，IPS服务器缓存，根域名服务器缓存，顶级域名服务器缓存，主域名服务器缓存，太过详细的上边就没写了。</p>
 </blockquote>
 <p>demo:<br>浏览器中输入<a href="http://www.google.com后：" target="_blank" rel="noopener">www.google.com后：</a><br>网址的解析是一个从右向左的过程: com -&gt; google.com -&gt; <a href="http://www.google.com" target="_blank" rel="noopener">www.google.com</a> 。但是你是否发现少了点什么，根域名服务器的解析过程呢？事实上，真正的网址是<a href="http://www.google.com" target="_blank" rel="noopener">www.google.com</a>. ，并不是我多打了一个.，这个.对应的就是根域名服务器，默认情况下所有的网址的最后一位都是.，既然是默认情况下，为了方便用户，通常都会省略，浏览器在请求DNS的时候会自动加上，所有网址真正的解析过程为: . -&gt; .com -&gt; google.com. -&gt; <a href="http://www.google.com.。" target="_blank" rel="noopener">www.google.com.。</a></p>
-<h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><p>了解了DNS的过程，可以为我们带来哪些？上文中请求到google的IP地址时，经历了8个步骤，这个过程中存在多个请求，如果每次都经过这么多步骤，是否太耗时间？如何减少该过程的步骤呢？那就是DNS缓存。<br>这里前端可以做的工作有限不做展开。</p>
+<h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><p>了解了DNS的过程，可以为我们带来哪些？上文中请求到google的IP地址时，经历了8个步骤，这个过程中存在多个请求，如果每次都经过这么多步骤，是否太耗时间？如何减少该过程的步骤呢？那就是DNS缓存。<br>DNS优化主要一下2点：</p>
+<ol>
+<li>减少DNS请求<br> 合理利用缓存，减少文件请求</li>
+<li>DNS预解析<br> 可以通过用meta信息来告知浏览器, 我这页面要做DNS预解析<br> <code>&lt;meta http-equiv=&quot;x-dns-prefetch-control&quot; content=&quot;on&quot; /&gt;</code>可以使用link标签来强制对DNS做预解析:<br> <code>&lt;link rel=&quot;dns-prefetch&quot; href=&quot;http://campus.lagou.com/&quot; /&gt;</code></li>
+</ol>
 <h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><p><strong>DNS负载均衡：</strong><br>DNS可以返回一个合适的机器的IP给用户，例如可以根据每台机器的负载量，该机器离用户地理位置的距离等等，这种过程就是DNS负载均衡，又叫做DNS重定向</p>
 <p><strong>CDN加速：</strong><br>CDN 就利用了DNS负载均衡的技术，另外还会提供专业的加载优化方案，所以静态资源要尽量放在 CDN 上。</p>
 <h2 id="建立TCP连接"><a href="#建立TCP连接" class="headerlink" title="建立TCP连接"></a>建立TCP连接</h2><p>主要是三次握手、四次挥手<br>（没事可以回顾一下为什么要三次握手，2次不行嘛，4次呢。为什么要四次挥手）</p>
 <h4 id="优化-1"><a href="#优化-1" class="headerlink" title="优化"></a>优化</h4><p>HTTP协议是使用TCP作为其传输层协议的，当TCP出现瓶颈时，HTTP也会受到影响。但是这部分前端能做的有限不做展开。</p>
 <h4 id="扩展-1"><a href="#扩展-1" class="headerlink" title="扩展"></a>扩展</h4><p><strong>TCP、UDP区别:</strong><br>TCP面向连接的协议、传输可靠、速度慢。<br>UPD无连接的传输层协议、传输不可靠、速度快。（音频、视频会用）</p>
 <p><strong>HTTPS协议：</strong><br>HTTP报文是明文，如果中间被截取的话会存在一些信息泄露的风险，那么在进入TCP报文之前对HTTP做一次加密就可以解决这个问题了。使用对称密钥加密内容，使用非对称密钥加密对称密钥。</p>
-<p><strong>网络七层协议：</strong><br>OSI模型从上而下：Application(应用层)、Presentation(表达层)、Session(会话层)、Transport(传输层)、Network(网络层)、Data Link(数据链路层)、Physical(物理层)<br>以前是这么记的：All people seem to need data processing</p>
+<p><strong>网络七层协议：</strong><br>OSI模型从上而下：Application(应用层)、Presentation(表示层)、Session(会话层)、Transport(传输层)、Network(网络层)、Data Link(数据链路层)、Physical(物理层)<br>以前是这么记的：All people seem to need data processing</p>
 <h2 id="发起HTTP请求"><a href="#发起HTTP请求" class="headerlink" title="发起HTTP请求"></a>发起HTTP请求</h2><p>HTTP请求报文是由三部分组成: 【<strong>请求行</strong>】, 【<strong>请求报头</strong>】和【<strong>请求正文</strong>】。</p>
-<p>首部字段大概介绍：<br>Accept：用于指定客户端用于接受哪些类型的信息<br>Accept-Encoding：与Accept类似，它用于指定接受的编码方式<br>Connection：设置为Keep-alive用于告诉客户端本次HTTP请求结束之后并不需要关闭TCP连接，这样可以使下次HTTP请求使用相同的TCP通道，节省TCP连接建立的时间。<br>Content-Type：与请求正文相关的信息。如请求json格式的数据设置application/json</p>
-<p>请求方法大概介绍：<br>GET：获取<br>POST：向服务器端发送<br>PUT：是向服务器端新增<br>DELETE：在服务器端删除</p>
+<p>首部字段大概介绍：<br>Accept：用于指定客户端用于接受哪些类型的信息<br>Accept-Encoding：与Accept类似，它用于指定接受的编码方式<br>Connection：可设置为Keep-alive，服务端和客户端都可以使用它告诉对方在发送完数据之后不需要断开 TCP 连接，这样可以使下次HTTP请求使用相同的TCP通道，节省TCP连接建立的时间，这就是建立长连接。<br>Content-Type：与请求正文相关的信息。如请求json格式的数据设置application/json<br>Cookie: 请求时携带的cookie信息<br>Referer: 请求来源<br>User-Agent: 用户代理 </p>
+<p>请求方法大概介绍：<br>GET：获取（查）<br>POST：向服务器端发送（改）<br>PUT：是向服务器端新增（增）<br>DELETE：在服务器端删除（删）</p>
 <h4 id="扩展-2"><a href="#扩展-2" class="headerlink" title="扩展"></a>扩展</h4><p><strong>get,post区别：</strong></p>
 <ol>
 <li>最直观的就是语义上的区别，get用于获取数据，post用于提交数据。</li>
+<li>get有利于传播，post有利于隐藏请求数据</li>
 <li>get参数有长度限制（受限于url长度，具体的数值取决于浏览器和服务器的限制），而post无限制</li>
 </ol>
 <p>详细说下第一点，先说结论：颠倒两者会造成非常糟糕的结果。</p>
@@ -456,16 +461,17 @@
 <ol>
 <li>200: 当【浏览器本地没有缓存】 或 【请求内容数据发生变更】 或 【用户使用CTL+F5强制刷新】时，浏览器直接取服务器下载最新数据。</li>
 <li>304: 由last-modified/etag 控制。当【缓存失效】 或 【用户点击refresh、h5等刷新】时 浏览器就会发送请求给服务器，如果服务器端资源没有变化，则返回304给浏览器。</li>
-<li>200（from cache）: 由expires/cache-control控制。1、expires(http1.0版有效)是绝对的时间点。2、cache-control(http 1.1 版有效)，相对的时间长度，两者都存在时cache-control覆盖expires只要没有实效，浏览器只访问自己的缓存。</li>
+<li>200（from cache）: 由expires/cache-control控制。1、expires(http1.0版有效)是绝对的时间点。2、cache-control(http 1.1 版有效)，相对的时间长度，两者都存在时cache-control覆盖expires只要没有失效，浏览器只访问自己的缓存。</li>
 </ol>
 <p><strong>总结</strong>：</p>
 <ul>
-<li>Last-Modified和Etag每次请求资源都会发起请求，哪怕是很久都不会有修改的资源，都至少有一次请求响应的消耗。<br><br> 对于所有可缓存资源，指定一个Expires或Cache-Control max-age以及一个Last-Modified或ETag至关重要。同时使用前者和后者可以很好的相互适应。<br><br> Expires或Cache-Control max-age不需要每次都发起一次请求来校验资源时效性，Last-Modified或ETag保证当资源未出现修改的时候不需要重新发送该资源。而在用户的不同刷新页面行为中，二者的结合也能很好的利用HTTP缓存控制特性，无论是在地址栏输入URI然后输入回车进行访问，还是点击刷新按钮，浏览器都能充分利用缓存内容，避免进行不必要的请求与数据传输。<br><br></li>
+<li>Last-Modified和Etag每次请求资源时都会携带相关头，哪怕是很久都不会有修改的资源，都至少有一次请求响应的消耗。<br><br> 对于所有可缓存资源，指定一个Expires或Cache-Control max-age以及一个Last-Modified或ETag至关重要。同时使用前者和后者可以很好的相互适应。<br><br> Expires或Cache-Control max-age不需要每次都发起一次请求来校验资源时效性，Last-Modified或ETag保证当资源未出现修改的时候不需要重新发送该资源。而在用户的不同刷新页面行为中，二者的结合也能很好的利用HTTP缓存控制特性，无论是在地址栏输入URI然后输入回车进行访问，还是点击刷新按钮，浏览器都能充分利用缓存内容，避免进行不必要的请求与数据传输。<br><br></li>
 <li>需要兼容HTTP1.0的时候需要使用Expires，不然可以考虑直接使用Cache-Control</li>
 <li>需要处理一秒内多次修改的情况，或者其他Last-Modified处理不了的情况，才使用ETag，否则使用Last-Modified。</li>
 <li>对于所有可缓存资源，需要指定一个Expires或Cache-Control，同时指定Last-Modified或者Etag。</li>
 <li>可以通过标识文件版本名、加长缓存时间的方式来减少304响应。</li>
 </ul>
+<p><strong>扩展</strong><br>HTTP/1.1相较于 HTTP/1.0 协议的区别主要体现在：<br>1 缓存处理<br>2 带宽优化及网络连接的使用(HTTP1.1中默认开启Connection： keep-alive)<br>3 错误通知的管理<br>4 消息在网络中的发送<br>5 互联网地址的维护<br>6 安全性及完整性<br>更多内容可以参考下这里：<a href="https://juejin.im/entry/5981c5df518825359a2b9476" target="_blank" rel="noopener">https://juejin.im/entry/5981c5df518825359a2b9476</a></p>
 <h2 id="浏览器解析html、布局、渲染"><a href="#浏览器解析html、布局、渲染" class="headerlink" title="浏览器解析html、布局、渲染"></a>浏览器解析html、布局、渲染</h2><p>【一、一个网页的加载依赖于脚本文件、CSS样式文件等。让我们看看浏览器加载网页的过程】：</p>
 <ol>
 <li>首先，浏览器下载 HTML 并开始解析。如果浏览器发现外部CSS资源链接则发送下载请求。‘</li>
@@ -506,7 +512,7 @@
 <li>js并发模式：并发与并行是有区别的。 前者是逻辑上的同时发生，而后者是物理上的同时发生。所以，单核处理器也能实现并发。</li>
 </ol>
 <p><strong>异步事件驱动：</strong><br>浏览器有一个内部大消息循环，Event Loop（事件循环），会轮询大的事件队列并处理事件。–“浏览器的事件循环”机制</p>
-<p>任务队列：<br>（1）所有同步任务都在javascript主线程上执行，形成一个执行栈（execution context stack）。<br>（2）主线程之外，还存在一个”任务队列”（task queue）。只要异步任务有了运行结果，就在”任务队列”之中放置一个事件。<br>（3）一旦”执行栈”中的所有同步任务执行完毕，系统就会读取”任务队列”，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。<br>（4）主线程不断重复上面的第三步。</p>
+<p>任务队列：<br>（1）所有同步任务都在javascript主线程上执行，形成一个“执行栈”（execution context stack）。<br>（2）主线程之外，还存在一个”任务队列”（task queue）。只要异步任务有了运行结果，就在”任务队列”之中放置一个事件。<br>（3）一旦”执行栈”中的所有同步任务执行完毕，系统就会读取”任务队列”，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。<br>（4）主线程不断重复上面的第三步。</p>
 <blockquote>
 <p>运行时主要构成元素：Stack（栈）、Heap（堆）、Queue（队列）</p>
 </blockquote>
@@ -549,8 +555,8 @@
 <li>setInterval却没有被自己所调用的 函数所束缚，它只是简单地每隔一定时间就重复执行一次那个函数。<ul>
 <li>下边代码我们每100毫秒调用一次func函数，如果func的执行时间少于100毫秒的话，在遇到下一个100毫秒前就能够执行完：</li>
 <li>如果func的执行时间大于100毫秒，那么第二个func会在队列（这里的队列是指event loop）中等待，直到第一个函数执行完<br><strong>有可能会立即执行，中间没有时间间隔</strong></li>
-<li>如果第一个函数的执行时间特别长，只要发现队列中有一个被执行的函数存在，那么其他的统统忽略，如图在第300毫秒和400毫秒处的回调都被抛弃。<br>不过一旦第一个函数执行完后，接着执行队列中的第二个，即使这个函数已经“过时”很久了。<br>如果队列中的第二个函数时在第450毫秒处结束的话，在第500毫秒时，它会继续执行下一轮func，<strong>也就是说这之间的间隔只有50ms，而非周期100ms</strong></li>
-<li>上边加黑部分说明，虽然你在setInterval里指定的周期是100ms，但它并不能保证两个函数之间调用的间隔一定是100ms。</li>
+<li>如果第一个函数的执行时间特别长，只要发现队列中有一个被执行的函数存在，那么其他的统统忽略，如图在第300毫秒和400毫秒处的回调都被抛弃。<br>不过一旦第一个函数执行完后，接着执行队列中的函数，即使这个函数已经“过时”很久了。<br>如果执行栈中函数在第450毫秒处结束的话会立即执行队列中函数，并在第500毫秒时，它会继续执行下一轮func，<strong>也就是说第一次函数执行结束到第三次函数调用这之间的间隔只有50ms，有效调用时间间隔很大</strong></li>
+<li>上边加黑部分说明，虽然你在setInterval里指定的周期是100ms，但它并不能保证两个函数之间调用的间隔一定是100ms。有可能是间隔100ms执行一次（1的情况），有可能是连续执行（2，3的情况）。</li>
 </ul>
 </li>
 </ul>
@@ -558,7 +564,8 @@
 <p>setTimeout 中的 this 被无数人吐槽过 ,setTimeout 的 this 会指向全局作用域，<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123; </span><br><span class="line">    a: <span class="string">"a”, </span></span><br><span class="line"><span class="string">    b: function() &#123; </span></span><br><span class="line"><span class="string">        setTimeout(function() &#123; </span></span><br><span class="line"><span class="string">            console.log( this.a ); &#125;, 1000);  </span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string"> &#125; </span></span><br><span class="line"><span class="string">o.b(); // undefined</span></span><br></pre></td></tr></table></figure></p>
 <p>解决办法：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123; </span><br><span class="line">    a: <span class="string">"a”, </span></span><br><span class="line"><span class="string">    b: function() &#123; </span></span><br><span class="line"><span class="string">        var that = this;</span></span><br><span class="line"><span class="string">        setTimeout(function() &#123; </span></span><br><span class="line"><span class="string">            console.log( that.a ); &#125;, 1000); </span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string"> &#125;</span></span><br><span class="line"><span class="string"> o.b(); // "</span>a<span class="string">"</span></span><br></pre></td></tr></table></figure>
-<p><strong>es6扩展:</strong><br>process.nextTick和setImmediate的一个重要区别：多个process.nextTick语句总是在当前”执行栈”一次执行完，多个setImmediate可能则需要多次loop才能执行完。<br>另外，由于process.nextTick指定的回调函数是在本次”事件循环”触发，而setImmediate指定的是在下次”事件循环”触发，所以很显然，前者总是比后者发生得早，而且执行效率也高（因为不用检查”任务队列”）。<br>（概念：process.nextTick方法可以在当前”执行栈”的尾部—-下一次Event Loop（主线程读取”任务队列”）之前—-触发回调函数。也就是说，它指定的任务总是发生在所有异步任务之前。setImmediate方法则是在当前”任务队列”的尾部添加事件，也就是说，它指定的任务总是在下一次Event Loop时执行，这与setTimeout(fn, 0)很像。）</p>
+<p><strong>html5 &amp; es6扩展:</strong><br>var requestId = requestAnimationFrame(func);<br>cancelAnimationFrame(requestId);<br>    只有一个参数，就是要执行的函数func<br>    html5新的标准，不过大部分的现代浏览器已经实现很好了。<br>    间隔时间是由显示器的刷新频率控制的，不由用户控制， 刷新频率大概为 60次/s，大概16.67/ms刷新一次，每次刷新就会触发。好处：1、用户不用关心间隔时间。2、动画比前边流畅（不会出现掉帧）</p>
+<p>process.nextTick和setImmediate的一个重要区别：多个process.nextTick语句总是在当前”执行栈”一次执行完，多个setImmediate可能则需要多次loop才能执行完。<br>另外，由于process.nextTick指定的回调函数是在本次”事件循环”触发，而setImmediate指定的是在下次”事件循环”触发，所以很显然，前者总是比后者发生得早，而且执行效率也高（因为不用检查”任务队列”）。<br>（概念：process.nextTick方法可以在当前”执行栈”的尾部—-下一次Event Loop（主线程读取”任务队列”）之前—-触发回调函数。也就是说，它指定的任务总是发生在所有异步任务之前。setImmediate方法则是在当前”任务队列”的尾部添加事件，也就是说，它指定的任务总是在下一次Event Loop时执行，这与setTimeout(fn, 0)很像。）</p>
 <h4 id="非阻塞js实现"><a href="#非阻塞js实现" class="headerlink" title="非阻塞js实现"></a>非阻塞js实现</h4><p>js在浏览器中需要被下载、解释并执行这三步。在html body标签中的script都是阻塞的。也就是说，顺序下载、解释、执行。<br>Chrome可以实现多线程并行下载外部资源，例如：script file、image、frame等（css比较复杂，在IE中不阻塞下载，但Firefox阻塞下载）。<br>但是，由于js是单线程的，所以尽管浏览器可以并发加快js的下载，但必须依次执行。所以chrome中image图片资源是可以并发下载的。</p>
 <p>要实现非阻塞js（non-blocking javascript）有两个方法：</p>
 <ul>
@@ -656,7 +663,7 @@
 <p>预防</p>
 <ul>
 <li>之所以被攻击是因为攻击者利用了存储在浏览器用于用户认证的cookie，那么如果我们不用cookie来验证不就可以预防了。所以我们可以采用token（不存储于浏览器）认证。</li>
-<li>通过referer识别，HTTP Referer是header的一部分，当浏览器向web服务器发送请求的时候，一般会带上Referer，告诉服务器我是从哪个页面链接过来的，服务器基此可以获得一些信息用于处理。那么这样的话，我们必须登录银行A网站才能进行转账了。<br><br>浏览器中输入任意路径回车是没有referer的（不论是html，还是json请求），输入访问链接后network html之外其他的加载都有，已经加载出来的页面中进行请求操作也有referer</li>
+<li>通过referer识别，HTTP Referer是header的一部分，当浏览器向web服务器发送请求的时候，一般会带上Referer，告诉服务器我是从哪个页面链接过来的，服务器基此可以获得一些信息用于处理。那么这样的话，我们必须登录银行A网站才能进行转账了。</li>
 <li>预防 CSRF 就是加入各个层级的权限验证，例如现在的购物网站，只要涉及现金交易，肯定要输入密码或者指纹才行。除此之外，敏感的接口使用POST请求而不是GET也是很重要的。 </li>
 </ul>
 
