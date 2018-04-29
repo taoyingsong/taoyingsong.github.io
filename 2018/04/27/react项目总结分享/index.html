@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2018/04/27/react项目总结分享/react1.png">
 <meta property="og:image" content="http://yoursite.com/2018/04/27/react项目总结分享/react2.png">
-<meta property="og:updated_time" content="2018-04-27T13:08:38.000Z">
+<meta property="og:updated_time" content="2018-04-29T06:42:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="react项目总结分享">
 <meta name="twitter:description" content="最近做的react项目的总结、分享">
@@ -317,7 +317,7 @@
         <p>最近做的react项目的总结、分享<br><a id="more"></a></p>
 <h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><p><a href="//www.processon.com/view/link/5ae1815fe4b019d3a90f0bdb">点我</a>看详细</p>
 <h2 id="架构图示"><a href="#架构图示" class="headerlink" title="架构图示"></a>架构图示</h2><p><a href="https://www.processon.com/view/link/5ae29135e4b090f6eeb65613" target="_blank" rel="noopener">点我</a>看详细</p>
-<h2 id="提炼的几个点"><a href="#提炼的几个点" class="headerlink" title="提炼的几个点"></a>提炼的几个点</h2><h3 id="一、同构思路汇总："><a href="#一、同构思路汇总：" class="headerlink" title="一、同构思路汇总："></a>一、同构思路汇总：</h3><ol>
+<h2 id="提炼的几个点"><a href="#提炼的几个点" class="headerlink" title="提炼的几个点"></a>提炼的几个点</h2><h3 id="1、同构思路汇总："><a href="#1、同构思路汇总：" class="headerlink" title="1、同构思路汇总："></a>1、同构思路汇总：</h3><ol>
 <li><p>把拉取数据的逻辑写到 React Class 的 static 方法上，一方面服务端上可以通过直接操作 static 方法来提前拉取数据再根据数据生成 HTML，另一方面客户端可以在 componentDidMount 时去调用该静态方法拉取数据。<br>在做服务端渲染的时候遍历需要渲染的 components 去 同步 调用静态方法得到数据并吐出在页面上作为redux 的 initialState。在前端的 componentDidMount 方法中去判断是否在前端做 fetch。<br>（点评：数据可以集中处理，可以加上二次渲染优化）</p>
 </li>
 <li><p>由于componentWillMount会在服务端渲染过程中执行，并且执行时this.props中的内容已经根据路由信息被修改，我们可以将ajax请求放入其中。我们可以在其中执行任意个ajax请求，由于store是可改变的，所以在请求结束后、reducer生效后我们便可以取到完整的、初始化过的store。<br>但仍然有一点需要注意——ajax请求时异步的，一次服务端渲染结束后，并不代表ajax请求就结束了，我们仍然需要一些方法来确定所哟请求确实结束，这里就需要一点设计了——我们可以在store中创建一个state专门用于表示初始化是否结束，并配以相应的action和reducer来修改它。<br>setImmediate不断检查store.getState().state.initDone来确定所有请求是否结束。<br>想要让服务端渲染出初始化store后的完整页面，方法很简单，只需要把第一次渲染后的finalState作为初始状态进行二次渲染即可。<br>（点评：数据不方便集中处理，二次渲染优化思路不错）</p>
@@ -328,7 +328,7 @@
 <h4 id="概念扩展："><a href="#概念扩展：" class="headerlink" title="概念扩展："></a>概念扩展：</h4><p><strong>关于平台区分：</strong><br>同构一般只是在组件和逻辑编写上共用（包括组件、 Reducer Action / Reducer 等等业务和数据的处理逻辑），这覆盖到了绝大部分的日常业务代码。但根据平台不同最后基础层面还是会有部分区别。比如一个拉取数据的请求，在前端最后可能是 AJAX ，后端就是 http.request，（如果没有直接使用 isomorphic-fetch 这样的库的话）。<br>如果业务逻辑中还有少量要区分平台的代码，可以用 Webpack define plugin 来实现：设置一个环境变量来标识环境，编写分支。变量在编译时会替换为指定的值</p>
 <p><strong>页面渲染演变：</strong><br>后台包办（jsp\php处理数据及页面，前端在后台项目中开发html、js、css等。问题是有时候简单的修改需要启动整个项目，服务庞大时会比较耗时，前后端糅合的地带变得越来越难以维护）<br>前后端部分分离（html、 js、css前端单独开发，开发完之后js、css、img等静态资源发布到cdn服务器上，html发布到后台——供后台模版编译）<br>前后端完全分离（html、css、img等静态资源放在cdn服务器上，访问页面时会先经由node服务处理页面数据，原本需要后台模版生成的页面可以通过node生成后返回浏览器）</p>
 <p><strong>使用React实现服务器渲染主要有以下好处：</strong><br>1.利于SEO：React服务器渲染的方案使你的页面在一开始就有一个HTML DOM结构，方便Google等搜索引擎的爬虫能爬到网页的内容。<br>2.提高首屏渲染的速度：服务器直接返回一个填满数据的HTML，而不是在请求了HTML后还需要异步请求首屏数据。</p>
-<h3 id="二、涉及到的关键API"><a href="#二、涉及到的关键API" class="headerlink" title="二、涉及到的关键API"></a>二、涉及到的关键API</h3><blockquote>
+<h3 id="2、涉及到的关键API"><a href="#2、涉及到的关键API" class="headerlink" title="2、涉及到的关键API"></a>2、涉及到的关键API</h3><blockquote>
 <p>react-dom/server（server）</p>
 </blockquote>
 <ol>
@@ -365,12 +365,12 @@
 也就是说，当服务器端和客户端渲染具有相同的props和相同DOM结构的组件时，该React组件只会渲染一次，否则舍弃服务端渲染结果重绘。
 </code></pre><p>关于dom属性data-react-checksum源码解析：<br>（百科解释：<a href="https://baike.baidu.com/item/%E6%A0%A1%E9%AA%8C%E5%92%8C?fr=aladdin" target="_blank" rel="noopener">checksum含义</a>）</p>
 <p><img src="/2018/04/27/react项目总结分享/react1.png" alt=""><br><img src="/2018/04/27/react项目总结分享/react2.png" alt=""></p>
-<h3 id="三、问题：server直出的页面如何获取client编译生成的带hash的资源文件，以更新html中对这些文件的引用？"><a href="#三、问题：server直出的页面如何获取client编译生成的带hash的资源文件，以更新html中对这些文件的引用？" class="headerlink" title="三、问题：server直出的页面如何获取client编译生成的带hash的资源文件，以更新html中对这些文件的引用？"></a>三、问题：server直出的页面如何获取client编译生成的带hash的资源文件，以更新html中对这些文件的引用？</h3><p>项目中使用插件assets-webpack-plugin，将client的生成资源的映射表输出到assets.json并放到server中，供server产出首屏使用。<br>扩展：<br>web开发中静态文件版本控制的方法有两种：</p>
+<h3 id="3、问题：server直出的页面如何获取client编译生成的带hash的资源文件，以更新html中对这些文件的引用？"><a href="#3、问题：server直出的页面如何获取client编译生成的带hash的资源文件，以更新html中对这些文件的引用？" class="headerlink" title="3、问题：server直出的页面如何获取client编译生成的带hash的资源文件，以更新html中对这些文件的引用？"></a>3、问题：server直出的页面如何获取client编译生成的带hash的资源文件，以更新html中对这些文件的引用？</h3><p>项目中使用插件assets-webpack-plugin，将client的生成资源的映射表输出到assets.json并放到server中，供server产出首屏使用。<br>扩展：<br>web开发中静态文件版本控制的方法有两种：</p>
 <ul>
 <li>通过静态文件的querystring中的版本号来表示不同版本的文件，<br>如<code>&lt;script type=&quot;text/javascript&quot; src=&quot;a.js?v=1.1.0&quot;&gt;&lt;/script&gt;</code>；</li>
 <li>通过在文件命中添加hash表示不同版本的文件,如<code>&lt;script type=&quot;text/javascript&quot; src=&quot;a_fdsf234d.js&quot;&gt;&lt;/script&gt;</code>，<br>或者类似的，通过不同的文件路径区分：<code>&lt;script type=&quot;text/javascript&quot; src=&quot;/js/a/fdsf234d/a.js&quot;&gt;&lt;/script&gt;</code></li>
 </ul>
-<h3 id="四、CSS-Modules的概念："><a href="#四、CSS-Modules的概念：" class="headerlink" title="四、CSS Modules的概念："></a>四、CSS Modules的概念：</h3><p>为了让 CSS 也能适用软件工程方法，程序员想了各种办法，让它变得像一门编程语言。从最早的Less、SASS，到后来的 PostCSS，再到最近的 CSS in JS，都是为了解决这个问题。<br>这里推荐 CSS Modules，它不是将 CSS 改造成编程语言，而是功能很单纯，只加入了局部作用域和模块依赖，这恰恰是网页组件最急需的功能。</p>
+<h3 id="4、CSS-Modules的概念："><a href="#4、CSS-Modules的概念：" class="headerlink" title="4、CSS Modules的概念："></a>4、CSS Modules的概念：</h3><p>为了让 CSS 也能适用软件工程方法，程序员想了各种办法，让它变得像一门编程语言。从最早的Less、SASS，到后来的 PostCSS，再到最近的 CSS in JS，都是为了解决这个问题。<br>这里推荐 CSS Modules，它不是将 CSS 改造成编程语言，而是功能很单纯，只加入了局部作用域和模块依赖，这恰恰是网页组件最急需的功能。</p>
 <h4 id="CSS工程化方案："><a href="#CSS工程化方案：" class="headerlink" title="CSS工程化方案："></a>CSS工程化方案：</h4><p><strong><em>CSS 预处理器:</em></strong></p>
 <ul>
 <li>内容：比如 Less 和 Sass，包括 PostCSS等</li>
@@ -558,7 +558,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前置知识"><span class="nav-number">1.</span> <span class="nav-text">前置知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构图示"><span class="nav-number">2.</span> <span class="nav-text">架构图示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提炼的几个点"><span class="nav-number">3.</span> <span class="nav-text">提炼的几个点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、同构思路汇总："><span class="nav-number">3.1.</span> <span class="nav-text">一、同构思路汇总：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#概念扩展："><span class="nav-number">3.1.1.</span> <span class="nav-text">概念扩展：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、涉及到的关键API"><span class="nav-number">3.2.</span> <span class="nav-text">二、涉及到的关键API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、问题：server直出的页面如何获取client编译生成的带hash的资源文件，以更新html中对这些文件的引用？"><span class="nav-number">3.3.</span> <span class="nav-text">三、问题：server直出的页面如何获取client编译生成的带hash的资源文件，以更新html中对这些文件的引用？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、CSS-Modules的概念："><span class="nav-number">3.4.</span> <span class="nav-text">四、CSS Modules的概念：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CSS工程化方案："><span class="nav-number">3.4.1.</span> <span class="nav-text">CSS工程化方案：</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前置知识"><span class="nav-number">1.</span> <span class="nav-text">前置知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构图示"><span class="nav-number">2.</span> <span class="nav-text">架构图示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提炼的几个点"><span class="nav-number">3.</span> <span class="nav-text">提炼的几个点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、同构思路汇总："><span class="nav-number">3.1.</span> <span class="nav-text">1、同构思路汇总：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#概念扩展："><span class="nav-number">3.1.1.</span> <span class="nav-text">概念扩展：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、涉及到的关键API"><span class="nav-number">3.2.</span> <span class="nav-text">2、涉及到的关键API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、问题：server直出的页面如何获取client编译生成的带hash的资源文件，以更新html中对这些文件的引用？"><span class="nav-number">3.3.</span> <span class="nav-text">3、问题：server直出的页面如何获取client编译生成的带hash的资源文件，以更新html中对这些文件的引用？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、CSS-Modules的概念："><span class="nav-number">3.4.</span> <span class="nav-text">4、CSS Modules的概念：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CSS工程化方案："><span class="nav-number">3.4.1.</span> <span class="nav-text">CSS工程化方案：</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
