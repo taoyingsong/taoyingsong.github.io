@@ -94,7 +94,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/04/27/react项目总结分享/react5.png">
 <meta property="og:image" content="http://yoursite.com/2018/04/27/react项目总结分享/react6.png">
 <meta property="og:image" content="http://yoursite.com/2018/04/27/react项目总结分享/react7.png">
-<meta property="og:updated_time" content="2018-05-06T17:24:00.000Z">
+<meta property="og:updated_time" content="2018-05-07T07:24:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="react项目总结分享">
 <meta name="twitter:description" content="最近做的react项目的总结、分享">
@@ -384,7 +384,7 @@
 <p>借助babel-plugin-transform-react-jsx，上面的JSX将被转译成：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var profile = React.createElement(&quot;div&quot;, null,</span><br><span class="line">  React.createElement(&quot;img&quot;, &#123; src: &quot;avatar.png&quot;, className: &quot;profile&quot; &#125;),</span><br><span class="line">  React.createElement(&quot;h3&quot;, null, [user.firstName, user.lastName].join(&quot; &quot;))</span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
 <ul>
 <li>一个元素（element）就是一个纯对象，描述了一个组件实例或DOM node，以及它需要的属性。它仅仅包含这些信息：组件类型，属性（properties），及子元素。<br><img src="/2018/04/27/react项目总结分享/react3.png" alt=""><ul>
-<li>react的render方法是返回一个Elements Tree，react的核心就是围绕Elements Tree做文章。<br>Elements Tree结合数据生成Virtual DOM Tree ，react更新此树以响应各种操作引起的data model变化。</li>
+<li>react的render方法是一个由Elements Tree生成的函数，react的核心就是围绕Elements Tree做文章。<br>Elements Tree结合数据生成Virtual DOM Tree ，react更新此树以响应各种操作引起的data model变化。</li>
 </ul>
 </li>
 </ul>
@@ -393,7 +393,7 @@
 <p>论述1:</p>
 </blockquote>
 <p>Let’s See Some Numbers!<br>根据网上一些数据可以看出：<br>加载页面后，jQuery显示最简单的“Hello，world”应用程序的总时间比纯JavaScript慢50ms，两者比React快大约3倍。Rendering时间react也是最慢的。<br>常识是：使用库比不使用库慢（加载库需要时间）。在实际操作DOM之前在内存中创建virtual DOM比仅仅直接操作DOM时要慢（创建virtual DOM需要时间）。</p>
-<p>“Hello，world！”示例对React不公平，因为它们只处理页面的初始渲染。 React旨在管理对页面的更新。<br>虚拟DOM通常实际上比其他系统使用更少的内存，因为它不需要在内存中保存观察值？？。<br>但是，每次执行操作时，比较两个完整的虚拟DOM是低效的。对于复杂的用户界面，CPU要求可能很高。这个可以用过shouldComponentUpdate优化。<br>事实是，可能没法办确切证明使用虚拟DOM比直接更新DOM的方法更快，因为它取决于很多不同的因素，不过大多还是取决于你如何优化你的应用程序。如果你更新元素并不频繁，那么Virtual DOM并不一定适用，性能很可能还不如直接操控DOM。<br>react真正带给我们的是性能和生产力的益处。虽不一定就是最效率的，但大部分场景下这种方式更加效率。</p>
+<p>“Hello，world！”示例对React不公平，因为它们只处理页面的初始渲染。 React旨在管理对页面的更新。<br>但是，每次执行操作时，比较两个完整的虚拟DOM是低效的。对于复杂的用户界面，CPU要求可能很高。这个可以用过shouldComponentUpdate优化。<br>事实是，可能没法办确切证明使用虚拟DOM比直接更新DOM的方法更快，因为它取决于很多不同的因素，不过大多还是取决于你如何优化你的应用程序。如果你更新元素并不频繁，那么Virtual DOM并不一定适用，性能很可能还不如直接操控DOM。<br>react真正带给我们的是性能和生产力的益处。虽不一定就是最效率的，但大部分场景下这种方式更加效率。</p>
 <blockquote>
 <p>论述2:</p>
 </blockquote>
@@ -632,7 +632,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
