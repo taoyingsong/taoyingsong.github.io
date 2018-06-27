@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="路漫漫其修远兮&lt;br &#x2F;&gt;吾将上下而求索">
 <meta property="og:description" content="Keep learning">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-27T04:34:20.000Z">
+<meta property="og:updated_time" content="2018-06-27T04:40:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="koa核心">
 <meta name="twitter:description" content="Keep learning">
@@ -312,6 +312,12 @@
 
       
         <p>Keep learning<br><a id="more"></a></p>
+<h2 id="中间件框架"><a href="#中间件框架" class="headerlink" title="中间件框架"></a>中间件框架</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// 搭一个Server</span><br><span class="line">const Koa = require(&apos;koa&apos;)</span><br><span class="line">const router = require(&apos;koa-router&apos;)()</span><br><span class="line">const app = new Koa()</span><br><span class="line"></span><br><span class="line">router.get(&apos;/article&apos;, ctx =&gt; &#123;</span><br><span class="line">    let article = fetchArticleFromDB(ctx.query.id)</span><br><span class="line">    ctx.body = `&lt;!DOCTYPE html&gt;</span><br><span class="line">    &lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">    &lt;head&gt;</span><br><span class="line">        &lt;meta charset=&quot;UTF=8&quot;&gt;</span><br><span class="line">        &lt;title&gt;$&#123;article.title&#125;&lt;/title&gt;</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">        &lt;div class=&quot;article&quot;&gt;</span><br><span class="line">            $&#123;article.content&#125;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/body&gt;</span><br><span class="line">    &lt;/html&gt;`</span><br><span class="line">&#125;)</span><br><span class="line">app.use(router.routes())</span><br><span class="line">app.listen(3000)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">listen(...args) &#123;</span><br><span class="line">    const server = http.createServer(this.callback());</span><br><span class="line">    return server.listen(...args);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">callback() &#123; // compose = middleware =&gt; ctx =&gt; Promise</span><br><span class="line">    const fn = compose(this.middleware); </span><br><span class="line"></span><br><span class="line">    const handleRequest = (req, res) =&gt; &#123;</span><br><span class="line">        const ctx = this.createContext(req, res);</span><br><span class="line">        return this.handleRequest(ctx, fn);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return handleRequest;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">handleRequest(ctx, fnMiddleware) &#123;</span><br><span class="line">    const onerror = err =&gt; ctx.onerror(err);</span><br><span class="line">    const handleRequest = () =&gt; respond(ctx);</span><br><span class="line">    return fnMiddleware(ctx).then(handleRequest).catch(onerror);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// use 的作用</span><br><span class="line">use(fn) &#123;</span><br><span class="line">    this.middleware.push(fn);</span><br><span class="line">    return this;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 中间件的执行</span><br><span class="line">async (ctx, next) =&gt; &#123;</span><br><span class="line">    // before</span><br><span class="line">    </span><br><span class="line">    await next()</span><br><span class="line"></span><br><span class="line">    //after</span><br><span class="line">&#125;</span><br><span class="line">app.use(middleware1)</span><br><span class="line">app.use(middleware2)</span><br><span class="line">app.use(middleware3)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// middleware机制</span><br><span class="line">function compose(middleware) &#123;</span><br><span class="line">    return function(context, next) &#123;</span><br><span class="line">        // last called middleware</span><br><span class="line">        let index = -1</span><br><span class="line">        return dispatch(0)</span><br><span class="line">        function dispatch(i) &#123;</span><br><span class="line">            if(i &lt;= index) return Promise.reject(new Error(&apos;next() called multiple times&apos;))</span><br><span class="line">            index = i</span><br><span class="line">            let fn = middleware[i]</span><br><span class="line">            if(i === middleware.length) fn = next</span><br><span class="line">            if(!fn) return Promise.resolve()</span><br><span class="line">            try &#123;</span><br><span class="line">                return Promise.resolve(fn(context), dispatch.bind(null, i + 1))</span><br><span class="line">            &#125; catch (err) &#123;</span><br><span class="line">                return Promise.reject(err)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="context"><a href="#context" class="headerlink" title="context"></a>context</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// Context的封装</span><br><span class="line">// request response</span><br><span class="line">createContext(req, res) &#123;</span><br><span class="line">    const context = Object.create(this.context);</span><br><span class="line">    const request = context.request = Object.create(this.request);</span><br><span class="line">    const response = context.response = Object.create(this.response);</span><br><span class="line">    context.app = request.app = response.app = this;</span><br><span class="line">    context.req = request.req = response.req = req;</span><br><span class="line">    context.res = request.res = response.res = res;</span><br><span class="line">    request.ctx = request.ctx = context;</span><br><span class="line">    request.response = response;</span><br><span class="line">    response.request = request;</span><br><span class="line">    context.originalUrl = request.originalUrl = req.url;</span><br><span class="line">    context.cookies = new Cookies(req, res, &#123;</span><br><span class="line">        keys: this.keys,</span><br><span class="line">        secure: request.secure</span><br><span class="line">    &#125;);</span><br><span class="line">    request.ip = request.ips[0] || req.socket.remoteAddress || &apos;&apos;;</span><br><span class="line">    context.accept = request.accept = accepts(req);</span><br><span class="line">    context.state = &#123;&#125;;</span><br><span class="line">    return context;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -402,8 +408,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -454,6 +469,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#中间件框架"><span class="nav-number">1.</span> <span class="nav-text">中间件框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#context"><span class="nav-number">2.</span> <span class="nav-text">context</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
