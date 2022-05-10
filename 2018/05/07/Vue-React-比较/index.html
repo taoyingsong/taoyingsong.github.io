@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="再看区别">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue &amp; react 比较">
+<meta property="og:url" content="http://example.com/2018/05/07/Vue-React-%E6%AF%94%E8%BE%83/index.html">
+<meta property="og:site_name" content="路漫漫其修远兮&lt;br &#x2F;&gt;吾将上下而求索">
+<meta property="og:description" content="再看区别">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2018/05/07/Vue-React-%E6%AF%94%E8%BE%83/diff1.png">
+<meta property="og:image" content="http://example.com/2018/05/07/Vue-React-%E6%AF%94%E8%BE%83/diff2.png">
+<meta property="og:image" content="http://example.com/2018/05/07/Vue-React-%E6%AF%94%E8%BE%83/diff3.png">
+<meta property="article:published_time" content="2018-05-06T17:56:27.000Z">
+<meta property="article:modified_time" content="2022-05-10T03:40:38.169Z">
+<meta property="article:author" content="taoyingsong">
+<meta property="article:tag" content="vue  react">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2018/05/07/Vue-React-%E6%AF%94%E8%BE%83/diff1.png">
+
+<link rel="canonical" href="http://example.com/2018/05/07/Vue-React-%E6%AF%94%E8%BE%83/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>vue & react 比较 | 路漫漫其修远兮<br />吾将上下而求索</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">路漫漫其修远兮<br />吾将上下而求索</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/05/07/Vue-React-%E6%AF%94%E8%BE%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="taoyingsong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="路漫漫其修远兮<br />吾将上下而求索">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vue & react 比较
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-05-07 01:56:27" itemprop="dateCreated datePublished" datetime="2018-05-07T01:56:27+08:00">2018-05-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-10 11:40:38" itemprop="dateModified" datetime="2022-05-10T11:40:38+08:00">2022-05-10</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>再看区别</p>
+<span id="more"></span>
+<h3 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h3><p>React 和 Vue 都擅长处理组件<br>vue组件是(html+css+js),对开发友好,上手容易。react一切都是js,特别的灵活</p>
+<h3 id="ES6-与-ES5"><a href="#ES6-与-ES5" class="headerlink" title="ES6 与 ES5"></a>ES6 与 ES5</h3><p>React 专注于使用 Javascript ES6。Vue 使用 Javascript ES5 或 ES6。</p>
+<h3 id="模板-——-JSX-还是-HTML"><a href="#模板-——-JSX-还是-HTML" class="headerlink" title="模板 —— JSX 还是 HTML"></a>模板 —— JSX 还是 HTML</h3><ul>
+<li><p>vue的template是写在单文件组件中的，使用了基于 HTML 的模版语法，Vue鼓励你去使用HTML模板去进行渲染。<br>Vue 模板使用特殊的 Vue 语法（比如 v-if 或 v-for）来增强 HTML。 React 需要 JavaScript 的知识， Vue 会迫使你学习 Vue 特有的语法。<br>HTML模板<strong>上手方便</strong>，但是<strong>容易出现很难注意到的运行时错误，同时也很难去测试，重构和分解。</strong></p>
+</li>
+<li><p>JSX 意味着 React 中的所有内容都是 Javascript – 用于JSX模板和逻辑。Vue把 ‘JS’ 放到 HTML 中。React 把 ‘HTML’ 放到 JS 中。<br>这是一件好事，因为 Javascript 比 HTML 更强大。React认为每个框架都有自己的模板语言语法的话，这无疑<strong>增加了框架的门槛和复杂度</strong>。<br>Javascript模板<strong>可以组织成具有很好的分解性和干（DRY）代码的组件，干代码的可重用性和可测试性更好。</strong><br>React的immutable应用状态可能写起来不够简洁，但它在大型应用中意义非凡，因为透明度和可测试性在大型项目中变得至关重要。</p>
+</li>
+</ul>
+<p>Ps: 如果你喜欢 JSX 的思路，并想在 Vue 中使用它，可以使用 babel-plugin-transform-vue-jsx。   </p>
+<h3 id="数据绑定"><a href="#数据绑定" class="headerlink" title="数据绑定"></a>数据绑定</h3><ul>
+<li>Vue 支持 单向绑定和双向绑定（默认为单向绑定）。当 UI 元素（例如，用户输入）被更新时，Vue 可以双向绑定改变 model 状态。(<a target="_blank" rel="noopener" href="https://medium.com/js-dojo/exploring-vue-js-reactive-two-way-data-binding-da533d0c4554">https://medium.com/js-dojo/exploring-vue-js-reactive-two-way-data-binding-da533d0c4554</a>)</li>
+<li>React 只有一种方法：先更新 model，然后渲染 UI 元素。vue 的方式实现起来代码更干净，开发人员更容易实现。React 的方式会有更好的数据总览，因为数据只能在一个方向上流动（这使得调试更容易）。</li>
+</ul>
+<h3 id="状态管理"><a href="#状态管理" class="headerlink" title="状态管理"></a>状态管理</h3><p>状态（state）在react中是关键的概念，它是不可变的，在React中你需要使用setState()方法去更新状态。<br>而在vue中，state对象并不是必须的，数据由data属性在Vue对象中进行管理。</p>
+<p>react和vue方面，当非父子组件之间嵌套过深的时候都建议使用更专业的状态管理来维护数据的变化。<br>多数情况下，框架内置的状态管理是不足以支撑大型应用的，Redux或Vuex等状态管理方案是必须使用的。</p>
+<p>对于管理大型应用中的状态这一话题而言，Vue.js的作者尤雨溪曾说过，（Vue的）解决方案适用于小型应用，但对于对于大型应用而言不太适合。</p>
+<h3 id="体积和性能"><a href="#体积和性能" class="headerlink" title="体积和性能"></a>体积和性能</h3><p> Vue gzip 文件大小为 23K，React 为 43k。<br>为了提高性能，React 和 Vue 都使用了虚拟 DOM（Virtual DOM）。</p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>Facebook 使用 Jest 来测试其 React 代码。<br>Vue推荐使用 Karma。</p>
+<h3 id="学习曲线"><a href="#学习曲线" class="headerlink" title="学习曲线"></a>学习曲线</h3><ul>
+<li>如果你是一个没有经验的 Javascript 开发人员 - 或者如果你在过去十年中主要使用 jQuery，那么你应该考虑使用 Vue。转向 React 时，思维方式的转换更为明显。Vue 看起来更像是简单的 Javascript，同时也引入了一些新的概念：组件，事件驱动模型和单向数据流。这同样是很小的部分。</li>
+<li>React 也有自己的实现方式。它们可能会限制你，因为你需要调整自己的做法，才能顺畅的开发。这可能是一个缺点，因为你不能随心所欲，而且学习曲线陡峭。这也可能是一个好处，因为你在学习技术时必须学习正确的概念。用 Vue，你可以用老方法来做。这一开始可能会比较容易上手，但长此以往会出现问题。</li>
+<li>在调试方面，React 和 Vue 找出 bug 更容易，因为需要看的地方少了，堆栈跟踪的时候，自己的代码和那些库之间有更明显的区别。使用 React 的人员报告说，他们永远不必阅读库的源代码。</li>
+</ul>
+<h3 id="virtual-DOM及更新"><a href="#virtual-DOM及更新" class="headerlink" title="virtual DOM及更新"></a>virtual DOM及更新</h3><p>React组件更新方式及优化方向:<br>假如有 a、b、c三个组件，b 是 a 的子组件，c是 b 的子组件，那么 b 中 setState 之后，b 和 c 会 rerender，而 a 不会。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;Components&gt;</span><br><span class="line">  &lt;Components-1 /&gt;</span><br><span class="line">  &lt;Components-2 /&gt;</span><br><span class="line">  &lt;Components-3 /&gt;</span><br><span class="line">&lt;/Components&gt;</span><br></pre></td></tr></table></figure>
+<p>数据变化从Components-&gt;Components-1传递下来，React不会只重渲染Components-1和其父组件，React会以变化（props和state的变化）的最上层的组件为准生成对比的虚拟DOM，就导致了组件没必要的重渲染（即组件render方法的运行）。</p>
+<ul>
+<li>更新绿色点组件（从根组件传递下来应用在绿色组件上的数据发生改变）<br><img src="/2018/05/07/Vue-React-%E6%AF%94%E8%BE%83/diff1.png"></li>
+<li>理想状态我们想只更新绿色点的组件<br><img src="/2018/05/07/Vue-React-%E6%AF%94%E8%BE%83/diff2.png"></li>
+<li>实际图中的组件都会重渲染（黄色的点是不必要的渲染，优化的方向）<br><img src="/2018/05/07/Vue-React-%E6%AF%94%E8%BE%83/diff3.png"></li>
+</ul>
+<blockquote>
+<p>优化：</p>
+</blockquote>
+<p>Vue宣称可以更快地计算出Virtual DOM的差异，这是由于它在渲染过程中，会跟踪每一个组件的依赖关系，不需要重新渲染整个组件树。<br>而对于React而言，每当应用的状态被改变时，全部子组件都会重新渲染。当然，这可以通过shouldComponentUpdate这个生命周期方法来进行控制，但Vue将此视为默认的优化。</p>
+<p>vue和react都是基于dom diff更新差异元素。vue中,我们操作的data数据是vue封装处理过,修改数据时,vue会将数据初始化时收集的相关依赖元素进行更新,<br>而react每次setState更新数据针对的是组件,为了优化,组件设计的时候尽量细粒度,尤其是react当中的展示类组件。还可以使用shouldComponentUpdate。</p>
+<p>因为两者使用的是针对web页面情况优化过的dom diff算法,以使复杂度降低为O(n),所以有一些默认前提,理解并按照默认diff规则才能使代码达到最优,比如说,保持根节点一致;一个dom父节点下有多个子节点并列时,给子节点添加key,防止对父节点使用insertBefore插入子节点这种情况等等。</p>
+<p>详细论述及优化方案见<br><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000006741741">https://segmentfault.com/a/1190000006741741</a><br><a target="_blank" rel="noopener" href="http://taobaofed.org/blog/2016/08/12/optimized-react-components/">http://taobaofed.org/blog/2016/08/12/optimized-react-components/</a></p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>开发风格的偏好：React 推荐的做法是 JSX + inline style，也就是把 HTML 和 CSS 全都写进 JavaScript 了，即”all in js”；<br>Vue进阶之后推荐的是使用 webpack + vue-loader 的单文件组件格式，即html,css,js写在同一个文件；</p>
+<p>如果你想要一个同时适用于Web端和原生APP的框架，请选择React</p>
+<p>如果你想要最大的生态系统，请选择React： 人气不仅仅是一个肤浅的数字，这意味着更多的文章，教程和更多Stack Overflow的解答，还意味有着更多的工具和插件可以在项目中使用，让开发者不再孤立无援。</p>
+<h3 id="应该选什么？"><a href="#应该选什么？" class="headerlink" title="应该选什么？"></a>应该选什么？</h3><p>如果你已经用其中一个用的很爽，就别变了</p>
+<h4 id="总结一下，我们发现"><a href="#总结一下，我们发现" class="headerlink" title="总结一下，我们发现"></a>总结一下，我们发现</h4><p><strong>Vue的优势是：</strong></p>
+<p>模板和渲染函数的弹性选择</p>
+<p>简单的语法和项目配置</p>
+<p>更快的渲染速度和更小的体积</p>
+<p><strong>React的优势是：</strong></p>
+<p>更适合大型应用和更好的可测试性</p>
+<p>Web端和移动端原生APP通吃</p>
+<p>更大的生态系统，更多的支持和好用的工具</p>
+<p><strong>相似之处：</strong><br>然而，React和Vue都是很优秀的框架，它们之间的相似之处多过不同之处，并且大部分的优秀功能是相通的：</p>
+<p>用虚拟DOM实现快速渲染</p>
+<p>轻量级</p>
+<p>响应式组件</p>
+<p>服务端渲染</p>
+<p>集成路由工具，打包工具，状态管理工具的难度低</p>
+<p>优秀的支持和社区</p>
+<h4 id="如果上边还不能选出使用vue还是react或者有使用angular的打算："><a href="#如果上边还不能选出使用vue还是react或者有使用angular的打算：" class="headerlink" title="如果上边还不能选出使用vue还是react或者有使用angular的打算："></a>如果上边还不能选出使用vue还是react或者有使用angular的打算：</h4><p>如果你喜欢 TypeScript：Angular（或 React）</p>
+<p>如果你喜欢面向对象编程（OOP）: Angular</p>
+<p>如果你需要指导手册，架构和帮助：Angular</p>
+<p>如果你喜欢灵活性：React</p>
+<p>如果你喜欢大型的技术生态系统：React</p>
+<p>如果你喜欢在几十个软件包中进行选择：React</p>
+<p>如果你喜欢JS和“一切都是 Javascript 的方法”：React</p>
+<p>如果你喜欢真正干净的代码：Vue</p>
+<p>如果你想要最平缓的学习曲线：Vue</p>
+<p>如果你想要最轻量级的框架：Vue</p>
+<p>如果你想在一个文件中分离关注点：Vue</p>
+<p>如果你一个人工作，或者有一个小团队：Vue（或 React）</p>
+<p>如果你的应用程序往往变得非常大：Angular（或 React）</p>
+<p>如果你想用 react-native 构建一个应用程序：React</p>
+<p>如果你想在圈子中有很多的开发者：Angular 或 React</p>
+<p>如果你与设计师合作，并需要干净的 HTML 文件：Angular or Vue</p>
+<p>如果你喜欢 Vue 但是害怕有限的技术生态系统：React</p>
+<p>如果你不能决定，先学习 React，然后 Vue，然后 Angular。</p>
+<p>参考：<br><a target="_blank" rel="noopener" href="https://juejin.im/post/5a0d5df1f265da43062a542f">https://juejin.im/post/5a0d5df1f265da43062a542f</a><br><a target="_blank" rel="noopener" href="https://github.com/hawx1993/tech-blog/issues/17">https://github.com/hawx1993/tech-blog/issues/17</a><br><a target="_blank" rel="noopener" href="http://caibaojian.com/vue-vs-react.html">http://caibaojian.com/vue-vs-react.html</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/174e8028eabd">https://www.jianshu.com/p/174e8028eabd</a><br><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000012166510">https://segmentfault.com/a/1190000012166510</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/vue-react/" rel="tag"># vue  react</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/05/07/vue%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/" rel="prev" title="vue运行原理">
+      <i class="fa fa-chevron-left"></i> vue运行原理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/06/20/js%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83/" rel="next" title="Js深度思考(主要是坑)">
+      Js深度思考(主要是坑) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ES6-%E4%B8%8E-ES5"><span class="nav-number">2.</span> <span class="nav-text">ES6 与 ES5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF-%E2%80%94%E2%80%94-JSX-%E8%BF%98%E6%98%AF-HTML"><span class="nav-number">3.</span> <span class="nav-text">模板 —— JSX 还是 HTML</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%91%E5%AE%9A"><span class="nav-number">4.</span> <span class="nav-text">数据绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">状态管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%93%E7%A7%AF%E5%92%8C%E6%80%A7%E8%83%BD"><span class="nav-number">6.</span> <span class="nav-text">体积和性能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">7.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF"><span class="nav-number">8.</span> <span class="nav-text">学习曲线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#virtual-DOM%E5%8F%8A%E6%9B%B4%E6%96%B0"><span class="nav-number">9.</span> <span class="nav-text">virtual DOM及更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">10.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E8%AF%A5%E9%80%89%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">11.</span> <span class="nav-text">应该选什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%E4%B8%80%E4%B8%8B%EF%BC%8C%E6%88%91%E4%BB%AC%E5%8F%91%E7%8E%B0"><span class="nav-number">11.1.</span> <span class="nav-text">总结一下，我们发现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E4%B8%8A%E8%BE%B9%E8%BF%98%E4%B8%8D%E8%83%BD%E9%80%89%E5%87%BA%E4%BD%BF%E7%94%A8vue%E8%BF%98%E6%98%AFreact%E6%88%96%E8%80%85%E6%9C%89%E4%BD%BF%E7%94%A8angular%E7%9A%84%E6%89%93%E7%AE%97%EF%BC%9A"><span class="nav-number">11.2.</span> <span class="nav-text">如果上边还不能选出使用vue还是react或者有使用angular的打算：</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">taoyingsong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">taoyingsong</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '',
+      clientSecret: '',
+      repo        : '',
+      owner       : '',
+      admin       : [''],
+      id          : '9c9299af164fef8e3933e0849d754213',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

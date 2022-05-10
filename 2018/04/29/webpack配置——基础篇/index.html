@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="webpack配置知识梳理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack配置——基础篇">
+<meta property="og:url" content="http://example.com/2018/04/29/webpack%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E7%AF%87/index.html">
+<meta property="og:site_name" content="路漫漫其修远兮&lt;br &#x2F;&gt;吾将上下而求索">
+<meta property="og:description" content="webpack配置知识梳理">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-04-29T06:44:02.000Z">
+<meta property="article:modified_time" content="2018-04-29T07:41:18.000Z">
+<meta property="article:author" content="taoyingsong">
+<meta property="article:tag" content="webpack">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2018/04/29/webpack%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E7%AF%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>webpack配置——基础篇 | 路漫漫其修远兮<br />吾将上下而求索</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">路漫漫其修远兮<br />吾将上下而求索</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/29/webpack%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="taoyingsong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="路漫漫其修远兮<br />吾将上下而求索">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          webpack配置——基础篇
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2018-04-29 14:44:02 / 修改时间：15:41:18" itemprop="dateCreated datePublished" datetime="2018-04-29T14:44:02+08:00">2018-04-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>webpack配置知识梳理</p>
+<span id="more"></span>
+<h2 id="初识webpack"><a href="#初识webpack" class="headerlink" title="初识webpack"></a>初识webpack</h2><p>webpack 的几个重要的概念：entry，loader，plugin，output</p>
+<h3 id="entry"><a href="#entry" class="headerlink" title="entry:"></a>entry:</h3><p>单入口,多入口,多文件一个入口<br>webpack从入口开始解析依赖，打包产出</p>
+<h3 id="loader"><a href="#loader" class="headerlink" title="loader:"></a>loader:</h3><p>在module.rules 字段下来配置loader相关的规则<br>我们可以把 loader 理解为是一个转换器，负责把某种文件格式的内容转换成 webpack 可以支持打包的模块，它支撑着 webpack 来处理文件的多样性。</p>
+<p>举个例子，在没有添加额外插件的情况下，webpack 会默认把所有依赖打包成 js 文件，如果入口文件依赖一个 .hbs 的模板文件以及一个 .css 的样式文件，那么我们需要 handlebars-loader 来处理 .hbs 文件，需要 css-loader 来处理 .css 文件（这里其实还需要 style-loader，后续详解），最终把不同格式的文件都解析成 js 代码，以便打包后在浏览器中运行。</p>
+<h3 id="plugin"><a href="#plugin" class="headerlink" title="plugin:"></a>plugin:</h3><p>在配置中通过 plugins 字段添加新的 plugin<br>可以这么理解，模块代码转换的工作由 loader 来处理，除此之外的其他任何工作都可以交由 plugin 来完成。<br>例如，要使用压缩 JS 代码的 uglifyjs-webpack-plugin 插件，定义环境变量的 DefinePlugin，生成 CSS 文件的 ExtractTextWebpackPlugin 等。</p>
+<h3 id="output"><a href="#output" class="headerlink" title="output:"></a>output:</h3><p>Webpack构建结果的文件名、路径等都是可以配置的，使用 output 字段。</p>
+<h3 id="webpack构建："><a href="#webpack构建：" class="headerlink" title="webpack构建："></a>webpack构建：</h3><p>webpack 运行时默认读取项目下的 webpack.config.js 文件作为配置。<br>webpack 的配置其实是一个 Node.js 的脚本，这个脚本对外暴露一个配置对象，<br>因为是 Node.js 脚本，所以可玩性非常高，你可以使用任何的 Node.js 模块，如 path 模块，当然第三方的模块也可以。<br>Demo：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">const path = require(&#x27;path&#x27;)</span><br><span class="line">const UglifyPlugin = require(&#x27;uglifyjs-webpack-plugin&#x27;)</span><br><span class="line"></span><br><span class="line">module.exports = &#123;</span><br><span class="line">  entry: &#x27;./src/index.js&#x27;,</span><br><span class="line"></span><br><span class="line">  output: &#123;</span><br><span class="line">    path: path.resolve(__dirname, &#x27;dist&#x27;),</span><br><span class="line">    filename: &#x27;bundle.js&#x27;,</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  module: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: /\.jsx?/,</span><br><span class="line">        include: [</span><br><span class="line">          path.resolve(__dirname, &#x27;src&#x27;)</span><br><span class="line">        ],</span><br><span class="line">        use: &#x27;babel-loader&#x27;,</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  // 代码模块路径解析的配置</span><br><span class="line">  resolve: &#123;</span><br><span class="line">    modules: [</span><br><span class="line">      &quot;node_modules&quot;,</span><br><span class="line">      path.resolve(__dirname, &#x27;src&#x27;)</span><br><span class="line">    ],</span><br><span class="line"></span><br><span class="line">    extensions: [&quot;.wasm&quot;, &quot;.mjs&quot;, &quot;.js&quot;, &quot;.json&quot;, &quot;.jsx&quot;],</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  plugin: [</span><br><span class="line">    new UglifyPlugin(), </span><br><span class="line">    // 使用 uglifyjs-webpack-plugin 来压缩 JS 代码</span><br><span class="line">    // 如果你留意了我们一开始直接使用 webpack 构建的结果，你会发现默认已经使用了 JS 代码压缩的插件</span><br><span class="line">    // 这其实也是我们命令中的 --mode production 的效果，后续的小节会介绍 webpack 的 mode 参数</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有的时候我们开始一个新的前端项目，并不需要从零开始配置 webpack，而可以使用一些工具来帮助快速生成 webpack 配置。我们可以学习了解各脚手架所提供的 webpack 配置，有些情况下，还会尝试修改这些配置以满足特殊的需求。<br>e.g.<br><code>create-react-app</code><br><code>vue-cli</code><br><code>angular/devkit/build-webpack</code>   </p>
+<p>webpack 的安装和使用和大多数使用 Node.js 开发的命令行工具一样，使用 npm 安装后执行命令即可，webpack 4.x 版本的零配置特性也让上手变得更加简单。</p>
+<h2 id="使用Webpack搭建前端基本开发环境"><a href="#使用Webpack搭建前端基本开发环境" class="headerlink" title="使用Webpack搭建前端基本开发环境"></a>使用Webpack搭建前端基本开发环境</h2><p>基本前端开发环境的需求:</p>
+<ol>
+<li>构建我们发布需要的 HTML、CSS、JS 文件</li>
+<li>使用 CSS 预处理器来编写样式</li>
+<li>处理和压缩图片</li>
+<li>使用 Babel 来支持 ES 新特性</li>
+<li>本地提供静态服务以方便开发调试</li>
+</ol>
+<p><strong>展开：</strong></p>
+<h3 id="1-构建HTML并关联CSS"><a href="#1-构建HTML并关联CSS" class="headerlink" title="1. 构建HTML并关联CSS"></a>1. 构建HTML并关联CSS</h3><p>构建时 html-webpack-plugin 会通过我们配置的html模版为我们创建一个 HTML 文件，其中会引用构建出来的动态生成的JS 文件。如果需要添加多个页面关联，那么实例化多个 html-webpack-plugin。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  // ...</span><br><span class="line">  plugins: [</span><br><span class="line">    new HtmlWebpackPlugin(&#123;</span><br><span class="line">      filename: &#x27;index.html&#x27;, // 配置输出文件名和路径</span><br><span class="line">      template: &#x27;assets/index.html&#x27;, // 配置我们写好的文件模板</span><br><span class="line">    &#125;),</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-构建CSS"><a href="#2-构建CSS" class="headerlink" title="2. 构建CSS"></a>2. 构建CSS</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  module: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      // ...</span><br><span class="line">      &#123;</span><br><span class="line">        test: /\.css/,</span><br><span class="line">        include: [</span><br><span class="line">          path.resolve(__dirname, &#x27;src&#x27;),</span><br><span class="line">        ],</span><br><span class="line">        use: [</span><br><span class="line">          &#x27;style-loader&#x27;,</span><br><span class="line">          &#x27;css-loader&#x27;,</span><br><span class="line">        ],</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们在index.js 中引入index.css【import “.&#x2F;index.css”】然后构建，css相关loader会把css代码会转变为 JS，和 index.js 一起打包了。如果需要单独把 CSS 文件分离出来，我们需要使用 extract-text-webpack-plugin 插件。</p>
+<ul>
+<li>css-loader 负责解析 CSS 代码，主要是为了处理 CSS 中的依赖，例如 @import 和 url() 等引用外部文件的声明；</li>
+<li>style-loader 会将 css-loader 解析的结果转变成 JS 代码，运行时动态插入 style 标签来让 CSS 代码生效。</li>
+</ul>
+<p>使用extract-text-webpack-plugin demo: </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">const ExtractTextPlugin = require(&#x27;extract-text-webpack-plugin&#x27;)</span><br><span class="line">module.exports = &#123;</span><br><span class="line">  // ...</span><br><span class="line">  module: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: /\.css$/,</span><br><span class="line">        // 因为这个插件需要干涉模块转换的内容，所以需要使用它对应的 loader</span><br><span class="line">        use: ExtractTextPlugin.extract(&#123; </span><br><span class="line">          fallback: &#x27;style-loader&#x27;,</span><br><span class="line">         use: [</span><br><span class="line">             &#x27;css-loader’,</span><br><span class="line">             &#x27;less-loader’, </span><br><span class="line">          ],</span><br><span class="line">        &#125;), </span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">  plugins: [</span><br><span class="line">    // 引入插件，配置文件名，这里同样可以使用 [hash]</span><br><span class="line">    new ExtractTextPlugin(&#x27;index.css&#x27;),</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-处理图片等文件"><a href="#3-处理图片等文件" class="headerlink" title="3. 处理图片等文件"></a>3. 处理图片等文件</h3><p>file-loader 可以用于处理很多类型的文件，它的主要作用是直接输出文件，把构建后的文件路径返回。<br>css-loader虽然会解析样式中用 url() 引用的文件路径，但是图片对应的 jpg&#x2F;png&#x2F;gif 等文件格式，webpack 处理不了，此时就可以派file-loader上场了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  // 增加图片类型文件的解析配置</span><br><span class="line">  module: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: /\.(png|jpg|gif)$/,</span><br><span class="line">        use: [</span><br><span class="line">          &#123;</span><br><span class="line">            loader: &#x27;file-loader&#x27;,</span><br><span class="line">            options: &#123;&#125;,</span><br><span class="line">          &#125;,</span><br><span class="line">        ],</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-构建JS-——Babel"><a href="#4-构建JS-——Babel" class="headerlink" title="4. 构建JS ——Babel"></a>4. 构建JS ——Babel</h3><p>Babel 是一个让我们能够使用 ES 新特性的 JS 编译工具，Babel 的相关配置可以在目录下使用 .babelrc 文件来处理。</p>
+<h3 id="5-启动静态服务"><a href="#5-启动静态服务" class="headerlink" title="5. 启动静态服务"></a>5. 启动静态服务</h3><p>我们可以使用 webpack-dev-server 在本地开启一个简单的静态服务来进行开发。<br>（1） 安装webpack-dev-server<br>（2）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&quot;scripts&quot;: &#123;</span><br><span class="line">  &quot;build&quot;: &quot;webpack --mode production&quot;,</span><br><span class="line">  &quot;start&quot;: &quot;webpack-dev-server --mode development&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（3）运行 npm run start 或者 yarn start，然后通过 <code>http://localhost:8080/</code> 访问</p>
+<h2 id="Webpack如何解析代码模块路径"><a href="#Webpack如何解析代码模块路径" class="headerlink" title="Webpack如何解析代码模块路径"></a>Webpack如何解析代码模块路径</h2><p>webpack构建的项目中，我们可以<br>使用import * as m from ‘.&#x2F;index.js’ 来引用代码模块 index.js。<br>使用import React from ‘react’引用第三方类库。</p>
+<h3 id="webpack是如何解析到对应文件模块的呢？"><a href="#webpack是如何解析到对应文件模块的呢？" class="headerlink" title="webpack是如何解析到对应文件模块的呢？"></a>webpack是如何解析到对应文件模块的呢？</h3><p>webpack 依赖 enhanced-resolve 来解析代码模块的路径，webpack 配置文件中和 resolve 相关的选项都会传递给 enhanced-resolve 使用，<br>（这个模块可以说是 Node.js 那一套模块路径解析的增强版本，有很多可以自定义的解析配置）<br>解析模块的规则大概如下：</p>
+<ul>
+<li>解析相对路径</li>
+</ul>
+<ol>
+<li>查找相对当前模块（及当前模块内的模块）的路径下是否有对应文件或文件夹</li>
+<li>是文件则直接加载</li>
+<li>是文件夹则继续查找文件夹下的 package.json 文件</li>
+<li>有 package.json 文件则按照文件中 main 字段的文件名来查找文件</li>
+<li>无 package.json 或者无 main 字段则查找 index.js 文件</li>
+</ol>
+<ul>
+<li>解析模块名<br>查找当前文件目录的父级目录及以上目录下的 node_modules 文件夹，看是否有对应名称的模块</li>
+<li>解析绝对路径（不建议使用）<br>直接查找对应路径的文件</li>
+</ul>
+<p>在 webpack 配置中，和模块路径解析相关的配置都在 resolve 字段下，常用解析路径规则的自定义配置如下：</p>
+<h3 id="resolve-alias"><a href="#resolve-alias" class="headerlink" title="resolve.alias"></a>resolve.alias</h3><p>模糊匹配：   </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alias: &#123;</span><br><span class="line">  utils: path.resolve(__dirname, &#x27;src/utils&#x27;) // 这里使用 path.resolve 和 __dirname 来获取绝对路径</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下边的utils都会被替换为绝对路径</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import ‘utils&#x27;</span><br><span class="line">import &#x27;utils/query.js&#x27;</span><br></pre></td></tr></table></figure>
+<p>精确匹配：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alias: &#123;</span><br><span class="line">  utils$: path.resolve(__dirname, &#x27;src/utils&#x27;) // 只会匹配 import &#x27;utils&#x27;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="resolve-extensions"><a href="#resolve-extensions" class="headerlink" title="resolve.extensions"></a>resolve.extensions</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extensions: [&#x27;.wasm&#x27;, &#x27;.mjs&#x27;, &#x27;.js&#x27;, &#x27;.json&#x27;, &#x27;.jsx&#x27;], // 这里的顺序代表匹配后缀的优先级，例如对于 index.js 和 index.jsx，会优先选择 index.js</span><br></pre></td></tr></table></figure>
+<p>这个配置可以定义在进行模块路径解析时，在不写文件后缀时webpack 会尝试帮你补全那些后缀名来进行查找。</p>
+<h3 id="resolve-modules"><a href="#resolve-modules" class="headerlink" title="resolve.modules"></a>resolve.modules</h3><p>import React from ‘react’时，webpack 会类似 Node.js 一样进行路径搜索，搜索 node_modules 目录，这个目录就是使用 resolve.modules 字段进行配置的。</p>
+<p>默认：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">resolve: &#123;</span><br><span class="line">  modules: [&#x27;node_modules&#x27;],</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>通常情况下，我们不会调整这个配置，但是如果可以确定项目内所有的第三方依赖模块都是在项目根目录下的 node_modules 中的话，那么可以在 node_modules 之前配置一个确定的绝对路径，这样配置在某种程度上可以简化模块的查找，提升构建速度：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">resolve: &#123;</span><br><span class="line">  modules: [</span><br><span class="line">    path.resolve(__dirname, &#x27;node_modules&#x27;), // 指定当前目录下的 node_modules 优先查找</span><br><span class="line">    &#x27;node_modules&#x27;, // 如果有一些类库是放在一些奇怪的地方的，你可以添加自定义的路径或者目录</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="resolve-mainFields"><a href="#resolve-mainFields" class="headerlink" title="resolve.mainFields"></a>resolve.mainFields</h3><p>【对应上边模块解析规则第一项第4点】</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">resolve: &#123;</span><br><span class="line">  // 配置 target === &quot;web&quot; 或者 target === &quot;webworker&quot; 时 mainFields 默认值是：</span><br><span class="line">  mainFields: [&#x27;browser&#x27;, &#x27;module&#x27;, &#x27;main&#x27;],</span><br><span class="line"></span><br><span class="line">  // target 的值为其他时，mainFields 默认值为：</span><br><span class="line">  mainFields: [&quot;module&quot;, &quot;main&quot;],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为通常情况下，模块的 package 都不会声明 browser 或 module 字段，所以便是使用 main了。<br>在 NPM packages 中，会有些 package 提供了两个实现，分别给浏览器和 Node.js 两个不同的运行时使用，这个时候就需要区分不同的实现入口在哪里，所以有时候会制定target。</p>
+<h3 id="resolve-mainFiles"><a href="#resolve-mainFiles" class="headerlink" title="resolve.mainFiles"></a>resolve.mainFiles</h3><p>当目录下没有 package.json 文件时，我们说会默认使用目录下的 index.js 这个文件，其实这个可以通过mainFiles配置的，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">resolve: &#123;</span><br><span class="line">  mainFiles: [&#x27;index&#x27;], // 你可以添加其他默认使用的文件名，index为约定俗称，通常不会修改</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<h3 id="resolve-resolveLoader"><a href="#resolve-resolveLoader" class="headerlink" title="resolve.resolveLoader"></a>resolve.resolveLoader</h3><p>用于配置解析 loader 时的 resolve 配置，这个配置很少用，遵循默认即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">resolve: &#123;</span><br><span class="line">  resolveLoader: &#123;</span><br><span class="line">    extensions: [&#x27;.js&#x27;, &#x27;.json’],  // 默认</span><br><span class="line">    mainFields: [&#x27;loader&#x27;, &#x27;main’], // 默认</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<h2 id="配置loader："><a href="#配置loader：" class="headerlink" title="配置loader："></a>配置loader：</h2><h3 id="规则条件配置："><a href="#规则条件配置：" class="headerlink" title="规则条件配置："></a>规则条件配置：</h3><p>{ test: … } 匹配特定条件<br>{ include: … } 匹配特定路径<br>{ exclude: … } 排除特定路径<br>{ and: […] }必须匹配数组中所有条件<br>{ or: […] } 匹配数组中任意一个条件<br>{ not: […] } 排除匹配数组中所有条件</p>
+<p>值可以是：<br>字符串：必须以提供的字符串开始，所以是字符串的话，这里我们需要提供绝对路径<br>正则表达式：调用正则的 test 方法来判断匹配<br>函数：(path) &#x3D;&gt; boolean，返回 true 表示匹配<br>数组：至少包含一个条件的数组<br>对象：匹配所有属性值的条件</p>
+<p>Demo:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">rules: [</span><br><span class="line">  &#123;</span><br><span class="line">    test: /\.jsx?/, // 正则</span><br><span class="line">    include: [</span><br><span class="line">      path.resolve(__dirname, &#x27;src&#x27;), // 字符串，注意是绝对路径</span><br><span class="line">    ], // 数组</span><br><span class="line">    // ...</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    test: &#123;</span><br><span class="line">      js: /\.js/,</span><br><span class="line">      jsx: /\.jsx/,</span><br><span class="line">    &#125;, // 对象，不建议使用</span><br><span class="line">    not: [</span><br><span class="line">      (value) =&gt; &#123; /* ... */ return true; &#125;, // 函数，通常需要高度自定义时才会使用</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>Webpack4.X 强化了模块规则，新增了模块类型的概念，相当于 webpack 内置一个更加底层的文件类型处理，暂时只有 JS 相关的支持，后续会再添加 HTML 和 CSS 等类型。<br>现阶段实现了以下 5 种模块类型：<br>javascript&#x2F;auto：即 webpack 3 默认的类型，支持现有的各种 JS 代码模块类型 —— CommonJS、AMD、ESM<br>javascript&#x2F;esm：ECMAScript modules，其他模块系统，例如 CommonJS 或者 AMD 等不支持，是 .mjs 文件的默认类型<br>javascript&#x2F;dynamic：CommonJS 和 AMD，排除 ESM<br>javascript&#x2F;json：JSON 格式数据，require 或者 import 都可以引入，是 .json 文件的默认类型<br>webassembly&#x2F;experimental：WebAssembly modules，当前还处于试验阶段，是 .wasm 文件的默认类型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  test: /\.js/,</span><br><span class="line">  include: [</span><br><span class="line">    path.resolve(__dirname, &#x27;src&#x27;),</span><br><span class="line">  ],</span><br><span class="line">  type: &#x27;javascript/esm&#x27;, // 这里指定模块类型</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>上述做法是可以帮助你规范整个项目的模块系统，但是如果遗留太多不同类型的模块代码时，建议还是直接使用默认的 javascript&#x2F;auto。</p>
+<h3 id="Loader应用顺序："><a href="#Loader应用顺序：" class="headerlink" title="Loader应用顺序："></a>Loader应用顺序：</h3><p>rule中一个对象中的规则：配置多个loader, 执行是从后向前执行，对于css，除了 style-loader 和 css-loader，你可能还要配置 less-loader 然后再加个 postcss 的 autoprefixer 等。<br>rule中多个对象匹配到相通规则：无法保证规则执行先后顺序，可配置enforce字段为“pre” “post”， 分别对应前置类型或后置类型的 loader，不设置为普通类型<br>loader 按照前置 -&gt; 行内 -&gt; 普通 -&gt; 后置的顺序执行。<br>当项目文件类型和应用的 loader 不是特别复杂的时候，通常建议把要应用的同一类型 loader 都写在同一个匹配规则中，这样更好维护和控制。<br>Demo:<br>eslint-loader 要检查的是人工编写的代码，如果在 babel-loader 之后使用，那么检查的是 Babel 转换后的代码，所以必须在 babel-loader 处理之前使用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">rules: [</span><br><span class="line">  &#123;</span><br><span class="line">    test: /\.js$/,</span><br><span class="line">    exclude: /node_modules/,</span><br><span class="line">    loader: &quot;eslint-loader”,</span><br><span class="line">    enforce: “pre”,</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    test: /\.js$/,</span><br><span class="line">    exclude: /node_modules/,</span><br><span class="line">    loader: &quot;babel-loader&quot;,</span><br><span class="line">  &#125;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h3 id="noParse"><a href="#noParse" class="headerlink" title="noParse"></a>noParse</h3><p>module.noParse 字段，可以用于配置哪些模块文件的内容不需要进行解析。对于一些不需要解析依赖（即无依赖） 的第三方大型类库等，可以通过这个字段来配置，以提高整体的构建速度。<br>使用 noParse 进行忽略的模块文件中不能使用 import、require、define 等导入机制。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  // ...</span><br><span class="line">  module: &#123;</span><br><span class="line">    noParse: /jquery|lodash/, // 正则表达式</span><br><span class="line"></span><br><span class="line">    // 或者使用 function</span><br><span class="line">    noParse(content) &#123;</span><br><span class="line">      return /jquery|lodash/.test(content)</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置plugin"><a href="#配置plugin" class="headerlink" title="配置plugin:"></a>配置plugin:</h2><p>（这里只介绍几个常用插件）</p>
+<h3 id="DefinePlugin"><a href="#DefinePlugin" class="headerlink" title="DefinePlugin"></a>DefinePlugin</h3><p>DefinePlugin 是 webpack 内置的插件，可以使用 webpack.DefinePlugin 直接获取。<br>这个插件用于创建一些在编译时可以配置的全局常量，这些常量的值我们可以在 webpack 的配置中去指定，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  // ...</span><br><span class="line">  plugins: [</span><br><span class="line">    new webpack.DefinePlugin(&#123;</span><br><span class="line">      PRODUCTION: JSON.stringify(true), // const PRODUCTION = true</span><br><span class="line">      VERSION: JSON.stringify(&#x27;5fa3b9&#x27;), // const VERSION = &#x27;5fa3b9&#x27;</span><br><span class="line">      BROWSER_SUPPORTS_HTML5: true, // const BROWSER_SUPPORTS_HTML5 = &#x27;true&#x27;</span><br><span class="line">      TWO: &#x27;1+1&#x27;, // const TWO = 1 + 1,</span><br><span class="line">      CONSTANTS: &#123;</span><br><span class="line">        APP_VERSION: JSON.stringify(&#x27;1.1.2&#x27;) // const CONSTANTS = &#123; APP_VERSION: &#x27;1.1.2&#x27; &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;),</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在应用中访问变量：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">console.log(&quot;Running App version &quot; + VERSION);</span><br><span class="line"> if(!BROWSER_SUPPORTS_HTML5) require(&quot;html5shiv&quot;);</span><br></pre></td></tr></table></figure>
+<p>上面配置的注释已经简单说明了这些配置的效果，这里再简述一下整个配置规则。</p>
+<ul>
+<li>如果配置的值是字符串，那么整个字符串会被当成代码片段来执行，其结果作为最终变量的值，如上面的 “1+1”，最后的结果是 2</li>
+<li>如果配置的值不是字符串，也不是一个对象字面量，那么该值会被转为一个字符串，如 true，最后的结果是 ‘true’</li>
+<li>如果配置的是一个对象字面量，那么该对象的所有 key 会以同样的方式去定义<br>这样我们就可以理解为什么要使用 JSON.stringify() 了，因为 JSON.stringify(true) 的结果是 ‘true’，JSON.stringify(“5fa3b9”) 的结果是 “5fa3b9”。</li>
+</ul>
+<p>社区中关于 DefinePlugin 使用得最多的方式是定义环境变量，例如 PRODUCTION &#x3D; true 或者 <strong>DEV</strong> &#x3D; true 等。部分类库在开发环境时依赖这样的环境变量来给予开发者更多的开发调试反馈，例如 react 等。</p>
+<p>【建议使用 process.env.NODE_ENV: … 的方式来定义 process.env.NODE_ENV，而不是使用 process: { env: { NODE_ENV: … } } 的方式，因为这样会覆盖掉 process 这个对象，可能会对其他代码造成影响。】</p>
+<h3 id="copy-webpack-plugin"><a href="#copy-webpack-plugin" class="headerlink" title="copy-webpack-plugin"></a>copy-webpack-plugin</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">const CopyWebpackPlugin = require(&#x27;copy-webpack-plugin&#x27;)</span><br><span class="line"></span><br><span class="line">module.exports = &#123;</span><br><span class="line">  // 有些文件没经过 webpack 处理，但是我们希望它们也能出现在 build 目录下，这时就可以使用 CopyWebpackPlugin 来处理了</span><br><span class="line">  plugins: [</span><br><span class="line">    new CopyWebpackPlugin([</span><br><span class="line">      &#123; from: &#x27;src/file.txt&#x27;, to: &#x27;build/file.txt&#x27;, &#125;, // 顾名思义，from 配置来源，to 配置目标路径</span><br><span class="line">      &#123; from: &#x27;src/*.ico&#x27;, to: &#x27;build/*.ico&#x27; &#125;, // 配置项可以使用 glob</span><br><span class="line">      // 可以配置很多项复制规则</span><br><span class="line">    ]),</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="extract-text-webpack-plugin"><a href="#extract-text-webpack-plugin" class="headerlink" title="extract-text-webpack-plugin"></a>extract-text-webpack-plugin</h3><p>把依赖的 CSS 分离出来成为单独的文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">const ExtractTextPlugin = require(&#x27;extract-text-webpack-plugin&#x27;)</span><br><span class="line"></span><br><span class="line">module.exports = &#123;</span><br><span class="line">  // ...</span><br><span class="line">  module: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: /\.css$/,</span><br><span class="line">        // 因为这个插件需要干涉模块转换的内容，所以需要使用它对应的 loader</span><br><span class="line">        use: ExtractTextPlugin.extract(&#123; </span><br><span class="line">          fallback: &#x27;style-loader&#x27;,</span><br><span class="line">          use: &#x27;css-loader&#x27;,</span><br><span class="line">        &#125;), </span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">  plugins: [</span><br><span class="line">    // 引入插件，配置文件名，这里同样可以使用 [hash]</span><br><span class="line">    new ExtractTextPlugin(&#x27;index.css&#x27;),</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上述的配置中，我们使用了 index.css 作为单独分离出来的文件名，但有的时候构建入口不止一个，extract-text-webpack-plugin 会为每一个入口创建单独分离的文件，因此最好这样配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">plugins: [</span><br><span class="line">  new ExtractTextPlugin(&#x27;[name].css’), // 这样确保在使用多个构建入口时，生成不同名称的文件。</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<h3 id="ProvidePlugin"><a href="#ProvidePlugin" class="headerlink" title="ProvidePlugin"></a>ProvidePlugin</h3><p>ProvidePlugin 也是一个 webpack 内置的插件，我们可以直接使用 webpack.ProvidePlugin 来获取。<br>该组件用于引用某些模块作为应用运行时的变量，从而不必每次都用 require 或者 import，其用法相对简单：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">new webpack.ProvidePlugin(&#123;</span><br><span class="line">  identifier: &#x27;module&#x27;,</span><br><span class="line">  // ...</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">// 或者</span><br><span class="line">new webpack.ProvidePlugin(&#123;</span><br><span class="line">  identifier: [&#x27;module&#x27;, &#x27;property&#x27;], // 即引用 module 下的 property，类似 import &#123; property &#125; from &#x27;module&#x27;</span><br><span class="line">  // ...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>在你的代码中，当 identifier 被当作未赋值的变量时，module 就会被自动加载了，而 identifier 这个变量即 module 对外暴露的内容。</p>
+<p>注意，如果是 ES 的 default export，那么你需要指定模块的 default 属性：identifier: [‘module’, ‘default’],。</p>
+<h3 id="IgnorePlugin"><a href="#IgnorePlugin" class="headerlink" title="IgnorePlugin"></a>IgnorePlugin</h3><p>也是一个 webpack 内置的插件，可以直接使用 webpack.IgnorePlugin 来获取。</p>
+<p>这个插件用于忽略某些特定的模块，让 webpack 不把这些指定的模块打包进去。例如我们使用 moment.js，直接引用后，里边有大量的 i18n 的代码，导致最后打包出来的文件比较大，而实际场景并不需要这些 i18n 的代码，这时我们可以使用 IgnorePlugin 来忽略掉这些代码文件，配置如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  // ...</span><br><span class="line">  plugins: [</span><br><span class="line">    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>IgnorePlugin 配置的参数有两个，第一个是匹配引入模块路径的正则表达式，第二个是匹配模块的对应上下文，即所在目录名。</p>
+<h2 id="更好地使用-webpack-dev-server"><a href="#更好地使用-webpack-dev-server" class="headerlink" title="更好地使用 webpack-dev-server"></a>更好地使用 webpack-dev-server</h2><h3 id="webpack-dev-server-的基础使用"><a href="#webpack-dev-server-的基础使用" class="headerlink" title="webpack-dev-server 的基础使用"></a>webpack-dev-server 的基础使用</h3><p>webpack-dev-server 是一个 npm package，本质上也是调用 webpack，4.x 版本要指定 mode<br>建议把 webpack-dev-server 作为开发依赖安装，然后使用 npm scripts 来启动，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install webpack-dev-server --save-dev</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  // ...</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;start&quot;: &quot;webpack-dev-server --mode development” // npm run start</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="webpack-dev-server-默认使用-8080-端口"><a href="#webpack-dev-server-默认使用-8080-端口" class="headerlink" title="webpack-dev-server 默认使用 8080 端口"></a>webpack-dev-server 默认使用 8080 端口</h3><p>使用了 html-webpack-plugin 来构建 HTML 文件，并且有一个 index.html 的构建结果，那么直接访问 <code>http://localhost:8080/</code> 就可以看到 index.html 页面了。如果没有 HTML 文件的话，那么 webpack-dev-server 会生成一个展示静态资源列表的页面。</p>
+<h3 id="webpack-dev-server-的配置"><a href="#webpack-dev-server-的配置" class="headerlink" title="webpack-dev-server 的配置"></a>webpack-dev-server 的配置</h3><p>可以通过 devServer 字段来配置 webpack-dev-server，如端口设置、启动 gzip 压缩等，常用配置如下：</p>
+<ul>
+<li><p>public 字段用于指定静态服务的域名，默认是 <code>http://localhost:8080/</code> ，当你使用 Nginx 来做反向代理时，应该就需要使用该配置来指定 Nginx 配置使用的服务域名。</p>
+</li>
+<li><p>port 字段用于指定静态服务的端口，如上，默认是 8080，通常情况下都不需要改动。</p>
+</li>
+<li><p>publicPath 字段用于指定构建好的静态文件在浏览器中用什么路径去访问，默认是 &#x2F;，例如，对于一个构建好的文件 bundle.js，完整的访问路径是 <code>http://localhost:8080/</code>bundle.js，如果你配置了 publicPath: ‘assets&#x2F;‘，那么上述 bundle.js 的完整访问路径就是 <code>http://localhost:8080/</code>assets&#x2F;bundle.js。可以使用整个 URL 来作为 publicPath 的值，如 publicPath: <code>http://localhost:8080/assets/</code>如果你使用了HMR，那么要设置 publicPath 就必须使用完整的 URL。【建议将 devServer.publicPath 和 output.publicPath 的值保持一致】</p>
+</li>
+<li><p>proxy 用于配置 webpack-dev-server 将特定 URL 的请求代理到另外一台服务器上。当你有单独的后端开发服务器用于请求 API 时，这个配置相当有用。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">proxy: &#123;</span><br><span class="line">  &#x27;/api&#x27;: &#123;</span><br><span class="line">    target: &quot;http://localhost:3000&quot;, // 将 URL 中带有 /api 的请求代理到本地的 3000 端口的服务上</span><br><span class="line">    pathRewrite: &#123; &#x27;^/api&#x27;: &#x27;&#x27; &#125;, // 把 URL 中 path 部分的 `api` 移除掉</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  proxy 功能是使用 http-proxy-middleware 来实现的，更详细的 proxy 配置，可以参考官方文档 http-proxy-middleware。</p>
+</li>
+<li><p>contentBase 用于配置提供额外静态文件内容的目录，之前提到的 publicPath 是配置构建好的结果以什么样的路径去访问，而 contentBase 是配置额外的静态文件内容的访问路径，即那些不经过 webpack 构建，但是需要在 webpack-dev-server 中提供访问的静态资源（如部分图片等）。推荐使用绝对路径，【publicPath 的优先级高于 contentBase。】</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 使用当前目录下的 public</span><br><span class="line">contentBase: path.join(__dirname, &quot;public&quot;) </span><br><span class="line"></span><br><span class="line">// 也可以使用数组提供多个路径</span><br><span class="line">contentBase: [path.join(__dirname, &quot;public&quot;), path.join(__dirname, &quot;assets&quot;)]</span><br><span class="line">* before 和 after 配置用于在 webpack-dev-server 定义额外的中间件，如</span><br><span class="line">before(app)&#123;</span><br><span class="line">  app.get(&#x27;/some/path&#x27;, function(req, res) &#123; // 当访问 /some/path 路径时，返回自定义的 json 数据</span><br><span class="line">    res.json(&#123; custom: &#x27;response&#x27; &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>before 在 webpack-dev-server 静态资源中间件处理之前，可以用于拦截部分请求返回特定内容，或者实现简单的数据 mock。</p>
+</li>
+<li><p>after 在 webpack-dev-server 静态资源中间件处理之后，比较少用到，可以用于打印日志或者做一些额外处理。</p>
+</li>
+</ul>
+<h3 id="webpack-dev-middleware"><a href="#webpack-dev-middleware" class="headerlink" title="webpack-dev-middleware"></a>webpack-dev-middleware</h3><p>中间件，简而言之就是在 Express 之类的 Web 框架中实现各种各样功能（如静态文件访问）的这一部分函数。多个中间件可以一起协同构建起一个完整的 Web 服务器。<br>webpack-dev-middleware 就是在 Express 中提供 webpack-dev-server 静态服务能力的一个中间件。<br>首先：npm install webpack-dev-middleware –save-dev<br>接着：创建一个 Node.js 服务的脚本文件，如 app.js：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">const webpack = require(&#x27;webpack&#x27;)</span><br><span class="line">const middleware = require(&#x27;webpack-dev-middleware&#x27;)</span><br><span class="line">const webpackOptions = require(&#x27;./webpack.config.js&#x27;) // webpack 配置文件的路径</span><br><span class="line"></span><br><span class="line">// 本地的开发环境默认就是使用 development mode</span><br><span class="line">webpackOptions.mode = &#x27;development&#x27;</span><br><span class="line"></span><br><span class="line">const compiler = webpack(webpackOptions)</span><br><span class="line">const express = require(&#x27;express&#x27;)</span><br><span class="line">const app = express()</span><br><span class="line"></span><br><span class="line">app.use(middleware(compiler, &#123;</span><br><span class="line">  // webpack-dev-middleware 的配置选项</span><br><span class="line">&#125;))</span><br><span class="line"></span><br><span class="line">// 其他 Web 服务中间件</span><br><span class="line">// app.use(...)</span><br><span class="line"></span><br><span class="line">app.listen(3000, () =&gt; console.log(&#x27;Example app listening on port 3000!&#x27;))</span><br></pre></td></tr></table></figure>
+<p>然后：用node.js运行该文件：<br>node app.js # 使用刚才创建的 app.js 文件</p>
+<p>使用 webpack-dev-server 的好处是相对简单，直接安装依赖后执行命令即可，而使用 webpack-dev-middleware 的好处是可以在既有的 Express 代码基础上快速添加 webpack-dev-server 的功能，同时利用 Express 来根据需要添加更多的功能，如 mock 服务、代理 API 请求等。</p>
+<p>其实 webpack-dev-server 也是基于 Express 开发的，前面提及的 webpack-dev-server 中 before 或 after 的配置字段，也可以用于编写特定的中间件来根据需要添加额外的功能</p>
+<h3 id="实现一个简单的-mock-服务"><a href="#实现一个简单的-mock-服务" class="headerlink" title="实现一个简单的 mock 服务"></a>实现一个简单的 mock 服务</h3><p>而 webpack-dev-server 的 before 或 proxy 配置，又或者是 webpack-dev-middleware 结合 Express，都可以帮助我们来实现简单的 mock 服务。</p>
+<p>基于 Express app 对webpack-dev-server实现一个简单 mock 功能的方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">module.export = function mock(app) &#123;</span><br><span class="line">  app.get(&#x27;/some/path&#x27;, (req, res) =&gt; &#123;</span><br><span class="line">    res.json(&#123; data: &#x27;&#x27; &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  // ... 其他的请求 mock</span><br><span class="line">  // 如果 mock 代码过多，可以将其拆分成多个代码文件，然后 require 进来</span><br><span class="line">&#125;</span><br><span class="line">然后应用到配置中的 before 字段：</span><br><span class="line">const mock = require(&#x27;./mock&#x27;)</span><br><span class="line"></span><br><span class="line">// ...</span><br><span class="line">before(app) &#123;</span><br><span class="line">  mock(app) // 调用 mock 函数</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mock 函数同样可以应用到 Express 中去，提供与 webpack-dev-middleware 同样的功能。</span><br></pre></td></tr></table></figure>
+<p>由于 app.get(‘’, (req, res) &#x3D;&gt; { … }) 的 callback 可以拿到 req 请求对象，其实可以根据请求参数来改变返回的结果，即通过参数来模拟多种场景的返回数据来协助测试多种场景下的代码应用。</p>
+<p>当你单独实现或者使用一个 mock 服务时，你可以通过 proxy 来配置部分路径代理到对应的 mock 服务上去，从而把 mock 服务集成到当前的开发服务中去，相对来说也很简单。</p>
+<p>当你和后端开发进行联调时，亦可使用 proxy 代理到对应联调使用的机器上，从而可以使用本地前端代码的开发环境来进行联调。当然了，连线上环境的异常都可以这样来尝试定位问题。</p>
+<h2 id="开发和生产环境的构建配置差异"><a href="#开发和生产环境的构建配置差异" class="headerlink" title="开发和生产环境的构建配置差异"></a>开发和生产环境的构建配置差异</h2><p>问题：<br>webpack 4.x 和 3.x 如何在配置文件中区分环境来应用不同的配置选项（4.x 使用 mode 参数，3.x 使用 Node.js 的 process.env.NODE_ENV），<br>如何在应用代码运行时携带当前构建环境的相关信息，<br>以及如何利用 webpack-merge 这个工具来更好地维护不同构建环境中对应的构建需求配置。</p>
+<p>当你指定使用 production mode 时，默认会启用各种性能优化的功能，包括构建结果优化以及 webpack 运行性能优化，而如果是 development mode 的话，则会开启 debug 工具，运行时打印详细的错误信息，以及更加快速的增量编译构建。</p>
+<p>虽然 webpack 的 mode 参数已经给我们带来了一些很方便的环境差异化配置，但是针对一些项目情况，例如使用 css-loader 或者 url-loader 等，不同环境传入 loader 的配置也不一样，而 mode 并没有帮助我们做这些事情，因此有些配置还是需要手动区分环境后来进行调整。</p>
+<h3 id="在配置文件中区分-mode"><a href="#在配置文件中区分-mode" class="headerlink" title="在配置文件中区分 mode"></a>在配置文件中区分 mode</h3><p>webpack 4.x 的做法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">package.json中：</span><br><span class="line">&quot;scripts&quot;: &#123;</span><br><span class="line">  &quot;build&quot;: &quot;webpack --mode development&quot;,</span><br><span class="line">  &quot;develop&quot;: &quot;webpack --mode production&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">webpack配置中：</span><br><span class="line">module.exports = (env, argv) =&gt; (&#123;</span><br><span class="line">  // ... 其他配置</span><br><span class="line">  optimization: &#123;</span><br><span class="line">    minimize: false,</span><br><span class="line">    // 使用 argv 来获取 mode 参数的值, 之前webpack配置中直接对外暴露一个 JS 对象的方式无法获得，通过对外暴露一个函数，在函数中可以获取。</span><br><span class="line">    minimizer: argv.mode === &#x27;production&#x27; ? [</span><br><span class="line">      new UglifyJsPlugin(&#123; /* 你自己的配置 */ &#125;), </span><br><span class="line">      // 仅在我们要自定义压缩配置时才需要这么做</span><br><span class="line">      // mode 为 production 时 webpack 会默认使用压缩 JS 的 plugin</span><br><span class="line">    ] : [],</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>webpack 3.x中：（业界现在估计使用 webpack 3.x 版本的居多）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">package.json中：</span><br><span class="line">&#123;</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;build&quot;: &quot;NODE_ENV=production webpack&quot;,</span><br><span class="line">    &quot;develop&quot;: &quot;NODE_ENV=development webpack-dev-server&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">webpack配置中：</span><br><span class="line">const config = &#123;</span><br><span class="line">  // ... webpack 配置</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if (process.env.NODE_ENV === &#x27;production&#x27;) &#123;</span><br><span class="line">  // 生产环境需要做的事情，如使用代码压缩插件等</span><br><span class="line">  config.plugins.push(new UglifyJsPlugin())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">module.exports = config</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行时的环境变量"><a href="#运行时的环境变量" class="headerlink" title="运行时的环境变量"></a>运行时的环境变量</h3><p>webpack 4.x做法：<br>我们使用 webpack 时传递的 mode 参数，是可以在我们的应用代码运行时，通过 process.env.NODE_ENV 这个变量获取的。这样方便我们在运行时判断当前执行的构建环境，使用最多的场景莫过于控制是否打印 debug 信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">export default function log(...args) &#123;</span><br><span class="line">  if (process.env.NODE_ENV === &#x27;development&#x27; &amp;&amp; console &amp;&amp; console.log) &#123;</span><br><span class="line">    console.log.apply(console, args)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">webpack 3.x做法：</span><br><span class="line">module.exports = &#123;</span><br><span class="line">  // ...</span><br><span class="line">  // webpack 的配置</span><br><span class="line"></span><br><span class="line">  plugins: [</span><br><span class="line">    new webpack.DefinePlugin(&#123;</span><br><span class="line">      // webpack 3.x 的 process.env.NODE_ENV 是通过手动在命令行中指定 NODE_ENV=... 的方式来传递的</span><br><span class="line">      &#x27;process.env.NODE_ENV&#x27;: JSON.stringify(process.env.NODE_ENV),</span><br><span class="line">    &#125;),</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="常见的环境差异配置"><a href="#常见的环境差异配置" class="headerlink" title="常见的环境差异配置"></a>常见的环境差异配置</h3><ul>
+<li>生产环境可能需要分离 CSS 成单独的文件，以便多个页面共享同一个 CSS 文件</li>
+<li>生产环境需要压缩 HTML&#x2F;CSS&#x2F;JS 代码</li>
+<li>生产环境需要压缩图片</li>
+<li>开发环境需要生成 sourcemap 文件</li>
+<li>开发环境需要打印 debug 信息</li>
+<li>开发环境需要 live reload 或者 hot reload 的功能</li>
+</ul>
+<p>webpack 4.x 的 mode 已经提供了上述差异配置的大部分功能，mode 为 production 时默认使用 JS 代码压缩，而 mode 为 development 时默认启用 hot reload，等等。这样让我们的配置更为简洁，我们只需要针对特别使用的 loader 和 plugin 做区分配置就可以了。</p>
+<p>webpack 3.x 版本还是只能自己动手修改配置来满足大部分环境差异需求，所以如果你要开始一个新的项目，建议直接使用 webpack 4.x 版本。</p>
+<h3 id="拆分配置："><a href="#拆分配置：" class="headerlink" title="拆分配置："></a>拆分配置：</h3><p>当配置越来越复杂时我们可以把 webpack 的配置按照不同的环境进行拆分，运行时直接根据环境变量加载对应的配置即可。基本的划分如下：<br>webpack.base.js：基础部分，即多个文件中共享的配置<br>webpack.development.js：开发环境使用的配置<br>webpack.production.js：生产环境使用的配置<br>webpack.test.js：测试环境使用的配置</p>
+<p>通过webpack-merge对拆分进行合并：<br>demo：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">webpack.base.js</span><br><span class="line"> module.exports = &#123;</span><br><span class="line">  entry: &#x27;...&#x27;,</span><br><span class="line">  output: &#123;</span><br><span class="line">    // ...</span><br><span class="line">  &#125;,</span><br><span class="line">  resolve: &#123;</span><br><span class="line">    // ...</span><br><span class="line">  &#125;,</span><br><span class="line">  module: &#123;</span><br><span class="line">    // 这里是一个简单的例子，后面介绍 API 时会用到</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: /\.js$/, </span><br><span class="line">        use: [&#x27;babel&#x27;],</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">    // ...</span><br><span class="line">  &#125;,</span><br><span class="line">  plugins: [</span><br><span class="line">    // ...</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">webpack.development.js 需要添加 loader 或 plugin，就可以使用 webpack-merge 的 API</span><br><span class="line">const &#123; smart &#125; = require(&#x27;webpack-merge&#x27;)</span><br><span class="line">const webpack = require(&#x27;webpack&#x27;)</span><br><span class="line">const base = require(&#x27;./webpack.base.js&#x27;)</span><br><span class="line"></span><br><span class="line">module.exports = smart(base, &#123;</span><br><span class="line">  module: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      // 用 smart API，当这里的匹配规则相同且 use 值都是数组时，smart 会识别后处理</span><br><span class="line">      // 和上述 base 配置合并后，这里会是 &#123; test: /\.js$/, use: [&#x27;babel&#x27;, &#x27;coffee&#x27;] &#125;</span><br><span class="line">      // 如果这里 use 的值用的是字符串或者对象的话，那么会替换掉原本的规则 use 的值</span><br><span class="line">      &#123;</span><br><span class="line">        test: /\.js$/,</span><br><span class="line">        use: [&#x27;coffee&#x27;],</span><br><span class="line">      &#125;,</span><br><span class="line">      // ...</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">  plugins: [</span><br><span class="line">    // plugins 这里的数组会和 base 中的 plugins 数组进行合并</span><br><span class="line">    new webpack.DefinePlugin(&#123;</span><br><span class="line">      &#x27;process.env.NODE_ENV&#x27;: JSON.stringify(process.env.NODE_ENV),</span><br><span class="line">    &#125;),</span><br><span class="line">  ],</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Hot-Module-Replacement"><a href="#Hot-Module-Replacement" class="headerlink" title="Hot Module Replacement"></a>Hot Module Replacement</h2><p>早先时候的概念：Hot Reloading——当代码变更时通知浏览器刷新页面<br>HMR 可以理解为增强版的 Hot Reloading ——不用整个页面刷新，而是局部替换掉部分模块代码并且使其生效。<br>好处：HMR 既避免了频繁手动刷新页面，也减少了页面刷新时的等待，可以极大地提高前端页面开发效率。</p>
+<h3 id="配置HMR"><a href="#配置HMR" class="headerlink" title="配置HMR"></a>配置HMR</h3><p>安装好 webpack-dev-server后，webpack中添加如下配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">const webpack = require(&#x27;webpack&#x27;)</span><br><span class="line">module.exports = &#123;</span><br><span class="line">  // ...</span><br><span class="line">  devServer: &#123;</span><br><span class="line">    hot: true // dev server 的配置要启动 hot，或者在命令行中带参数开启</span><br><span class="line">  &#125;,</span><br><span class="line">  plugins: [</span><br><span class="line">    // ...</span><br><span class="line">    new webpack.NamedModulesPlugin(), // 用于启动 HMR 时可以显示模块的相对路径</span><br><span class="line">    new webpack.HotModuleReplacementPlugin(), // Hot Module Replacement 的插件</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>webpack 内部运行时，会维护一份用于管理构建代码时各个模块之间交互的表数据，webpack 官方称之为 Manifest，其中包括入口代码文件和构建出来的 bundle 文件的对应关系。</p>
+<p>相关原理api自行翻看文档分析</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/webpack/" rel="tag"># webpack</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/04/27/react%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93%E5%88%86%E4%BA%AB/" rel="prev" title="react项目总结分享">
+      <i class="fa fa-chevron-left"></i> react项目总结分享
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/04/29/webpack%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E4%BC%98%E5%8C%96%E7%AF%87/" rel="next" title="webpack配置——优化篇">
+      webpack配置——优化篇 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E8%AF%86webpack"><span class="nav-number">1.</span> <span class="nav-text">初识webpack</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#entry"><span class="nav-number">1.1.</span> <span class="nav-text">entry:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#loader"><span class="nav-number">1.2.</span> <span class="nav-text">loader:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#plugin"><span class="nav-number">1.3.</span> <span class="nav-text">plugin:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#output"><span class="nav-number">1.4.</span> <span class="nav-text">output:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack%E6%9E%84%E5%BB%BA%EF%BC%9A"><span class="nav-number">1.5.</span> <span class="nav-text">webpack构建：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Webpack%E6%90%AD%E5%BB%BA%E5%89%8D%E7%AB%AF%E5%9F%BA%E6%9C%AC%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="nav-number">2.</span> <span class="nav-text">使用Webpack搭建前端基本开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%9E%84%E5%BB%BAHTML%E5%B9%B6%E5%85%B3%E8%81%94CSS"><span class="nav-number">2.1.</span> <span class="nav-text">1. 构建HTML并关联CSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%9E%84%E5%BB%BACSS"><span class="nav-number">2.2.</span> <span class="nav-text">2. 构建CSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%A4%84%E7%90%86%E5%9B%BE%E7%89%87%E7%AD%89%E6%96%87%E4%BB%B6"><span class="nav-number">2.3.</span> <span class="nav-text">3. 处理图片等文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%9E%84%E5%BB%BAJS-%E2%80%94%E2%80%94Babel"><span class="nav-number">2.4.</span> <span class="nav-text">4. 构建JS ——Babel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%90%AF%E5%8A%A8%E9%9D%99%E6%80%81%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.5.</span> <span class="nav-text">5. 启动静态服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Webpack%E5%A6%82%E4%BD%95%E8%A7%A3%E6%9E%90%E4%BB%A3%E7%A0%81%E6%A8%A1%E5%9D%97%E8%B7%AF%E5%BE%84"><span class="nav-number">3.</span> <span class="nav-text">Webpack如何解析代码模块路径</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack%E6%98%AF%E5%A6%82%E4%BD%95%E8%A7%A3%E6%9E%90%E5%88%B0%E5%AF%B9%E5%BA%94%E6%96%87%E4%BB%B6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%91%A2%EF%BC%9F"><span class="nav-number">3.1.</span> <span class="nav-text">webpack是如何解析到对应文件模块的呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#resolve-alias"><span class="nav-number">3.2.</span> <span class="nav-text">resolve.alias</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#resolve-extensions"><span class="nav-number">3.3.</span> <span class="nav-text">resolve.extensions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#resolve-modules"><span class="nav-number">3.4.</span> <span class="nav-text">resolve.modules</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#resolve-mainFields"><span class="nav-number">3.5.</span> <span class="nav-text">resolve.mainFields</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#resolve-mainFiles"><span class="nav-number">3.6.</span> <span class="nav-text">resolve.mainFiles</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#resolve-resolveLoader"><span class="nav-number">3.7.</span> <span class="nav-text">resolve.resolveLoader</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEloader%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">配置loader：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%84%E5%88%99%E6%9D%A1%E4%BB%B6%E9%85%8D%E7%BD%AE%EF%BC%9A"><span class="nav-number">4.1.</span> <span class="nav-text">规则条件配置：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Loader%E5%BA%94%E7%94%A8%E9%A1%BA%E5%BA%8F%EF%BC%9A"><span class="nav-number">4.2.</span> <span class="nav-text">Loader应用顺序：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#noParse"><span class="nav-number">4.3.</span> <span class="nav-text">noParse</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEplugin"><span class="nav-number">5.</span> <span class="nav-text">配置plugin:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DefinePlugin"><span class="nav-number">5.1.</span> <span class="nav-text">DefinePlugin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#copy-webpack-plugin"><span class="nav-number">5.2.</span> <span class="nav-text">copy-webpack-plugin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#extract-text-webpack-plugin"><span class="nav-number">5.3.</span> <span class="nav-text">extract-text-webpack-plugin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ProvidePlugin"><span class="nav-number">5.4.</span> <span class="nav-text">ProvidePlugin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IgnorePlugin"><span class="nav-number">5.5.</span> <span class="nav-text">IgnorePlugin</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E5%A5%BD%E5%9C%B0%E4%BD%BF%E7%94%A8-webpack-dev-server"><span class="nav-number">6.</span> <span class="nav-text">更好地使用 webpack-dev-server</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack-dev-server-%E7%9A%84%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8"><span class="nav-number">6.1.</span> <span class="nav-text">webpack-dev-server 的基础使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack-dev-server-%E9%BB%98%E8%AE%A4%E4%BD%BF%E7%94%A8-8080-%E7%AB%AF%E5%8F%A3"><span class="nav-number">6.2.</span> <span class="nav-text">webpack-dev-server 默认使用 8080 端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack-dev-server-%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="nav-number">6.3.</span> <span class="nav-text">webpack-dev-server 的配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack-dev-middleware"><span class="nav-number">6.4.</span> <span class="nav-text">webpack-dev-middleware</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84-mock-%E6%9C%8D%E5%8A%A1"><span class="nav-number">6.5.</span> <span class="nav-text">实现一个简单的 mock 服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E5%92%8C%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E7%9A%84%E6%9E%84%E5%BB%BA%E9%85%8D%E7%BD%AE%E5%B7%AE%E5%BC%82"><span class="nav-number">7.</span> <span class="nav-text">开发和生产环境的构建配置差异</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%B8%AD%E5%8C%BA%E5%88%86-mode"><span class="nav-number">7.1.</span> <span class="nav-text">在配置文件中区分 mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E7%9A%84%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">7.2.</span> <span class="nav-text">运行时的环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E7%8E%AF%E5%A2%83%E5%B7%AE%E5%BC%82%E9%85%8D%E7%BD%AE"><span class="nav-number">7.3.</span> <span class="nav-text">常见的环境差异配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%86%E5%88%86%E9%85%8D%E7%BD%AE%EF%BC%9A"><span class="nav-number">7.4.</span> <span class="nav-text">拆分配置：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hot-Module-Replacement"><span class="nav-number">8.</span> <span class="nav-text">Hot Module Replacement</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEHMR"><span class="nav-number">8.1.</span> <span class="nav-text">配置HMR</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">taoyingsong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">taoyingsong</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '',
+      clientSecret: '',
+      repo        : '',
+      owner       : '',
+      admin       : [''],
+      id          : '145bca8a4d4a172be72ba1c67042e6f6',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

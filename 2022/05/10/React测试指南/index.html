@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="React测试指南">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React测试指南">
+<meta property="og:url" content="http://example.com/2022/05/10/React%E6%B5%8B%E8%AF%95%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="路漫漫其修远兮&lt;br &#x2F;&gt;吾将上下而求索">
+<meta property="og:description" content="React测试指南">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/05/10/React%E6%B5%8B%E8%AF%95%E6%8C%87%E5%8D%97/1.png">
+<meta property="article:published_time" content="2022-05-09T18:20:40.000Z">
+<meta property="article:modified_time" content="2022-05-10T04:36:15.115Z">
+<meta property="article:author" content="taoyingsong">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/05/10/React%E6%B5%8B%E8%AF%95%E6%8C%87%E5%8D%97/1.png">
+
+<link rel="canonical" href="http://example.com/2022/05/10/React%E6%B5%8B%E8%AF%95%E6%8C%87%E5%8D%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>React测试指南 | 路漫漫其修远兮<br />吾将上下而求索</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">路漫漫其修远兮<br />吾将上下而求索</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/10/React%E6%B5%8B%E8%AF%95%E6%8C%87%E5%8D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="taoyingsong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="路漫漫其修远兮<br />吾将上下而求索">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React测试指南
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-05-10 02:20:40 / 修改时间：12:36:15" itemprop="dateCreated datePublished" datetime="2022-05-10T02:20:40+08:00">2022-05-10</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>React测试指南</p>
+<span id="more"></span>
+<p>提纲：</p>
+<ul>
+<li>前言<ul>
+<li>为什么要自动化测试</li>
+<li>测什么</li>
+<li>前端测试最佳实践</li>
+</ul>
+</li>
+<li>React主要测试方案优缺点</li>
+<li>关于快照测试（Snapshot testing）</li>
+<li>选择要测试的DOM元素</li>
+<li>React组件主要测试内容</li>
+</ul>
+<hr>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><h2 id="为什么要自动化测试"><a href="#为什么要自动化测试" class="headerlink" title="为什么要自动化测试"></a>为什么要自动化测试</h2><ul>
+<li>自动化测试对于很少使用的功能特别有用，因为我们常常会遗忘这些功能的测试</li>
+<li>使我们更改代码更有信心</li>
+<li>有文档的作用，并且更新及时</li>
+<li>通过给bug写测试用例，可以对回归的bug进行预防</li>
+</ul>
+<h2 id="测什么"><a href="#测什么" class="headerlink" title="测什么"></a>测什么</h2><ol>
+<li><p>两种测试模型 —— 金字塔模型 &amp; 奖杯模型<br><img src="/2022/05/10/React%E6%B5%8B%E8%AF%95%E6%8C%87%E5%8D%97/1.png"><br><strong>金字塔模型</strong> 表示的是UI测试是编写最慢，最昂贵的，而单元测试是编写最快，最便宜的，因此我们应该多编写单元测试而少进行UI测试。其对后端通常工作得很好，但前端UI细节变更很频繁，这会导致许多单元测试失败 —— 可能我们花了很多时间更新单元测试，但是对于大的功能模块是否仍然有效却没有足够的信心。<br><strong>奖杯模型</strong> 在前端测试中则越来越受欢迎，其中的集成测试（Integration）可以为你提供最大的投资回报</p>
+</li>
+<li><p>分层说明</p>
+</li>
+</ol>
+<ul>
+<li>Unit tests 是测试单个代码单元，例如函数、React组件、棘手的算法。你不需要浏览器或数据库即可运行单元测试，因此它们非常快速。工具: Jest.</li>
+<li>Service tests 它们测试多个单元的集成，但没有任何UI。</li>
+<li>UI tests 会测试在真实浏览器（通常带有真实数据库）中加载的整个应用程序。这是确保应用程序的所有部分协同工作的唯一方法，但是它们运行缓慢，编写棘手且经常出错。</li>
+<li>Static 静态分析捕获语法错误，不好的写法，和不正确的API。工具：—代码格式化程序，像 Prettier；—代码检测工具，像ESLint；—类型检查器，像TypeScript or Flow</li>
+<li>Integration tests 给你应用程序的所有功能都能按预期运行的信心。工具: Jest &amp; Enzyme or react-testing-library.</li>
+<li>End-to-end tests 确保你的应用程序可以整体使用：前端，后端和数据库以及其他所有功能。工具: Cypress.</li>
+</ul>
+<ol start="3">
+<li>Unit tests &amp; Integration tests 比较<table>
+<thead>
+<tr>
+<th align="left">Unit tests</th>
+<th align="left">Integration tests</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">一个测试只覆盖一个模块</td>
+<td align="left">一个测试涵盖整个功能特性或一个页面</td>
+</tr>
+<tr>
+<td align="left">重构后通常需要重写</td>
+<td align="left">大部分时候都能在重构中留存下来</td>
+</tr>
+<tr>
+<td align="left">难以避免测试实现细节</td>
+<td align="left">更像用户如何使用你的应用</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<h2 id="前端测试最佳实践"><a href="#前端测试最佳实践" class="headerlink" title="前端测试最佳实践"></a>前端测试最佳实践</h2><ul>
+<li>编写比任何其他种类的测试更多的集成测试</li>
+<li>良好的测试可以验证外部行为是否正确，而不用知道任何实现细节</li>
+<li>好的测试是确定性的，它们不依赖于环境</li>
+<li>好的测试不会有任何 不必要的断言 &amp; 不必要的测试用例</li>
+<li>不用争取100％的代码覆盖率（这是库 &amp; 开源项目追求的目标），更重要的是易于维护，并让你有信心更改代码</li>
+</ul>
+<h1 id="React主要测试方案优缺点"><a href="#React主要测试方案优缺点" class="headerlink" title="React主要测试方案优缺点"></a>React主要测试方案优缺点</h1><p>Jest优点：</p>
+<ul>
+<li>很快</li>
+<li>交互式的watch mode，仅运行与你的更改相关的测试</li>
+<li>有用的失败信息</li>
+<li>简单的配置或零配置</li>
+<li>Mocks &amp; spies</li>
+<li>覆盖率报告</li>
+<li>丰富的匹配器API</li>
+</ul>
+<p>React Testing Library比Enzyme具有的一些有点：</p>
+<ul>
+<li>更简单的API（Enzyme API面太大，你需要知道哪些方法是好的，哪些不是）</li>
+<li>方便的查询（form label, image alt, ARIA role）</li>
+<li>异步查询和实用程序</li>
+<li>更好的错误信息</li>
+<li>设置更简单</li>
+<li>React团队推荐</li>
+</ul>
+<p>React Testing Library 缺点：</p>
+<ul>
+<li>虽然说Enzyme API面很大，访问组件内部太容易，相对的React Testing Library 的API就显得更加固话</li>
+<li>React Testing Library是一个新工具：它不那么成熟，并且社区比Enzyme小</li>
+</ul>
+<h1 id="关于快照测试（Snapshot-testing）"><a href="#关于快照测试（Snapshot-testing）" class="headerlink" title="关于快照测试（Snapshot testing）"></a>关于快照测试（Snapshot testing）</h1><p>快照测试听起来不错，但是有几个问题：</p>
+<ul>
+<li>容易在提交快照时携带bug</li>
+<li>生成快照失败很难理解</li>
+<li>一个较小的更改可能会导致数百个失败的快照</li>
+<li>我们倾向于不加思索地更新快照</li>
+<li>与底层模块耦合</li>
+<li>测试意图很难理解</li>
+<li>他们给人一种错误的安全感</li>
+</ul>
+<p>避免进行快照测试，除非你以明确的意图测试非常短的输出（例如类名或错误消息），或者当你确实想验证输出是否相同时。如果你使用快照，请使其简短些，并优先使用toMatchInlineSnapshot（）而不是toMatchSnapshot（）</p>
+<h1 id="选择要测试的DOM元素"><a href="#选择要测试的DOM元素" class="headerlink" title="选择要测试的DOM元素"></a>选择要测试的DOM元素</h1><p>比较一下选择DOM元素的不同方法</p>
+<table>
+<thead>
+<tr>
+<th align="left">选择器</th>
+<th align="left">是否推荐</th>
+<th align="left">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">button, Button</td>
+<td align="left">Never</td>
+<td align="left">最差：太通用</td>
+</tr>
+<tr>
+<td align="left">.btn.btn-large</td>
+<td align="left">Never</td>
+<td align="left">不好：和styles耦合</td>
+</tr>
+<tr>
+<td align="left">#main</td>
+<td align="left">Never</td>
+<td align="left">不好：一般避免使用ID</td>
+</tr>
+<tr>
+<td align="left">[data-testid&#x3D;”cookButton”]</td>
+<td align="left">Sometimes</td>
+<td align="left">可以：对用户不可见，但没有实现细节，请在没有更好的选择时使用</td>
+</tr>
+<tr>
+<td align="left">[alt&#x3D;”Chuck Norris”], [role&#x3D;”banner”]</td>
+<td align="left">Often</td>
+<td align="left">良好：仍然对用户不可见，但已成为应用程序用户界面的一部分</td>
+</tr>
+<tr>
+<td align="left">[children&#x3D;”Cook pizza!”]</td>
+<td align="left">Always</td>
+<td align="left">最佳：应用程序用户界面的用户可见部分</td>
+</tr>
+</tbody></table>
+<p>React Testing Library具有用于所有良好查询的方法。查询方法有六种变体（详见<a target="_blank" rel="noopener" href="https://testing-library.com/docs/queries/about/#queries">这里</a>）：</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left">No Match</th>
+<th align="left">1 Match</th>
+<th align="left">1+ Match</th>
+<th align="left">Await?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">getBy</td>
+<td align="left">throw</td>
+<td align="left">return</td>
+<td align="left">throw</td>
+<td align="left">No</td>
+</tr>
+<tr>
+<td align="left">findBy</td>
+<td align="left">throw</td>
+<td align="left">return</td>
+<td align="left">throw</td>
+<td align="left">Yes</td>
+</tr>
+<tr>
+<td align="left">queryBy</td>
+<td align="left">null</td>
+<td align="left">return</td>
+<td align="left">throw</td>
+<td align="left">No</td>
+</tr>
+<tr>
+<td align="left">getAllBy</td>
+<td align="left">throw</td>
+<td align="left">array</td>
+<td align="left">array</td>
+<td align="left">No</td>
+</tr>
+<tr>
+<td align="left">findAllBy</td>
+<td align="left">throw</td>
+<td align="left">array</td>
+<td align="left">array</td>
+<td align="left">Yes</td>
+</tr>
+<tr>
+<td align="left">queryAllBy</td>
+<td align="left">[]</td>
+<td align="left">array</td>
+<td align="left">array</td>
+<td align="left">No</td>
+</tr>
+</tbody></table>
+<ul>
+<li>getBy*() 返回第一个匹配元素，并在未找到元素或发现一个以上元素时抛出异常;</li>
+<li>queryBy*()返回第一个匹配的元素，未找到元素结果为null，发现一个以上元素时抛出异常;</li>
+<li>findBy*() 返回一个promise，结果为匹配元素的resolve结果 或者 如果超过默认查找时间仍未找到元素或者找到了一个以上元素时返回reject的结果</li>
+<li>getAllBy*() ，queryAllBy*() ，findAllBy*()：与上面相同，但返回所有找到的元素，而不仅仅是第一个。</li>
+</ul>
+<p>查询方法有（详见<a target="_blank" rel="noopener" href="https://testing-library.com/docs/queries/about/#queries">这里</a>）：</p>
+<ul>
+<li>getByLabelText() 通过label查找一个form元素;</li>
+<li>getByPlaceholderText() 通过placeholder文本找到一个form元素;</li>
+<li>getByText() 通过文本内容查找元素；</li>
+<li>getByAltText() 通过alt属性查找image</li>
+<li>getByTitle() 根据title属性查找元素；</li>
+<li>getByDisplayValue() 根据表单元素当前value查找元素；</li>
+<li>getByRole() 通过ARIA角色找到一个元素；</li>
+<li>getByTestId() 通过data-testid属性查找元素；</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;<span class="title class_">Hello</span> <span class="title class_">World</span>&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; getByText &#125; = <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">HelloWorld</span> /&gt;</span></span>);</span><br><span class="line"><span class="title function_">getByText</span>(<span class="regexp">/hello world/i</span>);</span><br></pre></td></tr></table></figure>
+<p>我们可以使用正则表达式（&#x2F;hello world&#x2F;i）而不是字符串文字（’Hello World’），以使查询对小的调整和内容更改更具弹性。</p>
+<h1 id="React组件主要测试内容"><a href="#React组件主要测试内容" class="headerlink" title="React组件主要测试内容"></a>React组件主要测试内容</h1><ol>
+<li>渲染<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; render &#125; <span class="keyword">from</span> <span class="string">&#x27;@testing-library/react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Pizza</span> <span class="keyword">from</span> <span class="string">&#x27;../Pizza&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;contains all ingredients&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> ingredients = [<span class="string">&#x27;bacon&#x27;</span>, <span class="string">&#x27;tomato&#x27;</span>, <span class="string">&#x27;mozzarella&#x27;</span>, <span class="string">&#x27;pineapples&#x27;</span>];</span><br><span class="line">  <span class="keyword">const</span> &#123; getByText &#125; = <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Pizza</span> <span class="attr">ingredients</span>=<span class="string">&#123;ingredients&#125;</span> /&gt;</span></span>);</span><br><span class="line"></span><br><span class="line">  ingredients.<span class="title function_">forEach</span>(<span class="function"><span class="params">ingredient</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">expect</span>(<span class="title function_">getByText</span>(ingredient)).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+<li>用户交互<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; render, fireEvent &#125; <span class="keyword">from</span> <span class="string">&#x27;@testing-library/react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ExpandCollapse</span> <span class="keyword">from</span> <span class="string">&#x27;../ExpandCollapse&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;button expands and collapses the content&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> children = <span class="string">&#x27;Hello world&#x27;</span>;</span><br><span class="line">  <span class="keyword">const</span> &#123; getByText, queryByText &#125; = <span class="title function_">render</span>(</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">ExpandCollapse</span> <span class="attr">excerpt</span>=<span class="string">&quot;Information about dogs&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;children&#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">ExpandCollapse</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line"> <span class="comment">// 使用queryByText() 方法而不是getByText() 方法是因为在找不到元素时前者不会抛出错误</span></span><br><span class="line">  <span class="title function_">expect</span>(<span class="title function_">queryByText</span>(children)).<span class="property">not</span>.<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line"></span><br><span class="line">  fireEvent.<span class="title function_">click</span>(<span class="title function_">getByText</span>(<span class="regexp">/expand/i</span>));</span><br><span class="line"></span><br><span class="line">  <span class="title function_">expect</span>(<span class="title function_">queryByText</span>(children)).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line"></span><br><span class="line">  fireEvent.<span class="title function_">click</span>(<span class="title function_">getByText</span>(<span class="regexp">/collapse/i</span>));</span><br><span class="line"></span><br><span class="line">  <span class="title function_">expect</span>(<span class="title function_">queryByText</span>(children)).<span class="property">not</span>.<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+<li>事件处理程序</li>
+</ol>
+<p>你可以通过jest.fn() 创建一个模拟函数来检查它被调用了多少次以及使用了哪些参数等</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; render, fireEvent &#125; <span class="keyword">from</span> <span class="string">&#x27;@testing-library/react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Login</span> <span class="keyword">from</span> <span class="string">&#x27;../Login&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;submits username and password&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> username = <span class="string">&#x27;me&#x27;</span>;</span><br><span class="line">  <span class="keyword">const</span> password = <span class="string">&#x27;please&#x27;</span>;</span><br><span class="line">  <span class="keyword">const</span> onSubmit = jest.<span class="title function_">fn</span>();</span><br><span class="line">  <span class="keyword">const</span> &#123; getByLabelText, getByText &#125; = <span class="title function_">render</span>(</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> <span class="attr">onSubmit</span>=<span class="string">&#123;onSubmit&#125;</span> /&gt;</span></span></span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  fireEvent.<span class="title function_">change</span>(<span class="title function_">getByLabelText</span>(<span class="regexp">/username/i</span>), &#123;</span><br><span class="line">    <span class="attr">target</span>: &#123; <span class="attr">value</span>: username &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  fireEvent.<span class="title function_">change</span>(<span class="title function_">getByLabelText</span>(<span class="regexp">/password/i</span>), &#123;</span><br><span class="line">    <span class="attr">target</span>: &#123; <span class="attr">value</span>: password &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  fireEvent.<span class="title function_">click</span>(<span class="title function_">getByText</span>(<span class="regexp">/log in/i</span>));</span><br><span class="line"></span><br><span class="line">  <span class="title function_">expect</span>(onSubmit).<span class="title function_">toHaveBeenCalledTimes</span>(<span class="number">1</span>);</span><br><span class="line">  <span class="title function_">expect</span>(onSubmit).<span class="title function_">toHaveBeenCalledWith</span>(&#123;</span><br><span class="line">    username,</span><br><span class="line">    password</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>异步<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; wait &#125; <span class="keyword">from</span> <span class="string">&#x27;@testing-library/react&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;something async&#x27;</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="comment">// Run an async operation...</span></span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">wait</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">expect</span>(<span class="title function_">getByText</span>(<span class="regexp">/done!/i</span>)).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+但是对于查询元素，我们可以使用findBy*() 和finddBall*() 方法来等待元素出现：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;something async&#x27;</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  expect.<span class="title function_">assertions</span>(<span class="number">1</span>);</span><br><span class="line">  <span class="title function_">expect</span>(<span class="keyword">await</span> <span class="title function_">findByText</span>(<span class="regexp">/done!/i</span>)).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+异步方法总结：</li>
+</ol>
+<ul>
+<li>wait (Promise) retry the function within until it stops throwing or times out</li>
+<li>waitForElement (Promise) retry the function until it returns an element or an array of elements</li>
+<li>findBy and findAllBy queries are async and retry until either a timeout or if the query returns successfully; they wrap waitForElement</li>
+<li>waitForDomChange (Promise) retry the function each time the DOM is changed</li>
+<li>waitForElementToBeRemoved (Promise) retry the function until it no longer returns a DOM node</li>
+</ul>
+<p>注意：Remember to await or .then() the result of async functions in your tests!</p>
+<ol start="5">
+<li>网络请求和mocks</li>
+</ol>
+<p>有多种方法可以测试发送网络请求的组件：</p>
+<p>a. 依赖注入;</p>
+<p>b. 模拟服务模块;</p>
+<p>c. 模拟高级网络API，例如fetch;</p>
+<p>d. 模拟低级网络API，可捕获进行网络请求的所有方式。</p>
+<p>这里没有提到将真实的网络请求发送到真实的API作为一种选择，因为它既慢又脆弱。 API返回的每个网络问题或数据更改都可能会破坏我们的测试。另外，你还需要拥有适用于所有测试用例的正确数据-很难用真正的API或数据库来实现。</p>
+<p>这里主要介绍b、d 两个推荐方案</p>
+<p>b: 使用jest.mock()</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">fetchIngredients</span> = (<span class="params"></span>) =&gt;</span><br><span class="line">  <span class="title function_">fetch</span>(</span><br><span class="line">    <span class="string">&#x27;https://httpbin.org/anything?ingredients=bacon&amp;ingredients=mozzarella&amp;ingredients=pineapples&#x27;</span></span><br><span class="line">  ).<span class="title function_">then</span>(<span class="function"><span class="params">r</span> =&gt;</span> r.<span class="title function_">json</span>());</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; fetchIngredients &#125; <span class="keyword">from</span> <span class="string">&#x27;../services&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">RemotePizza</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> [ingredients, setIngredients] = <span class="title class_">React</span>.<span class="title function_">useState</span>([]);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">handleCook</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    <span class="title function_">fetchIngredients</span>().<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="title function_">setIngredients</span>(response.<span class="property">args</span>.<span class="property">ingredients</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;handleCook&#125;</span>&gt;</span>Cook<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;ingredients.length &gt; 0 &amp;&amp; (</span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          &#123;ingredients.map(ingredient =&gt; (</span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">li</span> <span class="attr">key</span>=<span class="string">&#123;ingredient&#125;</span>&gt;</span>&#123;ingredient&#125;<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          ))&#125;</span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      )&#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; render, fireEvent, wait &#125; <span class="keyword">from</span> <span class="string">&#x27;@testing-library/react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">RemotePizza</span> <span class="keyword">from</span> <span class="string">&#x27;../RemotePizza&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; fetchIngredients &#125; <span class="keyword">from</span> <span class="string">&#x27;../../services&#x27;</span>;</span><br><span class="line"></span><br><span class="line">jest.<span class="title function_">mock</span>(<span class="string">&#x27;../../services&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="title function_">afterEach</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  fetchIngredients.<span class="title function_">mockReset</span>();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ingredients = [<span class="string">&#x27;bacon&#x27;</span>, <span class="string">&#x27;tomato&#x27;</span>, <span class="string">&#x27;mozzarella&#x27;</span>, <span class="string">&#x27;pineapples&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;download ingredients from internets&#x27;</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  expect.<span class="title function_">assertions</span>(<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">  fetchIngredients.<span class="title function_">mockResolvedValue</span>(&#123; <span class="attr">args</span>: &#123; ingredients &#125; &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> &#123; getByText &#125; = <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">RemotePizza</span> /&gt;</span></span>);</span><br><span class="line"></span><br><span class="line">  fireEvent.<span class="title function_">click</span>(<span class="title function_">getByText</span>(<span class="regexp">/cook/i</span>));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">wait</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    ingredients.<span class="title function_">forEach</span>(<span class="function"><span class="params">ingredient</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="title function_">expect</span>(<span class="title function_">getByText</span>(ingredient)).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>我们使用Jest的mockResolvedValue方法，用模拟数据resolve 一个 Promise。（详见<a target="_blank" rel="noopener" href="https://jestjs.io/docs/mock-function-api">这里</a>）</p>
+<p>d: 类似于模拟fetch API，但它在较低的级别上工作，因此使用其他API（如XMLHttpRequest）发送的网络请求也将被模拟。</p>
+<p>Jest.mock() 已随Jest一起提供，模拟低级网络API这里我们安装使用的nock</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; render, fireEvent, wait &#125; <span class="keyword">from</span> <span class="string">&#x27;@testing-library/react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> nock <span class="keyword">from</span> <span class="string">&#x27;nock&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">RemotePizza</span> <span class="keyword">from</span> <span class="string">&#x27;../RemotePizza&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ingredients = [<span class="string">&#x27;bacon&#x27;</span>, <span class="string">&#x27;tomato&#x27;</span>, <span class="string">&#x27;mozzarella&#x27;</span>, <span class="string">&#x27;pineapples&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="title function_">afterEach</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  nock.<span class="title function_">restore</span>();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;download ingredients from internets&#x27;</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  expect.<span class="title function_">assertions</span>(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// query(true) 表示任何查询参数都可以通过请求，你也可以定义一个特定的查询参数来做限制，例如query(&#123;quantity：42&#125;)。</span></span><br><span class="line">  <span class="keyword">const</span> scope = <span class="title function_">nock</span>(<span class="string">&#x27;https://httpbin.org&#x27;</span>)</span><br><span class="line">    .<span class="title function_">get</span>(<span class="string">&#x27;/anything&#x27;</span>)</span><br><span class="line">    .<span class="title function_">query</span>(<span class="literal">true</span>)</span><br><span class="line">    .<span class="title function_">reply</span>(<span class="number">200</span>, &#123; <span class="attr">args</span>: &#123; ingredients &#125; &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> &#123; getByText &#125; = <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">RemotePizza</span> /&gt;</span></span>);</span><br><span class="line"></span><br><span class="line">  fireEvent.<span class="title function_">click</span>(<span class="title function_">getByText</span>(<span class="regexp">/cook/i</span>));</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 当在范围内定义的所有请求都发出时，scope.isDone() 为true。</span></span><br><span class="line">  <span class="title function_">expect</span>(scope.<span class="title function_">isDone</span>()).<span class="title function_">toBe</span>(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">wait</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    ingredients.<span class="title function_">forEach</span>(<span class="function"><span class="params">ingredient</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="title function_">expect</span>(<span class="title function_">getByText</span>(ingredient)).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>参考：</p>
+<p>JEST文档：<a target="_blank" rel="noopener" href="https://jestjs.io/zh-Hans/">https://jestjs.io/zh-Hans/</a></p>
+<p>jest-dom： <a target="_blank" rel="noopener" href="https://github.com/testing-library/jest-dom">https://github.com/testing-library/jest-dom</a></p>
+<p>Testing Library文档：<a target="_blank" rel="noopener" href="https://testing-library.com/docs/intro">https://testing-library.com/docs/intro</a>  &amp; <a target="_blank" rel="noopener" href="https://testing-library.com/docs/recipes">https://testing-library.com/docs/recipes</a></p>
+<p>Test Utilities： <a target="_blank" rel="noopener" href="https://zh-hans.reactjs.org/docs/test-utils.html">https://zh-hans.reactjs.org/docs/test-utils.html</a></p>
+<p>React 测试：<a target="_blank" rel="noopener" href="https://zh-hans.reactjs.org/docs/testing.html">https://zh-hans.reactjs.org/docs/testing.html</a> &amp; <a target="_blank" rel="noopener" href="https://blog.sapegin.me/all/react-testing-1-best-practices/">https://blog.sapegin.me/all/react-testing-1-best-practices/</a></p>
+<p>JavaScript测试指南：<a target="_blank" rel="noopener" href="http://km.oa.com/group/597/articles/show/390587">http://km.oa.com/group/597/articles/show/390587</a>  &amp; <a target="_blank" rel="noopener" href="http://km.oa.com/group/597/articles/show/390722">http://km.oa.com/group/597/articles/show/390722</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/09/hello-world/" rel="prev" title="Hello World">
+      <i class="fa fa-chevron-left"></i> Hello World
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/10/%E5%8D%81%E4%B8%87%E7%81%AB%E6%80%A5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BA%94%E5%AF%B9%E4%B9%8B%E7%AD%96%E5%92%8C%E6%8A%80%E6%9C%AF%E6%8F%90%E5%8D%87%E4%B9%8B%E8%B7%AF/" rel="next" title="十万火急项目的应对之策和技术提升之路">
+      十万火急项目的应对之策和技术提升之路 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95"><span class="nav-number">1.1.</span> <span class="nav-text">为什么要自动化测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E4%BB%80%E4%B9%88"><span class="nav-number">1.2.</span> <span class="nav-text">测什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E6%B5%8B%E8%AF%95%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">1.3.</span> <span class="nav-text">前端测试最佳实践</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#React%E4%B8%BB%E8%A6%81%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">React主要测试方案优缺点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95%EF%BC%88Snapshot-testing%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">关于快照测试（Snapshot testing）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E8%A6%81%E6%B5%8B%E8%AF%95%E7%9A%84DOM%E5%85%83%E7%B4%A0"><span class="nav-number">4.</span> <span class="nav-text">选择要测试的DOM元素</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#React%E7%BB%84%E4%BB%B6%E4%B8%BB%E8%A6%81%E6%B5%8B%E8%AF%95%E5%86%85%E5%AE%B9"><span class="nav-number">5.</span> <span class="nav-text">React组件主要测试内容</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">taoyingsong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">taoyingsong</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '',
+      clientSecret: '',
+      repo        : '',
+      owner       : '',
+      admin       : [''],
+      id          : '93e98dfd1db8dbfb323d14d63db61b61',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

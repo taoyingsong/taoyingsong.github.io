@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="算法的世界博大精深，路漫漫，上下求索">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端知识体系梳理（三）—— 聊聊算法及设计模式">
+<meta property="og:url" content="http://example.com/2018/03/15/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%A2%B3%E7%90%86%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94-%E8%81%8A%E8%81%8A%E7%AE%97%E6%B3%95%E5%8F%8A%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="路漫漫其修远兮&lt;br &#x2F;&gt;吾将上下而求索">
+<meta property="og:description" content="算法的世界博大精深，路漫漫，上下求索">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-03-15T04:36:31.000Z">
+<meta property="article:modified_time" content="2018-03-31T14:11:53.000Z">
+<meta property="article:author" content="taoyingsong">
+<meta property="article:tag" content="前端算法 前端设计模式">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2018/03/15/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%A2%B3%E7%90%86%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94-%E8%81%8A%E8%81%8A%E7%AE%97%E6%B3%95%E5%8F%8A%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>前端知识体系梳理（三）—— 聊聊算法及设计模式 | 路漫漫其修远兮<br />吾将上下而求索</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">路漫漫其修远兮<br />吾将上下而求索</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/03/15/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%A2%B3%E7%90%86%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94-%E8%81%8A%E8%81%8A%E7%AE%97%E6%B3%95%E5%8F%8A%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="taoyingsong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="路漫漫其修远兮<br />吾将上下而求索">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          前端知识体系梳理（三）—— 聊聊算法及设计模式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-15 12:36:31" itemprop="dateCreated datePublished" datetime="2018-03-15T12:36:31+08:00">2018-03-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-03-31 22:11:53" itemprop="dateModified" datetime="2018-03-31T22:11:53+08:00">2018-03-31</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>算法的世界博大精深，路漫漫，上下求索</p>
+<span id="more"></span>
+
+<ul>
+<li>算法<ul>
+<li>先说数据结构 </li>
+<li>算法复杂度分析</li>
+<li>详情</li>
+</ul>
+</li>
+<li>设计模式</li>
+</ul>
+<hr>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>下边说的都还比较简单，感兴趣的同学可以去各大OJ上刷刷题：<br><a target="_blank" rel="noopener" href="https://leetcode.com/">https://leetcode.com/</a><br><a target="_blank" rel="noopener" href="http://acm.hdu.edu.cn/">http://acm.hdu.edu.cn/</a><br><a target="_blank" rel="noopener" href="http://poj.org/">http://poj.org/</a><br>…</p>
+<h3 id="先说数据结构"><a href="#先说数据结构" class="headerlink" title="先说数据结构"></a>先说数据结构</h3><ul>
+<li>简单数据结构<ul>
+<li>有序数据结构：栈、队列、链表，有序数据结构省空间（存储空间小）</li>
+<li>无序数据结构：集合、字典、散列表，无序数据结构省时间（读取时间快）</li>
+</ul>
+</li>
+<li>复杂数据结构<ul>
+<li>树、堆</li>
+<li>图</li>
+</ul>
+</li>
+</ul>
+<p>对于简单数据结构，在 ES 中对应的是数组（Array）和对象（Object）。可以想一下，数组的存储是有序的，对象的存储是无序的，我要在对象中根据key找到一个值是立即返回的，数组则需要查找的过程。</p>
+<p>数组&amp;链表的区别：<br>数组在内存中连续，链表不连续；<br>数组静态分配内存，大小固定，不能动态拓展，链表动态分配内存拓展灵活； （js中数组是特殊的对象）<br>数组利用下标定位，时间复杂度为O(1)，链表定位元素时间复杂度O(n)；<br>数组插入或删除元素的时间复杂度O(n)，链表的时间复杂度O(1)。</p>
+<h3 id="算法复杂度分析"><a href="#算法复杂度分析" class="headerlink" title="算法复杂度分析"></a>算法复杂度分析</h3><p>这里只说时间复杂度</p>
+<p>常见的时间复杂度有：</p>
+<ul>
+<li>常数阶 O(1)</li>
+<li>对数阶 O(logN)</li>
+<li>线性阶 O(n)</li>
+<li>线性对数阶 O(nlogN)</li>
+<li>平方阶 O(n^2)</li>
+<li>立方阶 O(n^3)</li>
+<li>!k次方阶 O(n^k)</li>
+<li>指数阶O(2^n)</li>
+</ul>
+<ol>
+<li>看看有几重循环，一般来说一重就是O(n)，两重就是 O(n^2)，以此类推</li>
+<li>如果有二分，则为O(logN)</li>
+<li>保留最高项，去除常数项</li>
+</ol>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let number = 1; // 语句执行一次 </span><br><span class="line">while (number &lt; n) &#123; // 语句执行 logN 次</span><br><span class="line">  number *= 2; // 语句执行 logN 次</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码while的跳出判断条件是<code>number&lt;n</code>，而循环体内number增长速度是(2^n)，所以循环代码实际执行logN次，复杂度为：1 + 2 * logN &#x3D; O(logN)</p>
+<h3 id="详情"><a href="#详情" class="headerlink" title="详情"></a>详情</h3><p>前端相对来说需要高深复杂算法的情况不多，下边简单介绍一些基础算法：</p>
+<blockquote>
+<p>递归</p>
+</blockquote>
+<p>实现一个深拷贝：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">(function () &#123;</span><br><span class="line">    &#x27;use strict&#x27;;</span><br><span class="line"></span><br><span class="line">    var types = &#x27;Array Object String Date RegExp Function Boolean Number Null Undefined&#x27;.split(&#x27; &#x27;);</span><br><span class="line"></span><br><span class="line">	function type () &#123;</span><br><span class="line">	   return Object.prototype.toString.call(this).slice(8, -1);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	for (var i = types.length; i--;) &#123;</span><br><span class="line">	    $[&#x27;is&#x27; + types[i]] = (function (self) &#123;</span><br><span class="line">	        return function (elem) &#123;</span><br><span class="line">	           return type.call(elem) === self;</span><br><span class="line">	        &#125;;</span><br><span class="line">	    &#125;)(types[i]);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    return $;</span><br><span class="line">&#125;)(window.$ || (window.$ = &#123;&#125;));//类型判断</span><br><span class="line"></span><br><span class="line">function copy (param,deep) &#123; </span><br><span class="line"></span><br><span class="line">	// 原始类型</span><br><span class="line">    if (param === null || (typeof param !== &quot;object&quot; &amp;&amp; !$.isFunction(param))) &#123; </span><br><span class="line">        return param; </span><br><span class="line">    &#125; </span><br><span class="line">	</span><br><span class="line">	// 函数</span><br><span class="line">    if ($.isFunction(param)) &#123;</span><br><span class="line">    	return new Function(&quot;return &quot; + param.toString())();</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line"></span><br><span class="line">    // 数组、对象</span><br><span class="line">        var target = $.isArray(param) ? [] : &#123;&#125;,</span><br><span class="line">        	name,</span><br><span class="line">        	value; </span><br><span class="line"></span><br><span class="line">        for (name in param) &#123;</span><br><span class="line">            value = param[name]; </span><br><span class="line">			</span><br><span class="line">			// 防止循环引用 和不是自身属性的拷贝</span><br><span class="line">            if (value === param || !param.hasOwnProperty(name)) &#123;</span><br><span class="line">            	continue;</span><br><span class="line">            &#125;</span><br><span class="line">			</span><br><span class="line">			// 深拷贝</span><br><span class="line">            if (deep) &#123;</span><br><span class="line">                target[name] = copy(value,deep); // 数组的索引可以是非负整数字符串 eg. target[&#x27;1&#x27;]</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">           	// 浅拷贝</span><br><span class="line">            	target[name] = value;</span><br><span class="line">            &#125; </span><br><span class="line">        &#125; </span><br><span class="line">        return target;</span><br><span class="line">    &#125;　        </span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>快排</p>
+</blockquote>
+<p>O(NlogN)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">const Arr = [85, 24, 63, 45, 17, 31, 96, 50];</span><br><span class="line">function quickSort(arr) &#123;</span><br><span class="line">	if(!arr) &#123;</span><br><span class="line">		return [];</span><br><span class="line">	&#125;</span><br><span class="line">    if(arr.length &lt;= 1) &#123;</span><br><span class="line">        return arr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 取出中间值</span><br><span class="line">    let pivotIndex = Math.floor(arr.length / 2);</span><br><span class="line">    let pivot = arr.splice(pivotIndex, 1)[0];</span><br><span class="line">    let left = [];</span><br><span class="line">    let right = [];</span><br><span class="line">    for (let i = arr.length - 1; i &gt;= 0; i--) &#123;</span><br><span class="line">        if (arr[i] &lt; pivot) &#123; // 左边值</span><br><span class="line">            left.push(arr[i]);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            right.push(arr[i]); // 右边值</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    // 递归</span><br><span class="line">    return quickSort(left).concat([pivot], quickSort(right)); // 合并</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(quickSort(Arr));</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>二分查找</p>
+</blockquote>
+<p>O(logN)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">function find(arr, value) &#123;</span><br><span class="line">	if(!arr || arr.length === 0) &#123;</span><br><span class="line">		return false;</span><br><span class="line">	&#125;</span><br><span class="line">	let low = 0; </span><br><span class="line">	let high = arr.length - 1;</span><br><span class="line">	let mid;</span><br><span class="line">	let midValue;</span><br><span class="line">	while( low &lt;= high ) &#123;</span><br><span class="line">		mid = Math.floor((low + high)/2);</span><br><span class="line">		midValue = arr[mid];</span><br><span class="line">		if(midValue === undefined) &#123;</span><br><span class="line">			console.log(&#x27;未查找到数的index&#x27;, );</span><br><span class="line">			return false;</span><br><span class="line">		&#125;</span><br><span class="line">		if(value === midValue) &#123;</span><br><span class="line">			console.log(&#x27;查找到数的index为：&#x27;, mid);</span><br><span class="line">			return mid;</span><br><span class="line">		&#125;</span><br><span class="line">		if(value &gt; midValue) &#123;</span><br><span class="line">			low = mid + 1;</span><br><span class="line">		&#125;</span><br><span class="line">		if(value &lt; midValue) &#123;</span><br><span class="line">			high = mid - 1;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return false;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//测试用例</span><br><span class="line">find([1], 2);</span><br><span class="line">find([1,2,3,4], 3);</span><br></pre></td></tr></table></figure>
+
+<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><blockquote>
+<p>工厂模式</p>
+</blockquote>
+<p>可以通过工厂产生大量的相似的东西</p>
+<p>简单的工厂模式就是一个类的多次实例化；复杂的工厂模式就是公共部分放在父类中，创建时对可指定自己特性的子类实例化。</p>
+<p><strong>简单工厂</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">function CreatePerson(name,age,sex) &#123;</span><br><span class="line">    var obj = new Object();</span><br><span class="line">    obj.name = name;</span><br><span class="line">    obj.age = age;</span><br><span class="line">    obj.sex = sex;</span><br><span class="line">    obj.sayName = function()&#123;</span><br><span class="line">        return this.name;</span><br><span class="line">    &#125;</span><br><span class="line">    return obj;</span><br><span class="line">&#125;</span><br><span class="line">var p1 = new CreatePerson(&quot;longen&quot;,&#x27;28&#x27;,&#x27;男&#x27;);</span><br><span class="line">var p2 = new CreatePerson(&quot;tugenhua&quot;,&#x27;27&#x27;,&#x27;女&#x27;);</span><br><span class="line">console.log(p1.name); // longen</span><br><span class="line">console.log(p1.age);  // 28</span><br><span class="line">console.log(p1.sex);  // 男</span><br><span class="line">console.log(p1.sayName()); // longen</span><br><span class="line"></span><br><span class="line">console.log(p2.name);  // tugenhua</span><br><span class="line">console.log(p2.age);   // 27</span><br><span class="line">console.log(p2.sex);   // 女</span><br><span class="line">console.log(p2.sayName()); // tugenhua</span><br><span class="line"></span><br><span class="line">// 返回都是object 无法识别对象的类型 不知道他们是哪个对象的实列</span><br><span class="line">console.log(typeof p1);  // object</span><br><span class="line">console.log(typeof p2);  // object</span><br><span class="line">console.log(p1 instanceof Object); // true</span><br></pre></td></tr></table></figure>
+<p><strong>复杂工厂</strong>；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">// 定义自行车的构造函数</span><br><span class="line">var BicycleShop = function(name)&#123;</span><br><span class="line">    this.name = name;</span><br><span class="line">    this.method = function()&#123;</span><br><span class="line">        return this.name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">BicycleShop.prototype = &#123;</span><br><span class="line">    constructor: BicycleShop,</span><br><span class="line">    /*</span><br><span class="line">     * 买自行车这个方法</span><br><span class="line">     * @param &#123;model&#125; 自行车型号</span><br><span class="line">    */</span><br><span class="line">    sellBicycle: function(model)&#123;</span><br><span class="line">            var bicycle = this.createBicycle(model);</span><br><span class="line">            // 执行A业务逻辑</span><br><span class="line">            bicycle.A();</span><br><span class="line"></span><br><span class="line">            // 执行B业务逻辑</span><br><span class="line">            bicycle.B();</span><br><span class="line"></span><br><span class="line">            return bicycle;</span><br><span class="line">        &#125;,</span><br><span class="line">        createBicycle: function(model)&#123;</span><br><span class="line">            throw new Error(&quot;父类是抽象类不能直接调用，需要子类重写该方法&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    // 实现原型继承</span><br><span class="line">    function extend(Sub,Sup) &#123;</span><br><span class="line">        //Sub表示子类，Sup表示超类</span><br><span class="line">        // 首先定义一个空函数</span><br><span class="line">        var F = function()&#123;&#125;;</span><br><span class="line"></span><br><span class="line">        // 设置空函数的原型为超类的原型</span><br><span class="line">        F.prototype = Sup.prototype; </span><br><span class="line"></span><br><span class="line">        // 实例化空函数，并把超类原型引用传递给子类</span><br><span class="line">        Sub.prototype = new F();</span><br><span class="line">                    </span><br><span class="line">        // 重置子类原型的构造器为子类自身</span><br><span class="line">        Sub.prototype.constructor = Sub;</span><br><span class="line">                    </span><br><span class="line">        // 在子类中保存超类的原型,避免子类与超类耦合</span><br><span class="line">        Sub.sup = Sup.prototype;</span><br><span class="line"></span><br><span class="line">        if(Sup.prototype.constructor === Object.prototype.constructor) &#123;</span><br><span class="line">            // 检测超类原型的构造器是否为原型自身</span><br><span class="line">            Sup.prototype.constructor = Sup;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    var BicycleChild = function(name)&#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">// 继承构造函数父类中的属性和方法</span><br><span class="line">        BicycleShop.call(this,name);</span><br><span class="line">    &#125;;</span><br><span class="line">    // 子类继承父类原型方法</span><br><span class="line">    extend(BicycleChild,BicycleShop);</span><br><span class="line">// BicycleChild 子类重写父类的方法</span><br><span class="line">BicycleChild.prototype.createBicycle = function()&#123;</span><br><span class="line">    var A = function()&#123;</span><br><span class="line">        console.log(&quot;执行A业务操作&quot;);    </span><br><span class="line">    &#125;;</span><br><span class="line">    var B = function()&#123;</span><br><span class="line">        console.log(&quot;执行B业务操作&quot;);</span><br><span class="line">    &#125;;</span><br><span class="line">    return &#123;</span><br><span class="line">        A: A,</span><br><span class="line">        B: B</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">var childClass = new BicycleChild(&quot;龙恩&quot;);</span><br><span class="line">console.log(childClass);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>单例模式</p>
+</blockquote>
+<p>单例是如果它可以被实例化，那么它只能被实例化一次的对象，应用：每一个弹窗需要创建一个div，用单例所有弹窗只创建一个div减少页面重绘。</p>
+<p>单体模式的优点是：</p>
+<ul>
+<li>可以用来划分命名空间，减少全局变量的数量。</li>
+<li>使用单体模式可以使代码组织的更为一致，使代码容易阅读和维护。</li>
+<li>可以被实例化，且实例化一次。</li>
+</ul>
+<p><strong>通用单例模式</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">// 创建div</span><br><span class="line">var createWindow = function()&#123;</span><br><span class="line">    var div = document.createElement(&quot;div&quot;);</span><br><span class="line">    div.innerHTML = &quot;我是弹窗内容&quot;;</span><br><span class="line">    div.style.display = &#x27;none&#x27;;</span><br><span class="line">    document.body.appendChild(div);</span><br><span class="line">    return div;</span><br><span class="line">&#125;;</span><br><span class="line">// 创建iframe</span><br><span class="line">var createIframe = function()&#123;</span><br><span class="line">    var iframe = document.createElement(&quot;iframe&quot;);</span><br><span class="line">    document.body.appendChild(iframe);</span><br><span class="line">    return iframe;</span><br><span class="line">&#125;;</span><br><span class="line">// 获取实例的封装代码(存储在闭包中，读到了直接返回，读不到创建保存并返回)</span><br><span class="line">var getInstance = function(fn) &#123;</span><br><span class="line">    var result;</span><br><span class="line">    return function()&#123;</span><br><span class="line">        return result || (result = fn.call(this,arguments));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">// 测试创建div</span><br><span class="line">var createSingleDiv = getInstance(createWindow);</span><br><span class="line">document.getElementById(&quot;Id&quot;).onclick = function()&#123;</span><br><span class="line">    var win = createSingleDiv();</span><br><span class="line">    win.style.display = &quot;block&quot;;</span><br><span class="line">&#125;;</span><br><span class="line">// 测试创建iframe</span><br><span class="line">var createSingleIframe = getInstance(createIframe);</span><br><span class="line">document.getElementById(&quot;Id&quot;).onclick = function()&#123;</span><br><span class="line">    var win = createSingleIframe();</span><br><span class="line">    win.src = &quot;http://cnblogs.com&quot;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>观察者模式(又叫发布—订阅模式)</p>
+</blockquote>
+<p>在稍微复杂点的页面中，比如组件化开发的页面，同一个页面由两三个人来开发，为了保证组件的独立性和降低组件间耦合度，我们往往使用「订阅发布模式」，即组件间通信使用事件监听和派发的方式，而不是直接相互调用组件方法<br>为此我们可以封装一个全局订阅发布模式对象；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">var Event = (function()&#123;</span><br><span class="line">    var list = &#123;&#125;,</span><br><span class="line">          listen,</span><br><span class="line">          trigger,</span><br><span class="line">          remove;</span><br><span class="line">         </span><br><span class="line">        // 无数组，创建数组后push</span><br><span class="line">        listen = function(key,fn)&#123;</span><br><span class="line">            if(!list[key]) &#123;</span><br><span class="line">                list[key] = [];</span><br><span class="line">            &#125;</span><br><span class="line">            list[key].push(fn);</span><br><span class="line">        &#125;;</span><br><span class="line">        </span><br><span class="line">        // 不触发（触发函数数组不存在||为空）</span><br><span class="line">        // 触发（有数组，依次触发）</span><br><span class="line">        trigger = function()&#123;</span><br><span class="line">            var key = Array.prototype.shift.call(arguments), // 也可以用splice(0,1)[0]</span><br><span class="line">                 fns = list[key];</span><br><span class="line">            if(!fns || fns.length === 0) &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            for(var i = fns.length; i &gt;= 0; i--) &#123; // 必须倒序，因为once函数执行完删除函数会影响数组长度</span><br><span class="line">                fns[i].apply(this,arguments);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        </span><br><span class="line">        // 无法删除 （数组不存在或为空return false）</span><br><span class="line">        // 全部删除 （不指定具体删除函数）</span><br><span class="line">        // 删除某个（指定具体的函数）</span><br><span class="line">        remove = function(key,fn)&#123;</span><br><span class="line">            var fns = list[key];</span><br><span class="line">            if(!fns || fns.length === 0) &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            if(!fn) &#123;</span><br><span class="line">                fns.length = 0;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            for(var i = fns.length - 1; i &gt;= 0; i--)&#123;</span><br><span class="line">                var _fn = fns[i];</span><br><span class="line">                if(_fn === fn) &#123;</span><br><span class="line">                    fns.splice(i,1);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        once = function(key, fn) &#123;</span><br><span class="line">			function fun() &#123;</span><br><span class="line">				// var arr = Array.prototype.slice.apply(arguments);</span><br><span class="line">				fn.apply(this, arguments);</span><br><span class="line">				this.remove(key, fun);</span><br><span class="line">			&#125;</span><br><span class="line">			this.add(key, fun);</span><br><span class="line">		&#125;;</span><br><span class="line">        return &#123;</span><br><span class="line">            listen: listen,</span><br><span class="line">            trigger: trigger,</span><br><span class="line">            remove: remove,</span><br><span class="line">            once: once</span><br><span class="line">        &#125;</span><br><span class="line">&#125;)();</span><br><span class="line">// 测试代码如下：</span><br><span class="line">Event.listen(&quot;color&quot;,function(size) &#123;</span><br><span class="line">    console.log(&quot;尺码为:&quot;+size); // 打印出尺码为42</span><br><span class="line">&#125;);</span><br><span class="line">Event.trigger(&quot;color&quot;,42);</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%89%8D%E7%AB%AF%E7%AE%97%E6%B3%95-%E5%89%8D%E7%AB%AF%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag"># 前端算法 前端设计模式</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/03/15/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%A2%B3%E7%90%86%EF%BC%88%E4%BA%8C-3%EF%BC%89%E2%80%94%E2%80%94-JS-Web-API/" rel="prev" title="前端知识体系梳理（二-3）—— JS-Web-API">
+      <i class="fa fa-chevron-left"></i> 前端知识体系梳理（二-3）—— JS-Web-API
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/03/15/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%A2%B3%E7%90%86%EF%BC%88%E5%9B%9B%EF%BC%89%E2%80%94%E2%80%94-%E6%9D%82%E8%B0%88/" rel="next" title="前端知识体系梳理（四）—— 杂谈">
+      前端知识体系梳理（四）—— 杂谈 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%88%E8%AF%B4%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">先说数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">算法复杂度分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%A6%E6%83%85"><span class="nav-number">1.3.</span> <span class="nav-text">详情</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">设计模式</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">taoyingsong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">taoyingsong</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '',
+      clientSecret: '',
+      repo        : '',
+      owner       : '',
+      admin       : [''],
+      id          : '19849052563c91e78c535984a47e6b46',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

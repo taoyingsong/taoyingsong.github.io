@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一些自己遇到的坑、一些别人遇到的坑、一些有意思的现象">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Js深度思考(主要是坑)">
+<meta property="og:url" content="http://example.com/2018/06/20/js%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83/index.html">
+<meta property="og:site_name" content="路漫漫其修远兮&lt;br &#x2F;&gt;吾将上下而求索">
+<meta property="og:description" content="一些自己遇到的坑、一些别人遇到的坑、一些有意思的现象">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2018/06/20/js%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83/1.png">
+<meta property="og:image" content="http://example.com/2018/06/20/js%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83/2_1.png">
+<meta property="og:image" content="http://example.com/2018/06/20/js%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83/2_2.png">
+<meta property="og:image" content="http://example.com/2018/06/20/js%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83/2_3.png">
+<meta property="og:image" content="http://example.com/2018/06/20/js%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83/2_4.png">
+<meta property="article:published_time" content="2018-06-20T04:33:24.000Z">
+<meta property="article:modified_time" content="2022-05-10T11:58:10.025Z">
+<meta property="article:author" content="taoyingsong">
+<meta property="article:tag" content="js">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2018/06/20/js%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83/1.png">
+
+<link rel="canonical" href="http://example.com/2018/06/20/js%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Js深度思考(主要是坑) | 路漫漫其修远兮<br />吾将上下而求索</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">路漫漫其修远兮<br />吾将上下而求索</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/06/20/js%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="taoyingsong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="路漫漫其修远兮<br />吾将上下而求索">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Js深度思考(主要是坑)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-06-20 12:33:24" itemprop="dateCreated datePublished" datetime="2018-06-20T12:33:24+08:00">2018-06-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-10 19:58:10" itemprop="dateModified" datetime="2022-05-10T19:58:10+08:00">2022-05-10</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>一些自己遇到的坑、一些别人遇到的坑、一些有意思的现象</p>
+<span id="more"></span>
+
+<h2 id="定时器"><a href="#定时器" class="headerlink" title="定时器"></a>定时器</h2><p>关于setTimeout误差的进一步了解：<br>这里默认大家都知道setTimeout为延时执行，<br>在控制台输入以下代码，执行结果如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var value = 1;</span><br><span class="line">var start = Date.now();</span><br><span class="line">var timerId =  setTimeout(function run() &#123;</span><br><span class="line">    </span><br><span class="line">    if(value &gt; 200) &#123;</span><br><span class="line">        clearTimeout(timerId);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    ++value;</span><br><span class="line">    var now = Date.now();</span><br><span class="line">    console.log(value,now-start);</span><br><span class="line">    start = Date.now();</span><br><span class="line">    timerId = setTimeout(run, 1000)</span><br><span class="line">&#125;, 1000)</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：<br><img src="/2018/06/20/js%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83/1.png"><br>不是说好的延时执行吗？怎么还有999的数据？</p>
+<p><strong>解析</strong>：<br>即使天时地利人和，到了定时的时间时，JS主线程空闲，异步任务队列中只有setTimeout执行的方法，这个方法的执行时间也并不是精确的delay时间（精确到毫秒），因为浏览器上的计时器精确度有限：《Javascript高级程序设计（第三版）》有写</p>
+<h2 id="promise的一些现象"><a href="#promise的一些现象" class="headerlink" title="promise的一些现象"></a>promise的一些现象</h2><h3 id="值穿透"><a href="#值穿透" class="headerlink" title="值穿透:"></a>值穿透:</h3><p> then的参数不是函数时（eg. 2、null、Promise.resolve(3)）会跳过去发生值穿透，最终表达式返回的Promise中的值为最后执行then中函数的返回值。<br>值穿透时因为回调队列中不会搜集处理数值、表达式等。</p>
+<p>正常返回<br><img src="/2018/06/20/js%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83/2_1.png"></p>
+<p>穿透返回<br><img src="/2018/06/20/js%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83/2_2.png"></p>
+<p>输出的Promise是最后一个then返回的promise<br><img src="/2018/06/20/js%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83/2_3.png"></p>
+<h3 id="Catch异常"><a href="#Catch异常" class="headerlink" title="Catch异常:"></a>Catch异常:</h3><p>执行then的过程有异常发生时后边的then不会执行，第一个then产生异常，第二个then没有异常回调，所以异常直接被catch捕获到（回调队列中成功、失败回调是顺序收集、执行的）<br><img src="/2018/06/20/js%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83/2_4.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Promise.resolve(1)</span><br><span class="line">    .then((res) =&gt; &#123;</span><br><span class="line">        console.log(res);</span><br><span class="line">        return 2;</span><br><span class="line">    &#125;)</span><br><span class="line">    .catch((err) =&gt; &#123; // 没有成功回调，上边的resolve值直接往下传（回调队列中成功、失败回调是顺序收集、执行的）</span><br><span class="line">        return 3;</span><br><span class="line">    &#125;)</span><br><span class="line">    .then((res) =&gt; &#123;</span><br><span class="line">        console.log(res);</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：<br>1 2<br><strong>解析</strong>：<br>Promise首先resolve(1)，接着就会执行then函数，因此会输出1，然后在函数中返回2。<br>因为是resolve函数，因此后面的catch函数不会执行，而是直接执行第二个then函数，因此会输出2。</p>
+<h3 id="Promise-构造函数只执行一次"><a href="#Promise-构造函数只执行一次" class="headerlink" title="Promise 构造函数只执行一次"></a>Promise 构造函数只执行一次</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">const promise = new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">    setTimeout(() =&gt; &#123;</span><br><span class="line">        console.log(&#x27;开始&#x27;);</span><br><span class="line">        resolve(&#x27;success&#x27;);</span><br><span class="line">    &#125;, 5000);</span><br><span class="line">&#125;);</span><br><span class="line"> </span><br><span class="line">const start = Date.now();</span><br><span class="line">promise.then((res) =&gt; &#123;</span><br><span class="line">    console.log(res, Date.now() - start);</span><br><span class="line">&#125;);</span><br><span class="line"> </span><br><span class="line">promise.then((res) =&gt; &#123;</span><br><span class="line">    console.log(res, Date.now() - start);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：<br>开始<br>success 5002<br>success 5002　　<br><strong>解析</strong>：<br>promise 的.then或者.catch可以被调用多次，但这里 【Promise 构造函数只执行一次】。<br>或者说 promise 内部状态一经改变，并且有了一个值，那么后续每次调用.then 或者.catch都会直接拿到该值。<br>Promise状态一旦改变，无法在发生变更。</p>
+<h2 id="再看运算符"><a href="#再看运算符" class="headerlink" title="再看运算符"></a>再看运算符</h2><h3 id="运算符优先级"><a href="#运算符优先级" class="headerlink" title="运算符优先级"></a>运算符优先级</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var val = &#x27;smtg&#x27;;</span><br><span class="line"> console.log(&#x27;Value is &#x27; + (val === &#x27;smtg&#x27;) ? &#x27;Something&#x27; : &#x27;Nothing&#x27;);</span><br></pre></td></tr></table></figure>
+<p> <strong>结果</strong>：Something<br><strong>解析</strong>：<br>字符串连接比三元运算有更高的优先级<br>所以原题等价于<code>&#39;Value is true&#39; ? &#39;Somthing&#39; : &#39;Nonthing&#39;</code><br>而不是<code> &#39;Value   is&#39; + (true ? &#39;Something&#39; : &#39;Nonthing&#39;)</code><br><strong>巩固</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 || fn() &amp;&amp; fn()   //1  </span><br><span class="line">1 || 1 ? 2 : 3 ;    //2  </span><br></pre></td></tr></table></figure>
+<p>   巩固的解释请看下面这篇文章<br>   要点：绑定、关联、短路<br><a target="_blank" rel="noopener" href="https://juejin.im/post/5b22a5a36fb9a00e43465e2c/">Like Sunday, Like Rain - JavaScript运算符优先级之谜</a></p>
+<h3 id="运算符运算"><a href="#运算符运算" class="headerlink" title="运算符运算"></a>运算符运算</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x27;5&#x27; + 3</span><br><span class="line">&#x27;5&#x27; - 3</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：53  2<br><strong>解析</strong>：加号有拼接功能，减号就是逻辑运算<br><strong>巩固</strong>：typeof (+”1”)   &#x2F;&#x2F; “number” 对非数值+—常被用来做类型转换相当于Number()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 + - + + + - + 1</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：2<br><strong>解析</strong>：+-即是一元加和减操作符号，又是数学里的正负号。负负得正哈。<br><strong>巩固</strong>： 一元运算符还有一个常用的用法就是将自执行函数的function从函数声明变成表达式。<br>      常用的有 + - ～ ！ void<br>      + function () { }<br>      - function () { }<br>      ~ function () { }<br>      void function () { }</p>
+<h2 id="高阶函数相关"><a href="#高阶函数相关" class="headerlink" title="高阶函数相关"></a>高阶函数相关</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var ary = [0,1,2];</span><br><span class="line">ary[10] = 10;</span><br><span class="line">ary.filter(function(x) &#123; return x === undefined;&#125;); </span><br></pre></td></tr></table></figure>
+
+<p><strong>结果</strong>：[]<br><strong>解析</strong>：<br>数组的值 ary &#x3D; [0, 1, 2, empty × 7, 10];<br>filter() 不会对空数组进行检测。会跳过那些空元素<br><strong>巩固</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var ary = [0,1,2,undefined,undefined,undefined,null];</span><br><span class="line">ary.filter(function(x) &#123; return x === undefined;&#125;);</span><br><span class="line">// [undefined, undefined, undefined] </span><br></pre></td></tr></table></figure>
+
+<p><strong>扩展</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var ary = Array(3);</span><br><span class="line">ary[0]=2</span><br><span class="line">ary.map(function(elem) &#123; return &#x27;1&#x27;; &#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：[“1”, empty × 2]<br><strong>解析</strong>：如过没有值，map会跳过不会执行回调函数</p>
+<h2 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h2><h3 id="test1"><a href="#test1" class="headerlink" title="test1:"></a>test1:</h3><h4 id="demo1"><a href="#demo1" class="headerlink" title="demo1:"></a>demo1:</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function showCase(value) &#123;</span><br><span class="line">    switch(value) &#123;</span><br><span class="line">    case &#x27;A&#x27;:</span><br><span class="line">        console.log(&#x27;Case A&#x27;);</span><br><span class="line">        break;</span><br><span class="line">    case &#x27;B&#x27;:</span><br><span class="line">        console.log(&#x27;Case B&#x27;);</span><br><span class="line">        break;</span><br><span class="line">    case undefined:</span><br><span class="line">        console.log(&#x27;undefined&#x27;);</span><br><span class="line">        break;</span><br><span class="line">    default:</span><br><span class="line">        console.log(&#x27;Do not know!&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">showCase(new String(&#x27;A&#x27;));</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：Do not know!<br><strong>解析</strong>：<code>switch判断的是全等（===）</code> ，new String(x)是个对象<br><strong>巩固</strong>：<br>var a &#x3D;  new String(‘A’) ;<br>a.<strong>proto</strong>  &#x2F;&#x2F; String.prototype 实例的原型指向构造函数的原型对象</p>
+<h4 id="demo2"><a href="#demo2" class="headerlink" title="demo2:"></a>demo2:</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function showCase2(value) &#123;</span><br><span class="line">    switch(value) &#123;</span><br><span class="line">    case &#x27;A&#x27;:</span><br><span class="line">        console.log(&#x27;Case A&#x27;);</span><br><span class="line">        break;</span><br><span class="line">    case &#x27;B&#x27;:</span><br><span class="line">        console.log(&#x27;Case B&#x27;);</span><br><span class="line">        break;</span><br><span class="line">    case undefined:</span><br><span class="line">        console.log(&#x27;undefined&#x27;);</span><br><span class="line">        break;</span><br><span class="line">    default:</span><br><span class="line">        console.log(&#x27;Do not know!&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">showCase2(String(&#x27;A&#x27;));</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：Case A<br><strong>解析</strong>：String(‘A’)就是返回一个字符串<br><strong>巩固</strong>:<br>var a1 &#x3D; String(‘A’);<br>var a2 &#x3D;  ‘A’;<br>a2.<strong>proto</strong>                  &#x2F;&#x2F; String.prototype<br>a1.<strong>proto</strong> &#x3D;&#x3D;&#x3D; a2.<strong>proto</strong>  &#x2F;&#x2F; true 上一题的a.<strong>proto</strong></p>
+<p>那字符串不是对象为啥也指向String.prototype？<br>解析：a2是基本类型的值，逻辑上不应该有原型和方法。为了便于操作，有一种特殊的引用类型（基本包装类型）String。其实读取时，后台会自动完成下面的操作：<br>      var str &#x3D; new String(“A”); &#x2F;&#x2F;创建实例<br>      str.<strong>proto</strong>;             &#x2F;&#x2F;调用指定属性和方法<br>      str &#x3D; null;                &#x2F;&#x2F;销毁实例<br>      所以 a1.<strong>proto</strong> &#x3D;&#x3D;&#x3D; a2.<strong>proto</strong><br>      但注意基本包装类型特殊就在于它对象（str）的生命周期，只存在于一行代码(a1.<strong>proto</strong> &#x3D;&#x3D;&#x3D; a2.<strong>proto</strong>)的执行瞬间。<br>      这也就解释了为啥字符串也能操作属性和方法但不能添加。基本包装类型有三个（String,Number,Boolean）<br>     （详情请看《js高程》 5.6基本包类型 P119）</p>
+<h3 id="test2"><a href="#test2" class="headerlink" title="test2:"></a>test2:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var a = [0];</span><br><span class="line">if ([0]) &#123;</span><br><span class="line">  console.log(a == true);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  console.log(&quot;wut&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：false<br><strong>解析</strong>：<br>[0]的boolean值是true<br>console.log(a &#x3D;&#x3D; true); &#x2F;&#x2F; 转换为数字进行比较， Number([0]) &#x3D;&gt; 0 ,<br>Number(true) &#x3D;&gt; 1 ,所有是false<br><strong>巩固</strong>：<br>2 &#x3D;&#x3D; [[[2]]]  &#x2F;&#x2F; true</p>
+<h3 id="test3"><a href="#test3" class="headerlink" title="test3:"></a>test3:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function isOdd(num) &#123;</span><br><span class="line">    return num % 2 == 1;</span><br><span class="line">&#125;</span><br><span class="line">function isEven(num) &#123;</span><br><span class="line">    return num % 2 == 0;</span><br><span class="line">&#125;</span><br><span class="line">function isSane(num) &#123;</span><br><span class="line">    return isEven(num) || isOdd(num);</span><br><span class="line">&#125;</span><br><span class="line">var values = [7, 4, &#x27;13&#x27;, -9, Infinity];</span><br><span class="line">values.map(isSane);</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：[true, true, true, false, false]<br><strong>解析</strong>：<br>%如果不是数值会调用Number（）去转化<br>‘13’ % 2       &#x2F;&#x2F; 1<br>Infinity % 2  &#x2F;&#x2F;NaN  Infinity 是无穷大<br>-9 % 2        &#x2F;&#x2F; -1<br><strong>巩固</strong>： 9 % -2        &#x2F;&#x2F; 1   余数的正负号随第一个操作数</p>
+<h3 id="test4"><a href="#test4" class="headerlink" title="test4:"></a>test4:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[1 &lt; 2 &lt; 3, 3 &lt; 2 &lt; 1]</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：[true,true]<br><strong>解析</strong>：<br>1 &lt; 2    &#x3D;&gt;  true;<br>true &lt; 3 &#x3D;&gt;  1 &lt; 3 &#x3D;&gt; true;</p>
+<p>3 &lt; 2     &#x3D;&gt; false;<br>false &lt; 1 &#x3D;&gt; 0 &lt; 1 &#x3D;&gt; true;</p>
+<h3 id="test5"><a href="#test5" class="headerlink" title="test5:"></a>test5:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Array.isArray( Array.prototype )</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：true<br><strong>解析</strong>：<br>Array.prototype是一个数组<br>数组的原型是数组，对象的原型是对象，函数的原型是函数</p>
+<h2 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var a = &#123;&#125;, b = Object.prototype;</span><br><span class="line">[a.prototype === b, Object.getPrototypeOf(a) === b]  </span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：false, true<br><strong>解析</strong>：Object 的实例是 a，a上并没有prototype属性<br>     a的__poroto__ 指向的是Object.prototype，也就是Object.getPrototypeOf(a)。a的原型对象是b<br><strong>巩固</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function f() &#123;&#125;</span><br><span class="line">var a = f.prototype, b = Object.getPrototypeOf(f);</span><br><span class="line">a === b     </span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：false<br><strong>解析</strong>：a是构造函数f的原型 ： {constructor: ƒ}<br>     b是实例f的原型对象 ： ƒ () { [native code] }</p>
+<h2 id="暂时没有归类的项"><a href="#暂时没有归类的项" class="headerlink" title="暂时没有归类的项"></a>暂时没有归类的项</h2><h3 id="test1-1"><a href="#test1-1" class="headerlink" title="test1:"></a>test1:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var two   = 0.2</span><br><span class="line">var one   = 0.1</span><br><span class="line">var eight = 0.8</span><br><span class="line">var six   = 0.6</span><br><span class="line">[two - one == one, eight - six == two]</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：[true, false]<br><strong>解析</strong>：IEEE 754标准中的浮点数并不能精确地表达小数<br><strong>巩固</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var two   = 0.2;</span><br><span class="line">     var one   = 0.1;</span><br><span class="line">     var eight = 0.8;</span><br><span class="line">     var six   = 0.6;</span><br><span class="line">     ( eight - six ).toFixed(4) == two </span><br><span class="line">     //true</span><br></pre></td></tr></table></figure>
+
+<h3 id="test2-1"><a href="#test2-1" class="headerlink" title="test2:"></a>test2:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">3.toString()</span><br><span class="line">3..toString()</span><br><span class="line">3...toString()</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：error, “3”, error<br><strong>解析</strong>：因为在 js 中 1.1, 1., .1 都是合法的数字. 那么在解析 3.toString 的时候这个 . 到底是属于这个数字还是函数调用呢? 只能是数字, 因为3.合法啊!</p>
+<h3 id="test3-1"><a href="#test3-1" class="headerlink" title="test3:"></a>test3:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(function()&#123;</span><br><span class="line">  var x = y = 1;</span><br><span class="line">&#125;)();</span><br><span class="line">console.log(y);</span><br><span class="line">console.log(x);</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：1, error<br><strong>解析</strong>：y 被赋值成全局变量，等价于<br>     y &#x3D; 1 ;<br>     var x &#x3D; y;</p>
+<h3 id="test4-1"><a href="#test4-1" class="headerlink" title="test4:"></a>test4:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var a = [1, 2, 3],</span><br><span class="line">b = [1, 2, 3],</span><br><span class="line">c = [1, 2, 4]</span><br><span class="line">a ==  b</span><br><span class="line">a === b</span><br><span class="line">a &gt;   c</span><br><span class="line">a &lt;   c</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：false, false, false, true<br><strong>解析</strong>：相等（&#x3D;&#x3D;）和全等（&#x3D;&#x3D;&#x3D;）还是比较引用地址<br>     引用类型间比较大小是按照字典序比较，就是先比第一项谁大，相同再去比第二项。</p>
+<h3 id="test5-1"><a href="#test5-1" class="headerlink" title="test5:"></a>test5:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function foo() &#123; &#125;</span><br><span class="line">var oldName = foo.name;</span><br><span class="line">foo.name = &quot;bar&quot;;</span><br><span class="line">[oldName, foo.name]    </span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：[“foo”, “foo”]<br><strong>解析</strong>：函数的名字不可变.</p>
+<h3 id="test6"><a href="#test6" class="headerlink" title="test6:"></a>test6:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[,,,].join(&quot;,&quot;)</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：”,,”<br><strong>解析</strong>：因为javascript 在定义数组的时候允许最后一个元素后跟一个,<br>     所以这个数组长度是3，<br><strong>巩固</strong>： [,,1,].join(“.”).length &#x2F;&#x2F;  3 </p>
+<h3 id="test7"><a href="#test7" class="headerlink" title="test7:"></a>test7:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function foo(a) &#123;</span><br><span class="line">  var a;</span><br><span class="line">  return a;</span><br><span class="line">&#125;</span><br><span class="line">function bar(a) &#123;</span><br><span class="line">    var a = &#x27;bye&#x27;;</span><br><span class="line">    return a;</span><br><span class="line">&#125;</span><br><span class="line">[foo(&#x27;hello&#x27;), bar(&#x27;hello&#x27;)]</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：[“hello”, “bye”]<br><strong>解析</strong>：变量声明</p>
+<h3 id="test8"><a href="#test8" class="headerlink" title="test8:"></a>test8:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var name = &#x27;World!&#x27;;</span><br><span class="line">(function () &#123;</span><br><span class="line">if (typeof name === &#x27;undefined&#x27;) &#123;</span><br><span class="line">    var name = &#x27;Jack&#x27;;</span><br><span class="line">    console.log(&#x27;Goodbye &#x27; + name);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    console.log(&#x27;Hello &#x27; + name);</span><br><span class="line">&#125;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<p><strong>答案</strong>：Goodbye Jack<br><strong>解析</strong>：（1）typeof时 name变量提升。 在函数内部之声明未定义<br>     （2）typeof优先级高于&#x3D;&#x3D;&#x3D;<br><strong>巩固</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var str = &#x27;World!&#x27;;   </span><br><span class="line">(function (name) &#123;</span><br><span class="line">if (typeof name === &#x27;undefined&#x27;) &#123;</span><br><span class="line">    var name = &#x27;Jack&#x27;;</span><br><span class="line">    console.log(&#x27;Goodbye &#x27; + name);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    console.log(&#x27;Hello &#x27; + name);</span><br><span class="line">&#125;</span><br><span class="line">&#125;)(str);</span><br><span class="line">// 答案：Hello World 因为name已经变成函数内局部变量</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/js/" rel="tag"># js</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/05/07/Vue-React-%E6%AF%94%E8%BE%83/" rel="prev" title="vue & react 比较">
+      <i class="fa fa-chevron-left"></i> vue & react 比较
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/06/22/%E5%89%8D%E7%AB%AF%E7%BB%86%E5%B0%8F%E7%9F%A5%E8%AF%86%E7%82%B9%E7%A7%AF%E7%B4%AF%E6%B1%87%E6%80%BB/" rel="next" title="前端细小知识点积累汇总">
+      前端细小知识点积累汇总 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">定时器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#promise%E7%9A%84%E4%B8%80%E4%BA%9B%E7%8E%B0%E8%B1%A1"><span class="nav-number">2.</span> <span class="nav-text">promise的一些现象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%80%BC%E7%A9%BF%E9%80%8F"><span class="nav-number">2.1.</span> <span class="nav-text">值穿透:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Catch%E5%BC%82%E5%B8%B8"><span class="nav-number">2.2.</span> <span class="nav-text">Catch异常:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Promise-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%8F%AA%E6%89%A7%E8%A1%8C%E4%B8%80%E6%AC%A1"><span class="nav-number">2.3.</span> <span class="nav-text">Promise 构造函数只执行一次</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%8D%E7%9C%8B%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">3.</span> <span class="nav-text">再看运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">3.1.</span> <span class="nav-text">运算符优先级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E8%BF%90%E7%AE%97"><span class="nav-number">3.2.</span> <span class="nav-text">运算符运算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E7%9B%B8%E5%85%B3"><span class="nav-number">4.</span> <span class="nav-text">高阶函数相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-number">5.</span> <span class="nav-text">类型转换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#test1"><span class="nav-number">5.1.</span> <span class="nav-text">test1:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#demo1"><span class="nav-number">5.1.1.</span> <span class="nav-text">demo1:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#demo2"><span class="nav-number">5.1.2.</span> <span class="nav-text">demo2:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#test2"><span class="nav-number">5.2.</span> <span class="nav-text">test2:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#test3"><span class="nav-number">5.3.</span> <span class="nav-text">test3:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#test4"><span class="nav-number">5.4.</span> <span class="nav-text">test4:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#test5"><span class="nav-number">5.5.</span> <span class="nav-text">test5:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%9E%8B"><span class="nav-number">6.</span> <span class="nav-text">原型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9A%82%E6%97%B6%E6%B2%A1%E6%9C%89%E5%BD%92%E7%B1%BB%E7%9A%84%E9%A1%B9"><span class="nav-number">7.</span> <span class="nav-text">暂时没有归类的项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#test1-1"><span class="nav-number">7.1.</span> <span class="nav-text">test1:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#test2-1"><span class="nav-number">7.2.</span> <span class="nav-text">test2:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#test3-1"><span class="nav-number">7.3.</span> <span class="nav-text">test3:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#test4-1"><span class="nav-number">7.4.</span> <span class="nav-text">test4:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#test5-1"><span class="nav-number">7.5.</span> <span class="nav-text">test5:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#test6"><span class="nav-number">7.6.</span> <span class="nav-text">test6:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#test7"><span class="nav-number">7.7.</span> <span class="nav-text">test7:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#test8"><span class="nav-number">7.8.</span> <span class="nav-text">test8:</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">taoyingsong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">taoyingsong</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '',
+      clientSecret: '',
+      repo        : '',
+      owner       : '',
+      admin       : [''],
+      id          : '4ec2fd4c35a8d4fecd8714e9b12c5c78',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

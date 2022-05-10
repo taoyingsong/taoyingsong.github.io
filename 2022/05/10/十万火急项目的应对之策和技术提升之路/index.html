@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="2019年9月中旬开始到过年，因为一些高层战略方向需要和其它某些因素无法避免的连续做了3个“十万火急”项目，这是我从业以来第一回如此长时间连续接受超紧急项目的挑战。这中间没有过中秋，没有过国庆，能过的双休大部分是过1天（其实很多是睡了一天），最久连续到公司2个月，早上正常到公司，晚上凌晨是常态，不成干脆睡公司。还记得大概是十一，夏天的我穿着短袖进了公司，再出公司就成了冬天里最靓的仔。苦逼归苦逼，小">
+<meta property="og:type" content="article">
+<meta property="og:title" content="十万火急项目的应对之策和技术提升之路">
+<meta property="og:url" content="http://example.com/2022/05/10/%E5%8D%81%E4%B8%87%E7%81%AB%E6%80%A5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BA%94%E5%AF%B9%E4%B9%8B%E7%AD%96%E5%92%8C%E6%8A%80%E6%9C%AF%E6%8F%90%E5%8D%87%E4%B9%8B%E8%B7%AF/index.html">
+<meta property="og:site_name" content="路漫漫其修远兮&lt;br &#x2F;&gt;吾将上下而求索">
+<meta property="og:description" content="2019年9月中旬开始到过年，因为一些高层战略方向需要和其它某些因素无法避免的连续做了3个“十万火急”项目，这是我从业以来第一回如此长时间连续接受超紧急项目的挑战。这中间没有过中秋，没有过国庆，能过的双休大部分是过1天（其实很多是睡了一天），最久连续到公司2个月，早上正常到公司，晚上凌晨是常态，不成干脆睡公司。还记得大概是十一，夏天的我穿着短袖进了公司，再出公司就成了冬天里最靓的仔。苦逼归苦逼，小">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/05/10/%E5%8D%81%E4%B8%87%E7%81%AB%E6%80%A5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BA%94%E5%AF%B9%E4%B9%8B%E7%AD%96%E5%92%8C%E6%8A%80%E6%9C%AF%E6%8F%90%E5%8D%87%E4%B9%8B%E8%B7%AF/1.png">
+<meta property="og:image" content="http://example.com/2022/05/10/%E5%8D%81%E4%B8%87%E7%81%AB%E6%80%A5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BA%94%E5%AF%B9%E4%B9%8B%E7%AD%96%E5%92%8C%E6%8A%80%E6%9C%AF%E6%8F%90%E5%8D%87%E4%B9%8B%E8%B7%AF/2.png">
+<meta property="og:image" content="http://example.com/2022/05/10/%E5%8D%81%E4%B8%87%E7%81%AB%E6%80%A5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BA%94%E5%AF%B9%E4%B9%8B%E7%AD%96%E5%92%8C%E6%8A%80%E6%9C%AF%E6%8F%90%E5%8D%87%E4%B9%8B%E8%B7%AF/3.png">
+<meta property="og:image" content="http://example.com/2022/05/10/%E5%8D%81%E4%B8%87%E7%81%AB%E6%80%A5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BA%94%E5%AF%B9%E4%B9%8B%E7%AD%96%E5%92%8C%E6%8A%80%E6%9C%AF%E6%8F%90%E5%8D%87%E4%B9%8B%E8%B7%AF/4.png">
+<meta property="og:image" content="http://example.com/2022/05/10/%E5%8D%81%E4%B8%87%E7%81%AB%E6%80%A5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BA%94%E5%AF%B9%E4%B9%8B%E7%AD%96%E5%92%8C%E6%8A%80%E6%9C%AF%E6%8F%90%E5%8D%87%E4%B9%8B%E8%B7%AF/5.png">
+<meta property="article:published_time" content="2022-05-10T04:44:01.000Z">
+<meta property="article:modified_time" content="2022-05-10T06:20:22.058Z">
+<meta property="article:author" content="taoyingsong">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/05/10/%E5%8D%81%E4%B8%87%E7%81%AB%E6%80%A5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BA%94%E5%AF%B9%E4%B9%8B%E7%AD%96%E5%92%8C%E6%8A%80%E6%9C%AF%E6%8F%90%E5%8D%87%E4%B9%8B%E8%B7%AF/1.png">
+
+<link rel="canonical" href="http://example.com/2022/05/10/%E5%8D%81%E4%B8%87%E7%81%AB%E6%80%A5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BA%94%E5%AF%B9%E4%B9%8B%E7%AD%96%E5%92%8C%E6%8A%80%E6%9C%AF%E6%8F%90%E5%8D%87%E4%B9%8B%E8%B7%AF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>十万火急项目的应对之策和技术提升之路 | 路漫漫其修远兮<br />吾将上下而求索</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">路漫漫其修远兮<br />吾将上下而求索</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/10/%E5%8D%81%E4%B8%87%E7%81%AB%E6%80%A5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BA%94%E5%AF%B9%E4%B9%8B%E7%AD%96%E5%92%8C%E6%8A%80%E6%9C%AF%E6%8F%90%E5%8D%87%E4%B9%8B%E8%B7%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="taoyingsong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="路漫漫其修远兮<br />吾将上下而求索">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          十万火急项目的应对之策和技术提升之路
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-05-10 12:44:01 / 修改时间：14:20:22" itemprop="dateCreated datePublished" datetime="2022-05-10T12:44:01+08:00">2022-05-10</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>2019年9月中旬开始到过年，因为一些高层战略方向需要和其它某些因素无法避免的连续做了3个“十万火急”项目，这是我从业以来第一回如此长时间连续接受超紧急项目的挑战。这中间没有过中秋，没有过国庆，能过的双休大部分是过1天（其实很多是睡了一天），最久连续到公司2个月，早上正常到公司，晚上凌晨是常态，不成干脆睡公司。还记得大概是十一，夏天的我穿着短袖进了公司，再出公司就成了冬天里最靓的仔。苦逼归苦逼，小伙伴们也是一路很团结的走了下来，要的就是人在塔在！其实有挑战就有收获，这也算是难能可贵的经历了，事后来做个总结，希望可以帮助有需要的同学。</p>
+<span id="more"></span>
+<p>提纲：</p>
+<ul>
+<li>前端日常开发</li>
+<li>我经历的“十万火急”项目</li>
+<li>事后从我的视角出发，聊聊各个角色对一些问题可做的应对策略</li>
+<li>技术上呢，该如何提升演进？</li>
+<li>结语</li>
+</ul>
+<hr>
+<h1 id="前端日常开发"><a href="#前端日常开发" class="headerlink" title="前端日常开发"></a>前端日常开发</h1><p>作为前端大部分时候我们的项目都是正常的根据产品的规划，每个阶段每个迭代的内容在评审、讨论、评估、开发、联调、测试等步骤中有序稳步进行，有时候可能也会走敏捷开发，在一定的周期内简短迭代、持续交付。其实日常也会遇到紧急项目需求开发，不过大多数情况我们总还是可控的。</p>
+<p>下边贴出我整理的前端项目开发流程图：<br><img src="/2022/05/10/%E5%8D%81%E4%B8%87%E7%81%AB%E6%80%A5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BA%94%E5%AF%B9%E4%B9%8B%E7%AD%96%E5%92%8C%E6%8A%80%E6%9C%AF%E6%8F%90%E5%8D%87%E4%B9%8B%E8%B7%AF/1.png"><br>也可以通过下图来定位自己所处的阶段、位置：<br><img src="/2022/05/10/%E5%8D%81%E4%B8%87%E7%81%AB%E6%80%A5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BA%94%E5%AF%B9%E4%B9%8B%E7%AD%96%E5%92%8C%E6%8A%80%E6%9C%AF%E6%8F%90%E5%8D%87%E4%B9%8B%E8%B7%AF/2.png"></p>
+<h1 id="我经历的“十万火急”项目"><a href="#我经历的“十万火急”项目" class="headerlink" title="我经历的“十万火急”项目"></a>我经历的“十万火急”项目</h1><p>作为技术多多少少都会遇到紧急项目需求开发，上边流程图我也列出了发现风险时的一些解决方法。不过这次我遇到的需求紧急程度和挑战有些不同往常，这次尤为严峻。这里主要介绍3个需求，情况大概是这样的：</p>
+<h2 id="项目1：麦宝小程序"><a href="#项目1：麦宝小程序" class="headerlink" title="项目1：麦宝小程序"></a>项目1：麦宝小程序</h2><p><strong>背景：</strong> 其他组的超紧急项目，我们是过来支援的。</p>
+<p><strong>大概情况：</strong><br>这是一个小程序项目功能模块的开发，因为是支援的，对我们来说项目、业务都是新的，属于跨组异地协同开发。我算是第一次正式开发小程序项目（在小程序推出之初我私下会翻阅文档、写写demo，之后工作方向、项目的原因一直没机会更多的接触，其实再看文档的时候，感觉已经比较陌生了，时间也久了，文档也迭代很多版本了）。我们组前端还有我师父，也没搞过小程序开发，前期没什么能交流的。另外电商项目本身业务繁杂，这个模块开发涉及的其他模块很广，要在时间条件非常苛刻的情况下了解涉及到的众多模块的代码逻辑，理解需求，增改代码，保质保量的完成需求开发任务，可以说挑战是非常大的。<br>下边贴下事后的记录（7天完成模块一系列需求的开发联调和部分提测后bug的修复，十一基本没过，从commits数、commit时间范围、周报时间范围和工作内容品味，下同）：<br><img src="/2022/05/10/%E5%8D%81%E4%B8%87%E7%81%AB%E6%80%A5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BA%94%E5%AF%B9%E4%B9%8B%E7%AD%96%E5%92%8C%E6%8A%80%E6%9C%AF%E6%8F%90%E5%8D%87%E4%B9%8B%E8%B7%AF/3.png"></p>
+<h2 id="项目2：麦宝PC端-toB商品管理项目"><a href="#项目2：麦宝PC端-toB商品管理项目" class="headerlink" title="项目2：麦宝PC端 toB商品管理项目"></a>项目2：麦宝PC端 toB商品管理项目</h2><p><strong>背景：</strong> 也是支援，小程序的toB部分业务满足不了复杂的电商toB业务需要，PC端toB项目对小程序toB业务能力的增强。</p>
+<p><strong>大概情况：</strong><br>从上边说的业务增强就知道，小程序上已经解决不了或者很难解决需求的复杂性了，然后就有了这个独立的项目。这整个toB项目中商品的创建、编辑是基础核心，商品的创建及编辑是一个涉及到几十甚至上百个字段（多SKU的支持，可编辑内容可能会很多，类型繁杂）的大表单，夹杂着复杂的数据接口请求，对前端的组件、模块设计和状态管理挑战很大，而我负责的就是这块的开发。</p>
+<p>同样贴出来事后的记录（4天内熟悉项目完成功能的开发、联调）：<br><img src="/2022/05/10/%E5%8D%81%E4%B8%87%E7%81%AB%E6%80%A5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BA%94%E5%AF%B9%E4%B9%8B%E7%AD%96%E5%92%8C%E6%8A%80%E6%9C%AF%E6%8F%90%E5%8D%87%E4%B9%8B%E8%B7%AF/4.png"></p>
+<h2 id="项目3：容器镜像服务TCR"><a href="#项目3：容器镜像服务TCR" class="headerlink" title="项目3：容器镜像服务TCR"></a>项目3：容器镜像服务TCR</h2><p><strong>背景：</strong> 腾讯云为用户提供更优质、更安全的的容器镜像服务推出的产品，由我们部门和腾讯云产品部一起完成</p>
+<p><strong>大概情况：</strong><br>  由于前边两个超紧急项目的压迫，这个本来不算紧急的项目最终也变成了超紧急项目。<br>  这是个跨部门多组异地协同开发的项目，需要和云产品部产品经理、GSIC质量部QA、我们自己的后台、云产品部后台、云控制台相关负责人 等紧密合作。直接和我联调的后台有3个人，后台参与开发的我知道的有6个人，前台投入我1个人，总共涉及7个大模块，我要开发其中5个，维护改进2个。2个月大概要做的事情有将原来的TKE2技术架构升级为Tea框架，改造接口请求为云API的方式，接入Buffet自助运营系统，了解梳理清楚所有需求，完成需求的开发、联调、测试等。<br><img src="/2022/05/10/%E5%8D%81%E4%B8%87%E7%81%AB%E6%80%A5%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BA%94%E5%AF%B9%E4%B9%8B%E7%AD%96%E5%92%8C%E6%8A%80%E6%9C%AF%E6%8F%90%E5%8D%87%E4%B9%8B%E8%B7%AF/5.png"></p>
+<h2 id="总结下上边项目需求开发我看到的问题"><a href="#总结下上边项目需求开发我看到的问题" class="headerlink" title="总结下上边项目需求开发我看到的问题"></a>总结下上边项目需求开发我看到的问题</h2><p>问题1：人力不够基本也没法补充了（我们已经是支援方了，原团队已经是最大可能的做了补充）<br>问题2：开发时间严重不足（比如本来怎么也要2周甚至更久完成的事情，现在要压缩一半甚至更少来保障整体进度）<br>问题3：项目不是既有的熟悉项目<br>问题4：不是熟悉的技术栈<br>问题5：跨组异地协同开发（产品、熟悉项目代码的人都不在现场）<br>问题6：项目或需求本身复杂度较高<br>问题7：没什么时间吃透需求（卡点需求和开发时间互相挤压）<br>问题8：开发等可能会没有信心，没有士气<br>问题9：其他一些突发问题（比如成员之间各自的想法不同，可能会有争执）  </p>
+<p>现在回想的直观感受就是，太多东西跳出我的掌控了，心里真的有些慌乱，完全没有底气能把事情做好。我想不止是我，后来听到项目的原班人马，公认性格很好的开发人员也被逼到情绪失控时，我就意识到这次面对的情况可能比以往都要严峻。</p>
+<h1 id="事后从我的视角出发，聊聊各个角色对一些问题可做的应对策略"><a href="#事后从我的视角出发，聊聊各个角色对一些问题可做的应对策略" class="headerlink" title="事后从我的视角出发，聊聊各个角色对一些问题可做的应对策略"></a>事后从我的视角出发，聊聊各个角色对一些问题可做的应对策略</h1><h2 id="各负责人"><a href="#各负责人" class="headerlink" title="各负责人"></a>各负责人</h2><p><strong>问题1：</strong> 人力不够基本也没法补充了 <strong>——再看看能否进一步扩充人力。</strong><br>我们是基本没法再进一步了。 </p>
+<p><strong>问题5：</strong> 跨组异地协同开发 <strong>——看看能否营造环境一起办公。</strong><br>我们也是不好再进一步了。  </p>
+<p><strong>问题8：</strong> 开发等可能会没有信心，没有士气 <strong>——力所能及的多些员工关怀、帮助吧，适当给予思想上的分析、疏导和支持。</strong><br>  我这前端负责人就是我导师，我觉得我能坚持这么久时间，不断在自己的极限状态下比较好的完成挑战，主要是有我导师的支撑。其实根据我的估算，给出的时间点根本完成不了任务。我很大程度是导师给了镇定剂后，自己才进一步静心思考工作和有效处理任务的，尤其是开始那段，是确实心慌。  </p>
+<p><strong>问题9：</strong> 其他一些突发问题 <strong>——出现这种情况，要及时从更高的层面做出判断，给出选择。</strong><br>我觉得我们各负责人做的都很不错，中间有过问题争执不下，开发人员情绪失控，不过处理的结果都挺好。</p>
+<h2 id="产品"><a href="#产品" class="headerlink" title="产品"></a>产品</h2><p><strong>问题7：</strong> 没什么时间吃透需求 <strong>——尽可能的明确产品细节，必要时舍弃一些体验效果以实现功能为主（主要对B端需求），积极配合开发测试等，帮助快速理解需求。</strong>  </p>
+<p>这是一个比较致命的问题。<br>对于开发，没法吃透需求就没法把控开发细节，没法把控细节就可能出现数据结构设计不严谨，字段、交互遗漏或者效果偏差等等问题，就可能导致bug或隐性bug。<br>对于测试，没法吃透需求就可能遗漏需要测试的点，或者一些效果测试以为是正确的，其实是不正确的，这个最后就可能成了线上bug，影响用户体验，影响产品影响力等。  </p>
+<p>要想比较好的处理这个问题，产品作为上游，发挥的作用非常关键，有3方面可以注意：</p>
+<ol>
+<li>尽可能的明确产品细节。上边功能开发的过程中就遇到过，产品觉得这个细节不用写就应该是那样的，但实际情况是前端、后台、测试各有各的理解，各自以为的情况都不一样，但文档中没有描述这个东西，大家也就没意识到这是个点。后边连锁反应是后台接口设计出了问题，前端实现也出了问题，测试因为没注意到这个点也没测的很严谨，影响了项目推进效率。有了这种情况产品要觉悟到这个问题根本还是细节不明确导致的。正常过产品的时候对于一些细节可能相关人员会给出些预见，但是遇到这种超紧急项目的情况，开发、测试可能根本没时间琢磨太多细节，这个时候产品就要尽可能的细致的描述，要让开发、测拿到需求就能开搞，按照你以为的情况开发，以免影响项目进度。</li>
+<li>必要时以实现功能为主，适当忽略一些视觉及交互感受，这些可以后期一步步优化嘛。这个主要是对B端产品来说的，像我开发的上边项目2商品增加、编辑部分功能正常情况下根本不可能4内完成 需求开发、联调等一系列工作。这个时候在保障功能完备的情况下肯定要做适当效果交互舍弃的。</li>
+<li>如果落地人员有需要，给予积极的配合，帮助理解需求，不要嫌烦，要不厌其烦，越早越多烦你后边出意外的可能性才会越少，产品实现的质量才会越高，项目进度才越有保障。</li>
+</ol>
+<h2 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h2><p>说实话开发面对的挑战非常大，开发是落地方，是实实在在要把东西搞出来的，是偷懒不了的。</p>
+<p><strong>问题2：</strong> 开发时间严重不足 <strong>—— 拆分任务，想想有没有什么手段可以精简某些代码，可以快速开发，在纸上按紧急程度列出来工作清单，然后有计划的执行。</strong><br>  我习惯于拆分任务后在纸张上罗列出来要做的任务list，我一般会搞2个list，一个是总的任务list，有个大概的时间分配，一个是每天的任务list，每天晚上下班前想想现状，根据当前的实际情况做出评估，写出第二天一天的工作内容，按照紧急程度一一列出，这个要细化到具体的事情上。第二天开始基本就是按部就班的开搞。 </p>
+<p>  再有想想能不能通过技术本身来精简代码、快速开发，比如我在开发上边第三个项目（容器镜像服务TCR）的时候就引入了React官方推荐的Hooks方案，极大的提高了开发效率，精简了代码，这个也和平时积累有关系，平时多看多积累知识到需要用的时候就能直接用上了。另外必要时引入第三方插件提升开发效率。  </p>
+<p>  再说个开发技巧：（上边项目2，项目3的周报中可以看到后期我都会做重构工作）  </p>
+<ul>
+<li>开始做个“愣头青”：开始不要管实现方案好不好，代码写的优美不优美，组件封装的漂亮不漂亮，就是干，手搓都行，先把功能“怼”上去</li>
+<li>然后变成帅小伙：功能搞完了，上下游照顾到了，进度有保障了，你对逻辑，对代码有了更深入全面的了解了，静下心来抽半天一天该提炼的提炼，该封装的封装，该美化的美化（我通常是静坐半天到一晚上基本就搞定了）</li>
+</ul>
+<p><strong>问题3：</strong> 项目不是既有的熟悉项目 <strong>——及时沟通，有技巧的阅读项目。</strong><br>有时候项目本身实现或者流程很复杂，注释也不明确，为了节省学习成本、加快上手时间就要及时适当和了解项目的人做积极沟通。<br>学会快速阅读项目，一个不熟悉的模块，不要盯着一个细节觉得不明白就不肯放手，先把整体流转搞明白，大处着眼小处着手，有时间画图的画图（各种UML图），不行在纸上随便画画都行，目的是要快速把数据流转、主要结构这些东西搞清楚。这样在开发时候就能快速定位，有针对性的分析代码细节，最终才能及时高效做出适当修改、添加等。  </p>
+<p><strong>问题4：</strong> 不是熟悉的技术栈 <strong>——学会阅读文档，学会问。</strong><br>和上边一样，快速过文档，不一定要很细致，但是遇到文档的使用问题时一定要知道怎么快速查找、定位。再不行就赶紧问有经验的开发人员，可能别人一两句的话你就知道怎么回事了，这就省下了很多时间。有时候不要觉得自己肯定能搞清楚什么，就一直在那找看查，要权衡成本和收益。  </p>
+<p><strong>问题6：</strong> 项目本身复杂度不低 <strong>——主要手段同上边问题3</strong>  </p>
+<p><strong>问题7：</strong> 没什么时间吃透需求 <strong>——学会让产品给你助力。</strong><br>觉得没什么时间吃透需求，就让产品快速有重点的再给你介绍下，争取过完就能直接进行开发。你可以在开发的过程中通过分析数据和代码逻辑推敲需求细节，这个时候你极有可能会发现一些比较深入的细节问题，然后再和产品做进一步的的沟通，几个回合，大事可成。这个过程可能并不严谨，产品出来后开发不经过仔细推敲和合理性论证，可能会有坑，埋隐患，但是又能怎么办呢，这个时候只能先无条件相信产品，保障大的进度和核心功能是重点，后期真的有细节问题再逐步优化。有时候项目本身就是要卡点去抢占时间、抢占资源，对早起版本可能本身可以不用非常严谨，你心里要大概明白大局，要给予谅解和合适的有取舍的支持。  </p>
+<p><strong>问题8：</strong> 开发等可能会没有信心，没有士气 <strong>——和领导沟通，聊聊你的想法，可能会获取到意想不到的帮助。</strong></p>
+<p><strong>问题9：</strong> 其他一些突发问题 <strong>——你要清楚各个角色的职责，大概的能力范围，学会找对的人解决问题，不要把时间浪费在无意义的争辩上。</strong><br>我发现有些时候讨论问题，就是为了讨论问题而讨论问题，明明这个讨论是在浪费时间，明明就讨论不出来什么结果，可能对方知道一点，但更多的也不很清楚，决断不了或者解释不清楚你的问题。这时候要及时洞察到当下状况，及时跳出来，找对的人来快速解决问题。</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p><strong>问题7：</strong> 没什么时间吃透需求 <strong>——多和产品沟通吧，必要时拉开发一起和产品交流。</strong><br>这样项目中测试我觉得是最苦逼的，产品到线上有什么大问题，测试是要担责的，然而前期的各个环节得不到保障，到了测试阶段几乎不可避免的会积攒出很多问题，这都需要测试同学帮着发现、扶正。所以我觉得产品，开发也要多体谅测试，有什么需要配合的积极做好配合。提测后产品看看能不能多帮着验证下，开发要及时梳理代码，提测后开发对需求、对代码已经有了一定的熟知度了，完全可以做做严谨性的重构，提高代码质量，避免隐性bug。像我上边介绍的。</p>
+<h1 id="技术上呢，该如何提升演进？"><a href="#技术上呢，该如何提升演进？" class="headerlink" title="技术上呢，该如何提升演进？"></a>技术上呢，该如何提升演进？</h1><p>这个我觉有时间的时候多思考，多积累非常关键，越是这种忙的时候越是可以借着紧急项目的时间压迫倒逼自己快速落地实践，当然越是这个时候发现有技术改进的机会，也越要把握住。</p>
+<h2 id="总结下上边技术演进的隐线"><a href="#总结下上边技术演进的隐线" class="headerlink" title="总结下上边技术演进的隐线"></a>总结下上边技术演进的隐线</h2><ol>
+<li><p>上边项目2（麦宝PC toB）商品创建编辑复杂表单的处理：<br>之前几个月一个项目中积累的方法，还没有在其他项目中使用过，这里就刚好借着机会又实践上了，即验证了之前经验的有效性和通用性，又在关键时候起到了关键作用，极为收益。（后来大概写了下：复杂大表单的处理）</p>
+</li>
+<li><p>上边项目3（容器镜像服务TCR）：<br>起初是在这次前一段时间某个项目私下改造中尝试了一下hooks，然后发现hooks看着简单，但是有些地方自己认知还是不够（文章：Hooks方案的实践小结）。然后就私下又读了几遍官方文档，搜罗查看了一批网文，自己实践练习，提炼总结出了一套hooks使用指南供自己参考，同时也可推广培训使用。再后来好奇心驱使又调研了connect的替代方案等。到了TCR这个项目，为了提高开发效率，我的第一个意识就是，为了提升开发效率、减少书写代码量、便于理解维护，这次必须要大范围上hooks方案了。然后在使用的过程中又根据具体的业务需要处理了一些自定义hook方案，比如自定义了useModal、引入了react-final-form-hooks等等。我想接下来进一步的丰富自定义hooks什么的就是跟着需求顺水推舟的事情了。这就是一个持续的连贯的过程，<strong>项目切换虽然频繁，但是技术的演进可以连续不断。</strong></p>
+</li>
+<li><p>重构：<br>上边有两个项目的周报中都能看出来最后我都会单独进行一些重构工作，我觉得这个过程是一个深入思考项目、封装提炼组件的一个非常好的过程，这时候你大概是能看出来现在项目中还缺什么，后边需要补什么的。这就为进一步的项目优化，技术提升指明了方向。</p>
+</li>
+</ol>
+<h2 id="再说一个心态上的演进"><a href="#再说一个心态上的演进" class="headerlink" title="再说一个心态上的演进"></a>再说一个心态上的演进</h2><p>有了前两个项目的压迫与思考，其实到了TCR心里压力已经小了很多，对于可能会遇到的问题和应该怎么解决基本上已经心中有数。这就是成长。</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>有了这次的经历，我觉得以后不管再遇到什么紧急项目，我都会心中有底气，应对有方法了。其实即便是普通项目我觉得这次总结的很多方法也是很有实际借鉴意义的。以上是自己经历中的思考和愚见，欢迎交流指正。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/10/React%E6%B5%8B%E8%AF%95%E6%8C%87%E5%8D%97/" rel="prev" title="React测试指南">
+      <i class="fa fa-chevron-left"></i> React测试指南
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/10/%E5%A4%8D%E6%9D%82%E5%A4%A7%E8%A1%A8%E5%8D%95%E7%9A%84%E5%A4%84%E7%90%86/" rel="next" title="复杂大表单的处理">
+      复杂大表单的处理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91"><span class="nav-number">1.</span> <span class="nav-text">前端日常开发</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%91%E7%BB%8F%E5%8E%86%E7%9A%84%E2%80%9C%E5%8D%81%E4%B8%87%E7%81%AB%E6%80%A5%E2%80%9D%E9%A1%B9%E7%9B%AE"><span class="nav-number">2.</span> <span class="nav-text">我经历的“十万火急”项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE1%EF%BC%9A%E9%BA%A6%E5%AE%9D%E5%B0%8F%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.1.</span> <span class="nav-text">项目1：麦宝小程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE2%EF%BC%9A%E9%BA%A6%E5%AE%9DPC%E7%AB%AF-toB%E5%95%86%E5%93%81%E7%AE%A1%E7%90%86%E9%A1%B9%E7%9B%AE"><span class="nav-number">2.2.</span> <span class="nav-text">项目2：麦宝PC端 toB商品管理项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE3%EF%BC%9A%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F%E6%9C%8D%E5%8A%A1TCR"><span class="nav-number">2.3.</span> <span class="nav-text">项目3：容器镜像服务TCR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8B%E4%B8%8A%E8%BE%B9%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%BC%80%E5%8F%91%E6%88%91%E7%9C%8B%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.4.</span> <span class="nav-text">总结下上边项目需求开发我看到的问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8B%E5%90%8E%E4%BB%8E%E6%88%91%E7%9A%84%E8%A7%86%E8%A7%92%E5%87%BA%E5%8F%91%EF%BC%8C%E8%81%8A%E8%81%8A%E5%90%84%E4%B8%AA%E8%A7%92%E8%89%B2%E5%AF%B9%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%E5%8F%AF%E5%81%9A%E7%9A%84%E5%BA%94%E5%AF%B9%E7%AD%96%E7%95%A5"><span class="nav-number">3.</span> <span class="nav-text">事后从我的视角出发，聊聊各个角色对一些问题可做的应对策略</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E8%B4%9F%E8%B4%A3%E4%BA%BA"><span class="nav-number">3.1.</span> <span class="nav-text">各负责人</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A7%E5%93%81"><span class="nav-number">3.2.</span> <span class="nav-text">产品</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91"><span class="nav-number">3.3.</span> <span class="nav-text">开发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">3.4.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8A%80%E6%9C%AF%E4%B8%8A%E5%91%A2%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E6%8F%90%E5%8D%87%E6%BC%94%E8%BF%9B%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">技术上呢，该如何提升演进？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8B%E4%B8%8A%E8%BE%B9%E6%8A%80%E6%9C%AF%E6%BC%94%E8%BF%9B%E7%9A%84%E9%9A%90%E7%BA%BF"><span class="nav-number">4.1.</span> <span class="nav-text">总结下上边技术演进的隐线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%8D%E8%AF%B4%E4%B8%80%E4%B8%AA%E5%BF%83%E6%80%81%E4%B8%8A%E7%9A%84%E6%BC%94%E8%BF%9B"><span class="nav-number">4.2.</span> <span class="nav-text">再说一个心态上的演进</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">5.</span> <span class="nav-text">结语</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">taoyingsong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">taoyingsong</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '',
+      clientSecret: '',
+      repo        : '',
+      owner       : '',
+      admin       : [''],
+      id          : 'ab014e14789dfc85d86da3c2551aa50c',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

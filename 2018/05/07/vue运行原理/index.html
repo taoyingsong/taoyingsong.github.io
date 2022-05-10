@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="vue运行原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue运行原理">
+<meta property="og:url" content="http://example.com/2018/05/07/vue%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="路漫漫其修远兮&lt;br &#x2F;&gt;吾将上下而求索">
+<meta property="og:description" content="vue运行原理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2018/05/07/vue%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/vue1.png">
+<meta property="og:image" content="http://example.com/2018/05/07/vue%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/vue2.png">
+<meta property="og:image" content="http://example.com/2018/05/07/vue%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/vue3.png">
+<meta property="og:image" content="http://example.com/2018/05/07/vue%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/vue4.png">
+<meta property="article:published_time" content="2018-05-06T17:28:55.000Z">
+<meta property="article:modified_time" content="2022-05-10T11:56:42.974Z">
+<meta property="article:author" content="taoyingsong">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2018/05/07/vue%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/vue1.png">
+
+<link rel="canonical" href="http://example.com/2018/05/07/vue%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>vue运行原理 | 路漫漫其修远兮<br />吾将上下而求索</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">路漫漫其修远兮<br />吾将上下而求索</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/05/07/vue%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="taoyingsong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="路漫漫其修远兮<br />吾将上下而求索">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vue运行原理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-05-07 01:28:55" itemprop="dateCreated datePublished" datetime="2018-05-07T01:28:55+08:00">2018-05-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-10 19:56:42" itemprop="dateModified" datetime="2022-05-10T19:56:42+08:00">2022-05-10</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>vue运行原理</p>
+<span id="more"></span>
+
+<h2 id="init过程"><a href="#init过程" class="headerlink" title="init过程"></a>init过程</h2><p>初始化生命周期、事件、 props、 methods、 data、 computed 与 watch 等，并通过 Object.defineProperty 设置 setter 与 getter 函数，用来实现「响应式」以及「依赖收集」</p>
+<h3 id="响应式系统："><a href="#响应式系统：" class="headerlink" title="响应式系统："></a>响应式系统：</h3><ul>
+<li>Vue的核心实现就是「响应式系统」，vue中是通过Object.defineProperty实现的。</li>
+<li>将data中的数据都通过defineProperty包装一边对数据进行响应式化，这个过程中为每一个进行defineProperty包装的属性创建一个观察者对象dep。</li>
+<li>当 render function 被渲染的时候，因为会读取所需对象的值，所以会触发 getter 函数进行「依赖收集」，「依赖收集」的目的是将观察者 Watcher 对象存放到当前闭包中的订阅者 Dep 的 subs 中。</li>
+<li>在修改对象的值的时候，会触发对应的 setter， setter 通知之前「依赖收集」得到的 Dep 中的每一个 Watcher，告诉它们自己的值改变了，需要重新渲染视图。这时候这些 Watcher 就会开始调用 update 来更新视图，中间还有一个 patch 的过程以及使用队列来异步更新的策略。</li>
+</ul>
+<h3 id="问题：响应式数据失效"><a href="#问题：响应式数据失效" class="headerlink" title="问题：响应式数据失效"></a>问题：响应式数据失效</h3><p>首次渲染时data对象中的所有key都可以被响应化处理到。那么怎么会出现实效的情况？<br>1、数组没有Object.defineProperty这个方法，所以在使用数组索引角标的形式更改元素数据时（arr[index] &#x3D; newVal），视图往往无法响应式更新。<br>为解决这个问题，Vue.js 中提供了 $set() 方法：<br><code>vm.arr.$set(0, &#39;newVal’) // vm.arr[0] = ‘newVal&#39;</code></p>
+<p>2、Vue 不能检测到对象属性的添加或删除。由于 Vue 会在初始化实例时对属性执行 getter&#x2F;setter 转化过程，所以属性必须在 data 对象上存在才能让 Vue 转换它，这样才能让它是响应的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var vm = new Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    a: 1</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line">// `vm.a` 是响应的</span><br><span class="line">vm.b = 2</span><br><span class="line">// `vm.b` 是非响应的</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/05/07/vue%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/vue1.png"></p>
+<h2 id="mount"><a href="#mount" class="headerlink" title="$mount"></a>$mount</h2><p> 会挂载组件</p>
+<h2 id="compile"><a href="#compile" class="headerlink" title="compile()"></a>compile()</h2><h3 id="Parse"><a href="#Parse" class="headerlink" title="Parse:"></a>Parse:</h3><p>parse 会用正则等方式解析 template 模板中的指令、class、style等数据，形成AST(抽象语法树)。<br>AST并没有把数据解析到其中，对应需要数据的部分做了如下黄色选中部分的处理。</p>
+<p>AST的样子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    /* 标签属性的map，记录了标签上属性 */</span><br><span class="line">    &#x27;attrsMap&#x27;: &#123;</span><br><span class="line">        &#x27;:class&#x27;: &#x27;c&#x27;,</span><br><span class="line">        &#x27;class&#x27;: &#x27;demo&#x27;,</span><br><span class="line">        &#x27;v-if&#x27;: &#x27;isShow&#x27;</span><br><span class="line">    &#125;,</span><br><span class="line">    /* 解析得到的:class */</span><br><span class="line">    &#x27;classBinding&#x27;: &#x27;c&#x27;,</span><br><span class="line">    /* 标签属性v-if */</span><br><span class="line">    &#x27;if&#x27;: &#x27;isShow&#x27;,</span><br><span class="line">    /* v-if的条件 */</span><br><span class="line">    &#x27;ifConditions&#x27;: [</span><br><span class="line">        &#x27;exp&#x27;: &#x27;isShow&#x27;</span><br><span class="line">    ],</span><br><span class="line">    /* 标签属性class */</span><br><span class="line">    &#x27;staticClass&#x27;: &#x27;demo&#x27;,</span><br><span class="line">    /* 标签的tag */</span><br><span class="line">    &#x27;tag&#x27;: &#x27;div&#x27;,</span><br><span class="line">    /* 子标签数组 */</span><br><span class="line">    &#x27;children&#x27;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &#x27;attrsMap&#x27;: &#123;</span><br><span class="line">                &#x27;v-for&#x27;: &quot;item in sz&quot;</span><br><span class="line">            &#125;,</span><br><span class="line">            /* for循环的参数 */</span><br><span class="line">            &#x27;alias&#x27;: &quot;item&quot;,</span><br><span class="line">            /* for循环的对象 */</span><br><span class="line">            &#x27;for&#x27;: &#x27;sz&#x27;,</span><br><span class="line">            /* for循环是否已经被处理的标记位 */</span><br><span class="line">            &#x27;forProcessed&#x27;: true,</span><br><span class="line">            &#x27;tag&#x27;: &#x27;span&#x27;,</span><br><span class="line">            &#x27;children&#x27;: [</span><br><span class="line">                &#123;</span><br><span class="line">                    /* 表达式，_s是一个转字符串的函数 */</span><br><span class="line">                    &#x27;expression&#x27;: &#x27;_s(item)’,</span><br><span class="line">                    &#x27;text&#x27;: &#x27;&#123;&#123;item&#125;&#125;&#x27;</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="optimize（作优化）："><a href="#optimize（作优化）：" class="headerlink" title="optimize（作优化）："></a>optimize（作优化）：</h3><p>—— markStatic、markStaticRoots</p>
+<p>主要是为静态的节点做上一些「标记」（即加上 static 属性，这是 Vue 在编译过程中的一处优化），后边当 update更新界面时，会有一个 patch 的过程，diff 算法会直接跳过静态节点，从而减少了比较的过程，优化了 patch 的性能。<br>为静态根做staticRoot 标记（静态根会忽略一些处理，比如不做vnode转化等。作者认为这种情况的优化消耗会大于收益）。</p>
+<p><strong>静态节点判断标准：</strong><br>当一个node为【表达式节点】—— 有Mustache语法的表达式等，或存在【 if 或者 for】这样的条件的时候 是非静态节点，如果子节点是非静态节点，那么当前节点也是非静态节点。<br>【文本节点】等永远不需要改变的节点则是静态节点。</p>
+<p><strong>静态根判断标准：</strong><br>当前节点为静态节点 &amp;&amp; 有子节点 &amp;&amp; 子节点不是单个静态文本节点 则为静态根</p>
+<h3 id="generate-："><a href="#generate-：" class="headerlink" title="generate ："></a>generate ：</h3><p>会将传入的 AST 转化成可执行的 render函数。（AST和vnode关系？？？在经历过 parse、optimize 与 generate 这三个阶段以后，组件中就会存在渲染 VNode 所需的 render function 了。 Render function 和数据结合render生成Virtual DOM Tree  ）</p>
+<p>函数中：<br>_c 是生成一个vnode元素节点: _c —&gt; _createElement —&gt; new Vnode()<br>_s 则是调用了toString() 生成文字<br>_v 生成一个 vnode文字节点<br>…</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function generate (rootAst) &#123;</span><br><span class="line">    const code = rootAst ? genElement(rootAst) : &#x27;_c(&quot;div”)’ </span><br><span class="line">    return &#123;</span><br><span class="line">        render: `with(this)&#123;return $&#123;code&#125;&#125;`,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;    </span><br></pre></td></tr></table></figure>
+
+<p>结果类似这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">with(this)&#123;</span><br><span class="line">    return (isShow) ? </span><br><span class="line">    _c(</span><br><span class="line">        &#x27;div&#x27;,</span><br><span class="line">        &#123;</span><br><span class="line">            staticClass: &quot;demo&quot;,</span><br><span class="line">            class: c</span><br><span class="line">        &#125;,</span><br><span class="line">        _l(</span><br><span class="line">            (sz),</span><br><span class="line">            function(item)&#123;</span><br><span class="line">                return _c(&#x27;span&#x27;,[_v(_s(item))])</span><br><span class="line">            &#125;</span><br><span class="line">        )</span><br><span class="line">    )</span><br><span class="line">    : _e()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/05/07/vue%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/vue2.png"></p>
+<h3 id="扩展："><a href="#扩展：" class="headerlink" title="扩展："></a>扩展：</h3><p><code>Virtual DOM</code><br>Virtual DOM 其实就是一棵以 JavaScript 对象（ VNode 节点）作为基础的树，用对象属性来描述节点，实际上它只是一层对真实 DOM 的抽象。最终可以通过一系列操作使这棵树映射到真实环境上。由于 Virtual DOM 是以 JavaScript 对象为基础而不依赖真实平台环境，所以使它具有了跨平台的能力，比如说浏览器平台、Weex、Node 等。   </p>
+<h2 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h2><p>算法是通过同层的树节点进行比较而非对树进行逐层搜索遍历的方式，所以时间复杂度只有 O(n)，是一种相当高效的算法，比对得到「差异」后将这些「差异」更新到视图上。</p>
+<p>之所以将新的 VNode 与旧的 VNode 一起传入 patch 进行比较，经过 diff 算法得出它们的「差异」然后将这些「差异」的对应 DOM 进行修改。是因为通过innerHTML 将新的VNode直接替换旧的VNode全部渲染到真实 DOM 中是一个比较浪费的过程（这个过程其实包含了渲染的一些列步骤，如果很少内容更改浏览器就要白做很多事情）。<br>注意：</p>
+<ul>
+<li>对比的只是动态数据发生变化的部分（如if、else中的node，新的for和旧的for生成的node，动态文本改变前后node）</li>
+<li>发现差异后移动、更新操作的是oldVnode对应的elm，即已经挂载在页面中的真实DOM节点。<br><img src="/2018/05/07/vue%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/vue3.png"></li>
+</ul>
+<p>「编译」的时候会将静态节点标记出来，这样就可以跳过比对的过程。（这里不是什么也不做，还是有动作要做的：在当新老 VNode 节点都是 isStatic（静态的），并且 key 相同时，只要将 componentInstance 与 elm 从老 VNode 节点“拿过来”即可。）</p>
+<p>Diff算法比较的细节：<br><img src="/2018/05/07/vue%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/vue4.png"></p>
+<p>两端对比</p>
+<p>交叉对比<br>相同dom移动到oldVnode最后，并移动oldVnode的start指针和newVnode的end指针<br>相同dom移动到oldVnode最前，并移动oldVnode的end指针和newVnode的start指针</p>
+<p>中间对比：从newVnode start开始根据key快探查oldVnode是否在中间有相通节点<br>有：将此node移到oldVnode最前，移动newVnode start指针<br>无：创建新node插入到oldVnode最前，移动newVnode start指针</p>
+<p>理解并按照默认diff规则才能使代码达到最优,比如说,保持根节点一致;一个dom父节点下有多个子节点并列时,给子节点添加key,防止对父节点使用insertBefore插入子节点这种情况等等。</p>
+<h2 id="批量异步更新的策略"><a href="#批量异步更新的策略" class="headerlink" title="批量异步更新的策略"></a>批量异步更新的策略</h2><p>问题：循环中频繁更新数据视图也要跟着频繁更新吗？这个时候使用的就是一部更新</p>
+<ul>
+<li>Vue.js在默认情况下，每次触发某个数据的 setter 方法后，对应的 Watcher 对象其实会被 push 进一个队列 queue 中，在下一个 tick(nextTick) 的时候将这个队列 queue 全部拿出来 run一遍。</li>
+<li>其中有一个对批量去重的步骤，用一个map来存储queue中所有watcher的id这样在pushwatcher的时候就可以去重。</li>
+<li>nextTick其实就是任务队列中存储的一个任务，运行时会执行上边push进queue的所有内容，所有的循环会在本次执行栈中完成。run的是Watcher 对象的一个方法，用来触发 patch 操作</li>
+</ul>
+<h2 id="Vuex工作原理："><a href="#Vuex工作原理：" class="headerlink" title="Vuex工作原理："></a>Vuex工作原理：</h2><p>因为 Vuex 内部采用了 new Vue 来将 Store 内的数据进行「响应式化」，所以 Vuex 是一款利用 Vue 内部机制的库，与 Vue 高度契合。<br>数据会通过类似Vue.prototype.globalData &#x3D; globalData;的方式放在Vue的prototype中，这样当组件想获取值时直接通过prototype获取即可。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/vue/" rel="tag"># vue</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/04/29/webpack%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E4%BC%98%E5%8C%96%E7%AF%87/" rel="prev" title="webpack配置——优化篇">
+      <i class="fa fa-chevron-left"></i> webpack配置——优化篇
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/05/07/Vue-React-%E6%AF%94%E8%BE%83/" rel="next" title="vue & react 比较">
+      vue & react 比较 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#init%E8%BF%87%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">init过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%8D%E5%BA%94%E5%BC%8F%E7%B3%BB%E7%BB%9F%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">响应式系统：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%EF%BC%9A%E5%93%8D%E5%BA%94%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%A4%B1%E6%95%88"><span class="nav-number">1.2.</span> <span class="nav-text">问题：响应式数据失效</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mount"><span class="nav-number">2.</span> <span class="nav-text">$mount</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#compile"><span class="nav-number">3.</span> <span class="nav-text">compile()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Parse"><span class="nav-number">3.1.</span> <span class="nav-text">Parse:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#optimize%EF%BC%88%E4%BD%9C%E4%BC%98%E5%8C%96%EF%BC%89%EF%BC%9A"><span class="nav-number">3.2.</span> <span class="nav-text">optimize（作优化）：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#generate-%EF%BC%9A"><span class="nav-number">3.3.</span> <span class="nav-text">generate ：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%EF%BC%9A"><span class="nav-number">3.4.</span> <span class="nav-text">扩展：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#diff"><span class="nav-number">4.</span> <span class="nav-text">diff</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0%E7%9A%84%E7%AD%96%E7%95%A5"><span class="nav-number">5.</span> <span class="nav-text">批量异步更新的策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vuex%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">Vuex工作原理：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">taoyingsong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">taoyingsong</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '',
+      clientSecret: '',
+      repo        : '',
+      owner       : '',
+      admin       : [''],
+      id          : 'ec919574f50bf4cd128077816c62c022',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

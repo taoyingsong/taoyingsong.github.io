@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="第二部分的最后一篇，加油！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端知识体系梳理（二-3）—— JS-Web-API">
+<meta property="og:url" content="http://example.com/2018/03/15/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%A2%B3%E7%90%86%EF%BC%88%E4%BA%8C-3%EF%BC%89%E2%80%94%E2%80%94-JS-Web-API/index.html">
+<meta property="og:site_name" content="路漫漫其修远兮&lt;br &#x2F;&gt;吾将上下而求索">
+<meta property="og:description" content="第二部分的最后一篇，加油！">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-03-14T16:24:46.000Z">
+<meta property="article:modified_time" content="2018-03-25T05:24:07.000Z">
+<meta property="article:author" content="taoyingsong">
+<meta property="article:tag" content="dom bom 事件 ajax 存储">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2018/03/15/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%A2%B3%E7%90%86%EF%BC%88%E4%BA%8C-3%EF%BC%89%E2%80%94%E2%80%94-JS-Web-API/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>前端知识体系梳理（二-3）—— JS-Web-API | 路漫漫其修远兮<br />吾将上下而求索</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">路漫漫其修远兮<br />吾将上下而求索</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/03/15/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%A2%B3%E7%90%86%EF%BC%88%E4%BA%8C-3%EF%BC%89%E2%80%94%E2%80%94-JS-Web-API/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="taoyingsong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="路漫漫其修远兮<br />吾将上下而求索">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          前端知识体系梳理（二-3）—— JS-Web-API
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-15 00:24:46" itemprop="dateCreated datePublished" datetime="2018-03-15T00:24:46+08:00">2018-03-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-03-25 13:24:07" itemprop="dateModified" datetime="2018-03-25T13:24:07+08:00">2018-03-25</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>第二部分的最后一篇，加油！</p>
+<span id="more"></span>
+
+<ul>
+<li>BOM操作</li>
+<li>DOM操作</li>
+<li>事件<ul>
+<li>事件绑定</li>
+<li>事件冒泡</li>
+<li>事件代理</li>
+</ul>
+</li>
+<li>Ajax<ul>
+<li>XMLHttpRequest</li>
+<li>Fetch API</li>
+<li>跨域</li>
+</ul>
+</li>
+<li>存储<ul>
+<li>cookie、localStorage、sessionStorage</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="BOM操作"><a href="#BOM操作" class="headerlink" title="BOM操作"></a>BOM操作</h2><p>BOM（浏览器对象模型）是浏览器本身的一些信息的设置和获取。<br>其在window下的属性有：</p>
+<ul>
+<li>navigator</li>
+<li>screen</li>
+<li>location</li>
+<li>history</li>
+</ul>
+<p>获取浏览器特性（即俗称的UA）然后识别客户端，例如判断是不是 Chrome 浏览器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var ua = navigator.userAgent</span><br><span class="line">var isChrome = ua.indexOf(&#x27;Chrome&#x27;)</span><br><span class="line">console.log(isChrome)</span><br></pre></td></tr></table></figure>
+
+<p>获取屏幕的宽度和高度</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">console.log(screen.width)</span><br><span class="line">console.log(screen.height)</span><br></pre></td></tr></table></figure>
+
+<p>获取网址、协议、path、参数、hash 等</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 例如当前网址是 https://juejin.im/timeline/frontend?a=10&amp;b=10#some</span><br><span class="line">console.log(location.href)  // https://juejin.im/timeline/frontend?a=10&amp;b=10#some</span><br><span class="line">console.log(location.protocol) // https:</span><br><span class="line">console.log(location.pathname) // /timeline/frontend</span><br><span class="line">console.log(location.search) // ?a=10&amp;b=10</span><br><span class="line">console.log(location.hash) // #some</span><br></pre></td></tr></table></figure>
+<p>调用浏览器的前进、后退功能</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">history.back()</span><br><span class="line">history.forward()</span><br></pre></td></tr></table></figure>
+
+<h2 id="DOM操作"><a href="#DOM操作" class="headerlink" title="DOM操作"></a>DOM操作</h2><p><strong>什么是DOM</strong>？<br>浏览器就需要把 HTML 转变成 DOM，HTML 是一棵树，DOM 也是一棵树。对 DOM 的理解，可以暂时先抛开浏览器的内部因素，先从 JS 着手，即可以认为 DOM 就是 JS 能识别的 HTML 结构，一个普通的 JS 对象或者数组。</p>
+<p><strong>获取DOM节点</strong>：<br>最常用的 DOM API 就是获取节点，其中常用的获取方法有：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 通过 id 获取</span><br><span class="line">var div1 = document.getElementById(&#x27;div1&#x27;) // 元素</span><br><span class="line"></span><br><span class="line">// 通过 tagname 获取</span><br><span class="line">var divList = document.getElementsByTagName(&#x27;div&#x27;)  // 集合</span><br><span class="line">console.log(divList.length)</span><br><span class="line">console.log(divList[0])</span><br><span class="line"></span><br><span class="line">// 通过 class 获取</span><br><span class="line">var containerList = document.getElementsByClassName(&#x27;container&#x27;) // 集合</span><br><span class="line"></span><br><span class="line">// 通过 CSS 选择器获取</span><br><span class="line">var pList = document.querySelectorAll(&#x27;p&#x27;) // 集合</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>property 和 attribute 的区别</p>
+</blockquote>
+<p><code>property</code><br>DOM 节点本质上也是一个 JS 对象。因此，如下代码所示，p可以有style属性，有className nodeName nodeType属性。注意，这些都是 JS 范畴的属性，符合 JS 语法标准的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var pList = document.querySelectorAll(&#x27;p&#x27;)</span><br><span class="line">var p = pList[0]</span><br><span class="line">console.log(p.style.width)  // 获取样式</span><br><span class="line">p.style.width = &#x27;100px&#x27;  // 修改样式</span><br><span class="line">console.log(p.className)  // 获取 class</span><br><span class="line">p.className = &#x27;p1&#x27;  // 修改 class</span><br><span class="line"></span><br><span class="line">// 获取 nodeName 和 nodeType</span><br><span class="line">console.log(p.nodeName)</span><br><span class="line">console.log(p.nodeType)</span><br></pre></td></tr></table></figure>
+<p><code>attribute</code><br><strong>property</strong> 的获取和修改，是直接改变 <strong>JS 对象</strong>，而 <strong>attribute</strong> 是直接改变 <strong>HTML 的属性</strong>，两种有很大的区别。attribute 就是对 HTML 属性的 get 和 set，和 DOM 节点的 JS 范畴的 property 没有关系。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var pList = document.querySelectorAll(&#x27;p&#x27;)</span><br><span class="line">var p = pList[0]</span><br><span class="line">p.getAttribute(&#x27;data-name&#x27;)</span><br><span class="line">p.setAttribute(&#x27;data-name&#x27;, &#x27;juejin&#x27;)</span><br><span class="line">p.getAttribute(&#x27;style&#x27;)</span><br><span class="line">p.setAttribute(&#x27;style&#x27;, &#x27;font-size:30px;&#x27;)</span><br></pre></td></tr></table></figure>
+<p>而且，get 和 set attribute 时，还会触发 DOM 的查询或者重绘、重排，频繁操作会影响页面性能。</p>
+<p><strong>DOM 操作的基本API</strong>:<br>新增节点</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var div1 = document.getElementById(&#x27;div1&#x27;)</span><br><span class="line"></span><br><span class="line">// 添加新节点</span><br><span class="line">var p1 = document.createElement(&#x27;p&#x27;)</span><br><span class="line">p1.innerHTML = &#x27;this is p1&#x27;</span><br><span class="line">div1.appendChild(p1) // 添加新创建的元素(append 和appendTo是jquery的用法)</span><br><span class="line"></span><br><span class="line">// 移动已有节点。注意，这里是“移动”，并不是拷贝</span><br><span class="line">var p2 = document.getElementById(&#x27;p2&#x27;)</span><br><span class="line">div1.appendChild(p2)</span><br></pre></td></tr></table></figure>
+<p>获取父元素</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var div1 = document.getElementById(&#x27;div1&#x27;)</span><br><span class="line">var parent = div1.parentElement</span><br></pre></td></tr></table></figure>
+<p>获取子元素</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var div1 = document.getElementById(&#x27;div1&#x27;)</span><br><span class="line">var child = div1.childNodes</span><br></pre></td></tr></table></figure>
+<p>删除节点</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var div1 = document.getElementById(&#x27;div1&#x27;)</span><br><span class="line">var child = div1.childNodes</span><br><span class="line">div1.removeChild(child[0])</span><br></pre></td></tr></table></figure>
+<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><h3 id="事件绑定"><a href="#事件绑定" class="headerlink" title="事件绑定"></a>事件绑定</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var btn = document.getElementById(&#x27;btn1&#x27;)</span><br><span class="line">btn.addEventListener(&#x27;click&#x27;, function (event) &#123;</span><br><span class="line">    // event.preventDefault() // 阻止默认行为</span><br><span class="line">    // event.stopPropagation() // 阻止冒泡</span><br><span class="line">    console.log(&#x27;clicked&#x27;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 通用的事件绑定函数</span><br><span class="line">function bindEvent(elem, type, fn) &#123;</span><br><span class="line">    elem.addEventListener(type, fn)</span><br><span class="line">&#125;</span><br><span class="line">var a = document.getElementById(&#x27;link1&#x27;)</span><br><span class="line">// 写起来更加简单了</span><br><span class="line">bindEvent(a, &#x27;click&#x27;, function(e) &#123;</span><br><span class="line">    e.preventDefault() // 阻止默认行为</span><br><span class="line">    alert(&#x27;clicked&#x27;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="事件冒泡"><a href="#事件冒泡" class="headerlink" title="事件冒泡"></a>事件冒泡</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;div id=&quot;div1&quot;&gt;</span><br><span class="line">        &lt;p id=&quot;p1&quot;&gt;激活&lt;/p&gt;</span><br><span class="line">        &lt;p id=&quot;p2&quot;&gt;取消&lt;/p&gt;</span><br><span class="line">        &lt;p id=&quot;p3&quot;&gt;取消&lt;/p&gt;</span><br><span class="line">        &lt;p id=&quot;p4&quot;&gt;取消&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div id=&quot;div2&quot;&gt;</span><br><span class="line">        &lt;p id=&quot;p5&quot;&gt;取消&lt;/p&gt;</span><br><span class="line">        &lt;p id=&quot;p6&quot;&gt;取消&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var body = document.body</span><br><span class="line">bindEvent(body, &#x27;click&#x27;, function (e) &#123;</span><br><span class="line">    // 所有 p 的点击都会冒泡到 body 上，因为 DOM 结构中 body 是 p 的上级节点，事件会沿着 DOM 树向上冒泡</span><br><span class="line">    alert(&#x27;取消&#x27;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">var p1 = document.getElementById(&#x27;p1&#x27;)</span><br><span class="line">bindEvent(p1, &#x27;click&#x27;, function (e) &#123;</span><br><span class="line">    e.stopPropagation() // 阻止冒泡</span><br><span class="line">    alert(&#x27;激活&#x27;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="事件代理"><a href="#事件代理" class="headerlink" title="事件代理"></a>事件代理</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;div1&quot;&gt;</span><br><span class="line">    &lt;a href=&quot;#&quot;&gt;a1&lt;/a&gt;</span><br><span class="line">    &lt;a href=&quot;#&quot;&gt;a2&lt;/a&gt;</span><br><span class="line">    &lt;a href=&quot;#&quot;&gt;a3&lt;/a&gt;</span><br><span class="line">    &lt;a href=&quot;#&quot;&gt;a4&lt;/a&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;button&gt;点击增加一个 a 标签&lt;/button&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var div1 = document.getElementById(&#x27;div1&#x27;)</span><br><span class="line">div1.addEventListener(&#x27;click&#x27;, function (e) &#123;</span><br><span class="line">    // e.target 可以监听到触发点击事件的元素是哪一个</span><br><span class="line">    var target = e.target</span><br><span class="line">    if (target.nodeName === &#x27;A&#x27;) &#123;</span><br><span class="line">        // 点击的是 &lt;a&gt; 元素</span><br><span class="line">        alert(target.innerHTML)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">// 完善的通用事件绑定函数</span><br><span class="line">function bindEvent(elem, type, selector, fn) &#123;</span><br><span class="line">    // 这样处理，可接收两种调用方式 bindEvent(div1, &#x27;click&#x27;, &#x27;a&#x27;, function () &#123;...&#125;) 和 bindEvent(div1, &#x27;click&#x27;, function () &#123;...&#125;) 这两种</span><br><span class="line">    if (!fn) &#123;</span><br><span class="line">        fn = selector</span><br><span class="line">        selector = null</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 绑定事件</span><br><span class="line">    elem.addEventListener(type, function (e) &#123;</span><br><span class="line">        var target</span><br><span class="line">        if (selector) &#123;</span><br><span class="line">            // 有 selector 说明需要做事件代理</span><br><span class="line">            // 获取触发时间的元素，即 e.target</span><br><span class="line">            target = e.target</span><br><span class="line">            // 看是否符合 selector 这个条件</span><br><span class="line">            if (target.matches(selector)) &#123;</span><br><span class="line">                fn.call(target, e)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // 无 selector ，说明不需要事件代理</span><br><span class="line">            fn(e)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">------------------------------</span><br><span class="line">// 使用代理，bindEvent 多一个 &#x27;a&#x27; 参数</span><br><span class="line">var div1 = document.getElementById(&#x27;div1&#x27;)</span><br><span class="line">bindEvent(div1, &#x27;click&#x27;, &#x27;a&#x27;, function (e) &#123;</span><br><span class="line">    console.log(this.innerHTML)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">// 不使用代理</span><br><span class="line">var a = document.getElementById(&#x27;a1&#x27;)</span><br><span class="line">bindEvent(div1, &#x27;click&#x27;, function (e) &#123;</span><br><span class="line">    console.log(a.innerHTML)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>使用代理的优点如下：<br>使代码简洁<br>减少浏览器的内存占用</p>
+<h2 id="Ajax"><a href="#Ajax" class="headerlink" title="Ajax"></a>Ajax</h2><h3 id="XMLHttpRequest"><a href="#XMLHttpRequest" class="headerlink" title="XMLHttpRequest"></a>XMLHttpRequest</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var xhr = new XMLHttpRequest()</span><br><span class="line">xhr.open(&quot;GET&quot;, &quot;/api&quot;, false) // 最后一个参数async = true表示异步请求，false表示同步请求</span><br><span class="line">xhr.onreadystatechange = function () &#123;</span><br><span class="line">    // 这里的函数异步执行，可参考之前 JS 基础中的异步模块</span><br><span class="line">    if (xhr.readyState == 4) &#123;</span><br><span class="line">        if (xhr.status == 200) &#123;</span><br><span class="line">            alert(xhr.responseText)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">xhr.send(null)</span><br></pre></td></tr></table></figure>
+<p><strong>状态码说明</strong><br>xhr.readyState是浏览器判断请求过程中各个阶段的，<br>xhr.status是 HTTP 协议中规定的不同结果的返回状态说明。</p>
+<p><strong>xhr.readyState的状态码说明</strong>：</p>
+<ul>
+<li>0 - 初始状态</li>
+<li>1 - open()</li>
+<li>2 - send()</li>
+<li>3 - send()后接受到返回数据</li>
+<li>4 - send()后接受完返回数据</li>
+</ul>
+<p><strong>复习xhr.status</strong>：</p>
+<ul>
+<li>200 正常</li>
+<li>3xx</li>
+<li>301 永久重定向。如<a target="_blank" rel="noopener" href="http://xxx.com这个/">http://xxx.com这个</a> GET 请求（最后没有&#x2F;），就会被301到<a target="_blank" rel="noopener" href="http://xxx.com/%EF%BC%88%E6%9C%80%E5%90%8E%E6%98%AF/%EF%BC%89">http://xxx.com/（最后是/）</a></li>
+<li>302 临时重定向。临时的，不是永久的</li>
+<li>304 资源找到但是不符合请求条件，不会返回任何主体。如发送 GET 请求时，head 中有If-Modified-Since: xxx（要求返回更新时间是xxx时间之后的资源），如果此时服务器 端资源未更新，则会返回304，即不符合要求</li>
+<li>404 找不到资源</li>
+<li>5xx 服务器端出错了</li>
+</ul>
+<h3 id="Fetch-API"><a href="#Fetch-API" class="headerlink" title="Fetch API"></a>Fetch API</h3><p> 目前已经有一个获取 HTTP 请求更加方便的 API：Fetch，通过Fetch提供的fetch()这个全局函数方法可以很简单地发起异步请求，并且支持Promise的回调。但是 Fetch API 是比较新的 API，具体使用的时候还需要查查 caniuse，看下其浏览器兼容情况。</p>
+<p>看一个简单的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> fetch(&#x27;some/api/data.json&#x27;, &#123;</span><br><span class="line">  method:&#x27;POST&#x27;, //请求类型 GET、POST</span><br><span class="line">  headers:&#123;&#125;, // 请求的头信息，形式为 Headers 对象或 ByteString</span><br><span class="line">  body:&#123;&#125;, //请求发送的数据 blob、BufferSource、FormData、URLSearchParams（get 或head 方法中不能包含 body）</span><br><span class="line">  mode:&#x27;&#x27;, //请求的模式，是否跨域等，如 cors、 no-cors 或 same-origin</span><br><span class="line">  credentials:&#x27;&#x27;, //cookie 的跨域策略，如 omit、same-origin 或 include</span><br><span class="line">  cache:&#x27;&#x27;, //请求的 cache 模式: default、no-store、reload、no-cache、 force-cache 或 only-if-cached</span><br><span class="line">&#125;).then(function(response) &#123; ... &#125;);</span><br></pre></td></tr></table></figure>
+<p>手动封装一个兼容低版本的fetch: <a target="_blank" rel="noopener" href="https://gitee.com/taoyingsong/open-skill/blob/master/fetch.js">https://gitee.com/taoyingsong/open-skill/blob/master/fetch.js</a><br>更多关于fetch及promise的介绍：<br><a target="_blank" rel="noopener" href="https://github.com/camsong/blog/issues/2">https://github.com/camsong/blog/issues/2</a><br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise</a></p>
+<h3 id="跨域"><a href="#跨域" class="headerlink" title="跨域"></a>跨域</h3><p>什么是跨域：相同的协议、域名、端口号即同源，否则就是跨域。</p>
+<p>HTML 中几个标签能逃避过同源策略——<code>&lt;script src=&quot;xxx&quot;&gt;</code>、<code>&lt;img src=&quot;xxxx&quot;/&gt;</code>、<code>&lt;link href=&quot;xxxx&quot;&gt;</code>，这三个标签的src&#x2F;href可以加载其他域的资源，不受同源策略限制。</p>
+<p>因此：</p>
+<ul>
+<li><p><code>&lt;img&gt;</code>可以做打点统计，因为统计方并不一定是同域的，在讲解 JS 基础知识异步的时候有过代码示例。除了能跨域之外，<code>&lt;img&gt;</code>几乎没有浏览器兼容问题，它是一个非常古老的标签。</p>
+</li>
+<li><p><code>&lt;script&gt;</code>和<code>&lt;link&gt;</code>可以使用 CDN，CDN 基本都是其他域的链接。</p>
+</li>
+<li><p>另外<code>&lt;script&gt;</code>还可以实现 JSONP，能获取其他域接口的信息，接下来马上讲解。</p>
+</li>
+</ul>
+<p>注意，所有的跨域请求方式，最终都需要信息提供方来做出相应的支持和改动，也就是要经过信息提供方的同意才行，否则接收方是无法得到它们的信息的，浏览器是不允许的。</p>
+<h4 id="解决跨域-JSONP"><a href="#解决跨域-JSONP" class="headerlink" title="解决跨域 - JSONP"></a>解决跨域 - JSONP</h4><p>首先，有一个概念你要明白，例如访问<code>http://coding.com/classindex.html</code>的时候，服务器端就一定有一个classindex.html文件吗？—— 不一定，服务器可以拿到这个请求，动态生成一个文件，然后返回。 同理，<code>&lt;script src=&quot;http://coding.com/api.js&quot;&gt;</code>也不一定加载一个服务器端的静态文件，服务器也可以动态生成文件并返回。</p>
+<p>首先，我们在自己的页面这样定义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">window.callback = function (data) &#123;</span><br><span class="line">    // 这是我们跨域得到信息</span><br><span class="line">    console.log(data)</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>请求<code>&lt;script src=&quot;http://coding.com/api.js&quot;&gt;</code>时，后台动态生成如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">callback(&#123;x:100, y:200&#125;)</span><br></pre></td></tr></table></figure>
+<p>最后我们在页面中加入<code>&lt;script src=&quot;http://coding.com/api.js&quot;&gt;&lt;/script&gt;</code>，那么这个js加载之后，就会执行内容，我们就得到内容了。</p>
+<h4 id="解决跨域-CORS-服务器端设置-http-header"><a href="#解决跨域-CORS-服务器端设置-http-header" class="headerlink" title="解决跨域 - CORS: 服务器端设置 http header"></a>解决跨域 - CORS: 服务器端设置 http header</h4><p>这是需要在服务器端设置的，作为前端工程师我们不用详细掌握，但是要知道有这么个解决方案。而且，现在推崇的跨域解决方案是这一种，比 JSONP 简单许多。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">response.setHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;http://m.test.com/&quot;);  // 第二个参数填写允许跨域的域名称，不建议直接写 &quot;*&quot;</span><br><span class="line">response.setHeader(&quot;Access-Control-Allow-Headers&quot;, &quot;X-Requested-With&quot;);</span><br><span class="line">response.setHeader(&quot;Access-Control-Allow-Methods&quot;, &quot;PUT,POST,GET,DELETE,OPTIONS&quot;);</span><br><span class="line"></span><br><span class="line">// 接收跨域的cookie</span><br><span class="line">response.setHeader(&quot;Access-Control-Allow-Credentials&quot;, &quot;true&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>比较：</p>
+<ol>
+<li>JSONP的主要优势在于对浏览器的支持较好；虽然目前主流浏览器支持CORS，但IE10以下不支持CORS。</li>
+<li>JSONP只能用于获取资源（即只读，类似于GET请求）；CORS支持所有类型的HTTP请求，功能完善。（这点JSONP被玩虐，但大部分情况下GET已经能满足需求了）</li>
+<li>JSONP的错误处理机制并不完善，我们没办法进行错误处理；而CORS可以通过onerror事件监听错误，并且浏览器控制台会看到报错信息，利于排查。</li>
+<li>JSONP只会发一次请求；而对于复杂请求，CORS会发两次请求。</li>
+<li>始终觉得安全性这个东西是相对的，没有绝对的安全，也做不到绝对的安全。毕竟JSONP并不是跨域规范，它存在很明显的安全问题：callback参数注入和资源访问授权设置。CORS好歹也算是个跨域规范，在资源访问授权方面进行了限制（Access-Control-Allow-Origin），而且标准浏览器都做了安全限制，比如拒绝手动设置origin字段，相对来说是安全了一点。但是回过头来看一下，就算是不安全的JSONP，我们依然可以在服务端端进行一些权限的限制，服务端和客户端也都依然可以做一些注入的安全处理，哪怕被攻克，它也只能读一些东西。就算是比较安全的CORS，同样可以在服务端设置出现漏洞或者不在浏览器的跨域限制环境下进行攻击，而且它不仅可以读，还可以写。</li>
+</ol>
+<p>应用场景：<br>如果你需要兼容IE低版本浏览器，无疑，JSONP。<br>如果你需要对服务端资源进行谢操作，无疑，CORS。</p>
+<p>其他跨域解决方案Frame代理、Comet、Web Socket等平时都没用过就不深究了。</p>
+<h2 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h2><h3 id="cookie、localStorage、sessionStorage"><a href="#cookie、localStorage、sessionStorage" class="headerlink" title="cookie、localStorage、sessionStorage"></a>cookie、localStorage、sessionStorage</h3><p><code>cookie</code><br>cookie 本身不是用来做服务器端存储的，它是设计用来在服务器和客户端进行信息传递的，因此我们的每个 HTTP 请求都带着 cookie。但是 cookie 也具备浏览器端存储的能力（例如记住用户名和密码）,因此就被开发者用上了。<br>使用起来也非常简单，document.cookie &#x3D; … 即可。<br>但是 cookie 有它致命的缺点：</p>
+<ul>
+<li>存储量太小，只有 4KB</li>
+<li>所有 HTTP 请求都带着，会影响获取资源的效率</li>
+<li>API 简单，需要封装才能用</li>
+<li>一般由服务器生成，可设置失效时间。如果在浏览器端生成Cookie，默认是关闭浏览器后失效</li>
+<li>应用场景：比较常用的一个应用场景就是判断用户是否登录。针对登录过的用户，服务器端会在他登录时往 Cookie 中插入一段加密过的唯一辨识单一用户的辨识码，下次只要读取这个值就可以判断当前用户是否登录啦。</li>
+</ul>
+<p><code>localStorage</code><br>它是专门为了浏览器端缓存而设计的。其优点有：</p>
+<ul>
+<li>存储量增大到 5MB</li>
+<li>不会带到 HTTP 请求中</li>
+<li>API 适用于数据存储 localStorage.setItem(key, value) localStorage.getItem(key)。 (针对localStorage.setItem，使用时尽量加入到try-catch中，某些浏览器是禁用这个 API 的，要注意)</li>
+<li>localStorage除非被清除，否则永久保存</li>
+<li>应用场景：管理购物车，保存HTML5游戏的一些本地数据</li>
+</ul>
+<p><code>sessionStorage</code></p>
+<ul>
+<li>存储量增大到 5MB</li>
+<li>不会带到 HTTP 请求中</li>
+<li>API 适用于数据存储</li>
+<li>仅在当前会话下有效，关闭页面或浏览器后被清除</li>
+<li>应用场景：内容特别多的表单，我们可能要把表单页面拆分成多个子页面，然后按步骤引导用户填写。这时候 sessionStorage 的作用就发挥出来了。或者刷新页面保留想某些效果。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dom-bom-%E4%BA%8B%E4%BB%B6-ajax-%E5%AD%98%E5%82%A8/" rel="tag"># dom bom 事件 ajax 存储</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/03/14/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%A2%B3%E7%90%86%EF%BC%88%E4%BA%8C-2%EF%BC%89%E2%80%94%E2%80%94-%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86JS/" rel="prev" title="前端知识体系梳理（二-2）—— 重新认识JS">
+      <i class="fa fa-chevron-left"></i> 前端知识体系梳理（二-2）—— 重新认识JS
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/03/15/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%A2%B3%E7%90%86%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94-%E8%81%8A%E8%81%8A%E7%AE%97%E6%B3%95%E5%8F%8A%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="next" title="前端知识体系梳理（三）—— 聊聊算法及设计模式">
+      前端知识体系梳理（三）—— 聊聊算法及设计模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#BOM%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">BOM操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DOM%E6%93%8D%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">DOM操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A"><span class="nav-number">3.1.</span> <span class="nav-text">事件绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E5%86%92%E6%B3%A1"><span class="nav-number">3.2.</span> <span class="nav-text">事件冒泡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E4%BB%A3%E7%90%86"><span class="nav-number">3.3.</span> <span class="nav-text">事件代理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ajax"><span class="nav-number">4.</span> <span class="nav-text">Ajax</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#XMLHttpRequest"><span class="nav-number">4.1.</span> <span class="nav-text">XMLHttpRequest</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fetch-API"><span class="nav-number">4.2.</span> <span class="nav-text">Fetch API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%A8%E5%9F%9F"><span class="nav-number">4.3.</span> <span class="nav-text">跨域</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F-JSONP"><span class="nav-number">4.3.1.</span> <span class="nav-text">解决跨域 - JSONP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F-CORS-%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E8%AE%BE%E7%BD%AE-http-header"><span class="nav-number">4.3.2.</span> <span class="nav-text">解决跨域 - CORS: 服务器端设置 http header</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8"><span class="nav-number">5.</span> <span class="nav-text">存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cookie%E3%80%81localStorage%E3%80%81sessionStorage"><span class="nav-number">5.1.</span> <span class="nav-text">cookie、localStorage、sessionStorage</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">taoyingsong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">taoyingsong</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '',
+      clientSecret: '',
+      repo        : '',
+      owner       : '',
+      admin       : [''],
+      id          : 'd7365856d42e2de267382837be7b3f54',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
